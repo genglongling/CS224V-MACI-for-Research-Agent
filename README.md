@@ -1,4 +1,4 @@
-# 🚀 CS224G-MACI-for-Stock-Prediction  
+# 🚀 CS224V-MACI-for-Research-Agent  
 
 ## [Sprint 4 - NEW UPDATE]
 ## - Please review section How To Run The Code Part D for the app
@@ -233,4 +233,4 @@ MACI-Stock-Prediction/
 │── requirements.txt  # ✅ Python dependencies
 │── README.md  # ✅ Project documentation
 ```
-This **README** provides an overview of the **CS224G MACI for Stock Prediction** project, highlighting its **motivations, project plan, methodologies, demo, and future directions.** 🚀  
+This **README** provides an overview of the **CS224V-MACI-for-Research-Agent** project, highlighting its **motivations, project plan, methodologies, demo, and future directions.** 🚀  
