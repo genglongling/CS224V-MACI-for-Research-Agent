@@ -2,7 +2,7 @@
 ResearchMAS: A conversational agent based on multi-agent system for research tasks
 
 
-# 🏗️ *6 Multi-Agent tools**  
+# 🏗️ **6 Multi-Agent tools**  
    - Our current version MACI support Magentic multi-agent tool.
    - Our previous MACI-framework could support 5 multi-agent tools: SagaLLM, LangGraph, AutoGen, Crewai, LangChain, and to be extended on LlamaIndex, Haystack.
 
