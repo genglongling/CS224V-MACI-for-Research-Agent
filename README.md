@@ -1,16 +1,10 @@
-# 🚀 CS224V-MACI-for-Research-Agent  
-
-## [Sprint 4 - NEW UPDATE]
-## - Please review section How To Run The Code Part D for the app
-## - Code: cd MACI_stock_prediction
-## [Sprint 3 - UPDATE]
-## - Paper: [MACI Framework](https://arxiv.org/abs/2502.18836)
-## - Code: cd MACI_framework
+# 🚀 CS224V-MACI-for-Research-Agent
+ResearchMAS: A conversational agent based on multi-agent system for research tasks
 
 
-# 🏗️ **7 Multi-Agent tools**  
-   - Our newest version MACI support Magentic multi-agent tool.
-   - Our previous MACI-framework could support multi-agent tools: LangGraph, AutoGen, Crewai, LangChain, and to be extended on LlamaIndex, Haystack.
+# 🏗️ *6 Multi-Agent tools**  
+   - Our current version MACI support Magentic multi-agent tool.
+   - Our previous MACI-framework could support 5 multi-agent tools: SagaLLM, LangGraph, AutoGen, Crewai, LangChain, and to be extended on LlamaIndex, Haystack.
 
 # 🤝 **20+ LLM Agents**  
    - **[OpenAI LLMs:](https://openai.com/)** including gpt-4, gpt-4o, gpt-4o-mini, etc.
@@ -56,77 +50,45 @@ MACI is designed to overcome these LLM limitations using a three-layer approach:
    - **Common Agents:** Validate constraints & reasoning quality.  
    - **Task-Specific Agents:** Optimize domain-specific tasks.  
 
-3. 📡 **Run-Time Monitor**  
+3. 👥 **Multi-agent Debate via Information Theory**
+
+4. 📡 **Run-Time Monitor**  
    - Adapts to unexpected changes in real-time.  
 
 ---
 
 ## 📅 3. Project Plan  
 
-### 🔄 3.1 LLM Model Improvement on:  
+### 🤖 3.1 Functionalities:  
+Different LLMs agent tailored for **Decision-making task**:
 
-1. ✅ **Lack of Self-Verification**  
-   - Independent validation agents ensure correctness.  
-
-2. 🔍 **Attention Bias**  
-   - Task-specific agents with constrained context windows prevent bias.  
-
-3. 🌍 **Lack of Common Sense**  
-   - Integration agents enhance real-world feasibility.  
-
-### 🧪 3.2 LLM Research and Experiments:  
-
-- 📝 Spec completed, paper submitted to ICML.  
-- 🏆 Tested on **Traveling Salesperson** & **Thanksgiving Dinner Planning**, outperforming all LLMs, including DeepSeek.  
-- 📊 Stock Prediction application designed.  
-
-### 📆 3.3 General Timeline:  
-
-- 🏗 **(Sprint 1)** Implementation, Experiments, First Results →  
-- 🚀 **(Sprint 2)** First App Demo (Frond-End & Back-End) →  
-- 🔧 **(Sprint 3)** MACI Enhancement, Second App Demo →  
-- 🎤 **(Demo Day)** App Integration, Paper Submission for NeurIPS, Final App Demo →  
-
-### 🤖 3.4 Multi-Agent App Development:  
-
-- 🔍 **(1) LLM Specializatio✅**: Different LLMs tailored for **Stock Prediction, Company Analysis, Personal Insights, and Job Market Trends**.  
-- 🏗 **(2) Overall Architecture✅**: Using **MACI Framework with website**, Multi-Agents selection and collaboration, to generate holistic financial and career insights.  
-- 📈 **(3) Agent 1 & 2✅: Stock Prediction & Company Analysis**: Real-time data integration, LLMs for market trends and company analysis.  
-- 👥 **(4) Agent 3 & 4✅: Investment Expert Analysis & Job Analysis**: AI-driven investment, career suggestion, and matching based on market shifts.  
-- 🚀 **(5) Milestones**: Iterative development, testing, and user feedback loops.
+- 🔍 **(1) Stock Prediction(buy/sell)✅**: Real-time data integration (Alphaventage API)
+- 🏗 **(2) Company/News Sentiment Analysis(good/bad)✅**:  Real-time data integration (Alphaventage API)
+- 📈 **(2) Personal Insights(good/bad)✅**: Real-time data integration (Alphaventage API)
+- 👥 **(4) Job Market Trends(up/down)✅: Investment Expert Analysis & Job Analysis**: Real-time data integration (Alphaventage API)
   
 ---
 
 ## ⚙️ 4. Experiment Set-up  
 
-We plan to evaluate our multi-agent temporal planning framework on **S&P 500 stocks (2018-2024)**, incorporating historical trading data, reports data, and other relevant financial data. Our focus will be on three major market sectors.  
+### 📜 4.1 Datasets:
 
-All experiments will utilize publicly available data from sources like:  
+### ⚖️ 4.2 Baselines:  
 
-- 📈 **Yahoo Finance** (Stock Prices)  
-- 📜 **SEC EDGAR** (Financial Reports)  
+1. 📊 **OpenAI Deepresearch**  
 
-### ⚖️ 4.1 Baselines & Comparisons:  
+2. 🆚 **STORM/CO-STORM**  
 
-1. 📊 **Baseline Models:**  
-   - Traditional machine learning methods (**Logistic Regression, SVM, LSTM(best), LLM, MACI(best) networks**).  
-
-2. 🆚 **Comparison with MACI:**  
-   - Evaluating prediction accuracy (**MAE, MSE**) and **directional accuracy** for stock movement prediction.  
-
-3. 🧩 **Ablation Studies:**  
-   - Testing different combinations of agents and their impact on performance.  
-
-4. 📊 **Robustness & Scalability:**  
-   - Assessing performance across different market conditions and unseen stocks (out-of-sample validation).  
+### ⚖️ 4.3 Metrics (Human evaluation): 
 
 ---
 
 ## 🎓 5. Contribution  
 
-1. 📄 **Paper: Multi-Agent Collaborative Intelligence for Robust Temporal Planning** – *Edward Y. Chang*  
-2. 📄 **Paper: REALM-Bench: A Real-World Planning Benchmark for LLMs and Multi-Agent Systems** – *Longling Gloria Geng, Edward Y. Chang*  
-3. 💻 **GitHub Setup, App Development, and Experiments** – *Longling Gloria Geng*  
+1. 📄 **Paper: Into the Unknown Unknowns: Engaged Human Learning through Participation in Language Model Agent Conversations** -*Yucheng Jiang, Yijia Shao, Dekun Ma, Sina J. Semnani, Monica S. Lam*
+2. 📄 **Paper: Multi-Agent Collaborative Intelligence for Robust Temporal Planning** – *Edward Y. Chang*  
+3. 📄 **Paper: REALM-Bench: A Real-World Planning Benchmark for LLMs and Multi-Agent Systems** – *Longling Gloria Geng, Edward Y. Chang*  
+4. 💻 **GitHub Setup, App Development, and Experiments** – *Longling Gloria Geng*  
 
 ---
 # 🚀 How to Run the Code
