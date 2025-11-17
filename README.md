@@ -1,5 +1,4 @@
-# 🚀 CS224V-MACI-for-Research-Agent
-ResearchMAS: A conversational agent based on multi-agent system for research tasks
+# 🚀 CS224V: ResearchMAS: A conversational agent based on multi-agent system for research tasks
 
 
 # 🏗️ **6 Multi-Agent tools**  
