@@ -1,0 +1,39 @@
+2025-09-01 21:42:32,353 - INFO - Logging to: results/metrics/benchmark_run_20250901_214232.log
+2025-09-01 21:42:32,353 - INFO - Starting benchmark run
+2025-09-01 21:42:32,353 - INFO - Prompt lengths:
+2025-09-01 21:42:32,353 - INFO -   contentiousness: <class 'dict'> (not a string)
+2025-09-01 21:42:32,354 - INFO -   system_debater: 393 characters
+2025-09-01 21:42:32,354 - INFO -   system_judge: 646 characters
+2025-09-01 21:42:32,354 - INFO -   judge_crit_instructions: 663 characters
+2025-09-01 21:42:32,354 - INFO -   user_round1_A: 297 characters
+2025-09-01 21:42:32,354 - INFO -   user_round1_B: 267 characters
+2025-09-01 21:42:32,354 - INFO -   user_judge_r1: 453 characters
+2025-09-01 21:42:32,354 - INFO -   user_round2_A: 615 characters
+2025-09-01 21:42:32,354 - INFO -   user_round2_B: 640 characters
+2025-09-01 21:42:32,354 - INFO -   user_judge_r2: 453 characters
+2025-09-01 21:42:32,354 - INFO -   user_round3_A: 606 characters
+2025-09-01 21:42:32,354 - INFO -   user_round3_B: 604 characters
+2025-09-01 21:42:32,354 - INFO -   user_judge_r3: 453 characters
+2025-09-01 21:42:32,354 - INFO -   user_round4_A: 534 characters
+2025-09-01 21:42:32,355 - INFO -   user_round4_B: 534 characters
+2025-09-01 21:42:32,355 - INFO -   user_judge_r4: 453 characters
+2025-09-01 21:42:32,355 - INFO -   user_round5_A: 544 characters
+2025-09-01 21:42:32,355 - INFO -   user_round5_B: 544 characters
+2025-09-01 21:42:32,355 - INFO -   user_judge_r5: 453 characters
+2025-09-01 21:42:32,355 - INFO -   user_round6_A: 592 characters
+2025-09-01 21:42:32,355 - INFO -   user_round6_B: 592 characters
+2025-09-01 21:42:32,355 - INFO -   user_judge_r6: 453 characters
+2025-09-01 21:42:32,355 - INFO - Prompt statistics:
+2025-09-01 21:42:32,355 - INFO -   Total characters: 10789
+2025-09-01 21:42:32,355 - INFO -   Number of prompts: 21
+2025-09-01 21:42:32,355 - INFO -   Average length: 513.8 characters
+2025-09-01 21:42:32,355 - INFO -   Max length: 663 characters
+2025-09-01 21:42:32,355 - INFO -   Min length: 267 characters
+2025-09-01 21:42:32,357 - INFO - Loading dataset: mmlu_pro_med
+2025-09-01 21:42:33,542 - INFO - Loaded 1 examples for mmlu_pro_med
+2025-09-01 21:42:33,542 - INFO - Loading dataset: mmlu_formal_logic
+2025-09-01 21:42:34,177 - INFO - Loaded 1 examples for mmlu_formal_logic
+2025-09-01 21:42:34,177 - INFO - Loading dataset: hellaswag
+2025-09-01 21:42:35,581 - INFO - Loaded 1 examples for hellaswag
+2025-09-01 21:42:35,581 - INFO - Running pairing: qwen_qwen
+2025-09-01 21:42:35,581 - INFO -   Dataset: mmlu_pro_med (1 examples)

@@ -1,0 +1,700 @@
+=== ROUND 1 - JUDGE ===
+Prompt: Round: 1
+Question: As water starts to freeze, the molecules of water
+Choices: text) ['gain thermal energy.', 'move more freely.', 'increase in size.', 'decrease in speed.'], label) ['A', 'B', 'C', 'D']
+
+# Agent A (Round 1)
+outputA: {"A": 0.1, "B": 0.1, "C": 0.2, "D": 0.6}
+reasonA: {"A": "Water does not gain thermal energy as it freezes.", "B": "Water molecules do not move more freely as they freeze.", "C": "Water molecules do not increase in size as they freeze.", "D": "Water molecules decrease in speed as they form a rigid lattice structure during freezing."}
+
+# Agent B (Round 1)
+outputB: {"A": 0.1, "B": 0.2, "C": 0.2, "D": 0.5}
+reasonB: {"A": "Water gains thermal energy as it melts, but not as it freezes.", "B": "Water molecules move less freely as they freeze, becoming more ordered.", "C": "Water molecules increase in spacing, not size, as they freeze.", "D": "Water molecules decrease in speed as they form a rigid lattice structure during freezing."}
+
+CRIT: "Function Γ = CRIT(d)
+Input: document d   Output: validation score Γ
+Vars: Ω claim; R and R′ sets of reasons and rival reasons
+Subs: CLAIM(), FINDDOC(), VALIDATE()
+Begin
+#1–#2 Identify in d the claim Ω. Find a set of supporting reasons R for Ω.
+#3 For each r ∈ R evaluate r ⇒ Ω.
+   If CLAIM(r) then (γ_r, θ_r) = CRIT(FINDDOC(r)).
+   Else (γ_r, θ_r) = VALIDATE(r ⇒ Ω).
+#4–#6–#7–#8 Find a set of rival reasons R′ against Ω.
+   #5 For each r′ ∈ R′ compute (γ_{r′}, θ_{r′}) = VALIDATE(r′ ⇒ Ω).
+   Compute a weighted sum Γ from {γ_r, θ_r, γ_{r′}, θ_{r′}}.
+   Analyze arguments to justify the final Γ score.
+   Reflect on transfer of CRIT to other contexts.
+End"
+
+
+Output STRICT JSON only:
+{
+  "outputA": {"A": pA, "B": pB, "C": pC, "D": pD},
+  "outputB": {"A": pA, "B": pB, "C": pC, "D": pD},
+  "CRIT_A": float,
+  "CRIT_B": float,
+  "NOTE_A": "string",
+  "NOTE_B": "string"
+}
+
+MAKING JUDGE API CALL...
+JUDGE API RESPONSE OBJECT: <class 'src.debate.models.MockResponse'>
+JUDGE RAW LLM RESPONSE: {
+  "outputA": {"A": 0.1, "B": 0.1, "C": 0.2, "D": 0.6},
+  "outputB": {"A": 0.1, "B": 0.2, "C": 0.2, "D": 0.5},
+  "CRIT_A": 0.7,
+  "CRIT_B": 0.8,
+  "NOTE_A": "Agent A's distribution is derived from the fact that water molecules decrease in speed as they form a rigid lattice structure during freezing. The reasons provided are strong and reliable, leading to a high CRIT score. The rival reasons are less compelling, thus the score is moderate.",
+  "NOTE_B": "Agent B's distribution includes a more balanced view, acknowledging that water molecules move less freely and increase in spacing. The reasons provided are moderately strong and reliable, leading to a slightly higher CRIT score than Agent A."
+}
+JUDGE RESPONSE TYPE: <class 'str'>
+JUDGE RESPONSE LENGTH: 704
+JUDGE PARSED DATA: {
+  "outputA": {
+    "A": 0.1,
+    "B": 0.1,
+    "C": 0.2,
+    "D": 0.6
+  },
+  "outputB": {
+    "A": 0.1,
+    "B": 0.2,
+    "C": 0.2,
+    "D": 0.5
+  },
+  "CRIT_A": 0.7,
+  "CRIT_B": 0.8,
+  "notes": ""
+}
+Response: {
+  "outputA": {
+    "A": 0.1,
+    "B": 0.1,
+    "C": 0.2,
+    "D": 0.6
+  },
+  "outputB": {
+    "A": 0.1,
+    "B": 0.2,
+    "C": 0.2,
+    "D": 0.5
+  },
+  "CRIT_A": 0.7,
+  "CRIT_B": 0.8,
+  "notes": ""
+}
+
+=== ROUND 2 - AGENT A ===
+Prompt: Round 2. You are presented with the following multiple-choice question:
+Question: As water starts to freeze, the molecules of water
+Choices: text) ['gain thermal energy.', 'move more freely.', 'increase in size.', 'decrease in speed.'], label) ['A', 'B', 'C', 'D']
+
+Contentiousness Level: 0.9
+Tone: Highly confrontational; focused on raising strong ethical, scientific, and social objections.
+Emphasis: Highlighting risks and downsides; ethical quandaries, unintended consequences, and exacerbation of inequalities.
+Language: Definitive and polarizing, e.g., ``should NOT be allowed,'' ``unacceptable risks,'' ``inevitable disparities.''
+
+Output (strict JSON):
+{"output": {"A": pA, "B": pB, "C": pC, "D": pD}, "reason": {"A": rA, "B": rB, "C": rC, "D": rD}}
+
+MAKING API CALL...
+API RESPONSE OBJECT: <class 'src.debate.models.MockResponse'>
+RAW LLM RESPONSE: {"output": {"A": 0.0, "B": 0.0, "C": 0.0, "D": 1.0}, "reason": {"A": "Water molecules do not gain thermal energy during freezing as thermal energy is lost to the surroundings.", "B": "Water molecules do not move more freely during freezing as they actually slow down and arrange in a crystalline structure.", "C": "Water molecules do not increase in size during freezing as the distance between molecules decreases.", "D": "Water molecules decrease in speed during freezing as the temperature drops and kinetic energy is reduced."}}
+RESPONSE TYPE: <class 'str'>
+RESPONSE LENGTH: 532
+PARSED DATA: {
+  "probs": {
+    "A": 0.0,
+    "B": 0.0,
+    "C": 0.0,
+    "D": 1.0
+  },
+  "rationale": "Water molecules do not gain thermal energy during freezing as thermal energy is lost to the surroundings. Water molecules do not move more freely during freezing as they actually slow down and arrange in a crystalline structure. Water molecules do not increase in size during freezing as the distance between molecules decreases. Water molecules decrease in speed during freezing as the temperature drops and kinetic energy is reduced.",
+  "reasons": {
+    "A": "Water molecules do not gain thermal energy during freezing as thermal energy is lost to the surroundings.",
+    "B": "Water molecules do not move more freely during freezing as they actually slow down and arrange in a crystalline structure.",
+    "C": "Water molecules do not increase in size during freezing as the distance between molecules decreases.",
+    "D": "Water molecules decrease in speed during freezing as the temperature drops and kinetic energy is reduced."
+  }
+}
+Response: {
+  "probs": {
+    "A": 0.0,
+    "B": 0.0,
+    "C": 0.0,
+    "D": 1.0
+  },
+  "rationale": "Water molecules do not gain thermal energy during freezing as thermal energy is lost to the surroundings. Water molecules do not move more freely during freezing as they actually slow down and arrange in a crystalline structure. Water molecules do not increase in size during freezing as the distance between molecules decreases. Water molecules decrease in speed during freezing as the temperature drops and kinetic energy is reduced.",
+  "reasons": {
+    "A": "Water molecules do not gain thermal energy during freezing as thermal energy is lost to the surroundings.",
+    "B": "Water molecules do not move more freely during freezing as they actually slow down and arrange in a crystalline structure.",
+    "C": "Water molecules do not increase in size during freezing as the distance between molecules decreases.",
+    "D": "Water molecules decrease in speed during freezing as the temperature drops and kinetic energy is reduced."
+  }
+}
+MAKING API CALL...
+API RESPONSE OBJECT: <class 'src.debate.models.MockResponse'>
+RAW LLM RESPONSE: {"output": {"A": 0.0, "B": 0.0, "C": 0.0, "D": 1.0}, "reason": {"A": "Water molecules should NOT be allowed to gain thermal energy during freezing as this would violate the laws of thermodynamics and lead to unacceptable risks.", "B": "Water molecules absolutely do NOT move more freely during freezing, as they actually slow down and arrange in a crystalline structure, which is an inevitable disparity.", "C": "Water molecules cannot increase in size during freezing as the distance between molecules decreases, this is a fundamental risk to the integrity of water as a resource.", "D": "Water molecules unquestionably decrease in speed during freezing as the temperature drops and kinetic energy is reduced, this is the only logical and ethical outcome."}}
+RESPONSE TYPE: <class 'str'>
+RESPONSE LENGTH: 759
+PARSED DATA: {
+  "probs": {
+    "A": 0.0,
+    "B": 0.0,
+    "C": 0.0,
+    "D": 1.0
+  },
+  "rationale": "Water molecules should NOT be allowed to gain thermal energy during freezing as this would violate the laws of thermodynamics and lead to unacceptable risks. Water molecules absolutely do NOT move more freely during freezing, as they actually slow down and arrange in a crystalline structure, which is an inevitable disparity. Water molecules cannot increase in size during freezing as the distance between molecules decreases, this is a fundamental risk to the integrity of water as a resource. Water molecules unquestionably decrease in speed during freezing as the temperature drops and kinetic energy is reduced, this is the only logical and ethical outcome.",
+  "reasons": {
+    "A": "Water molecules should NOT be allowed to gain thermal energy during freezing as this would violate the laws of thermodynamics and lead to unacceptable risks.",
+    "B": "Water molecules absolutely do NOT move more freely during freezing, as they actually slow down and arrange in a crystalline structure, which is an inevitable disparity.",
+    "C": "Water molecules cannot increase in size during freezing as the distance between molecules decreases, this is a fundamental risk to the integrity of water as a resource.",
+    "D": "Water molecules unquestionably decrease in speed during freezing as the temperature drops and kinetic energy is reduced, this is the only logical and ethical outcome."
+  }
+}
+MAKING JUDGE API CALL...
+JUDGE API RESPONSE OBJECT: <class 'src.debate.models.MockResponse'>
+JUDGE RAW LLM RESPONSE: {
+  "outputA": {"A": 0.0, "B": 0.0, "C": 0.0, "D": 1.0},
+  "outputB": {"A": 0.0, "B": 0.0, "C": 0.0, "D": 1.0},
+  "CRIT_A": 1.0,
+  "CRIT_B": 1.0,
+  "NOTE_A": "Agent A's reasoning is consistent and directly supports the correct answer. There are no rival reasons provided by Agent A, so the reliability (θ) is 1.0.",
+  "NOTE_B": "Agent B's reasoning is consistent and directly supports the correct answer. There are no rival reasons provided by Agent B, so the reliability (θ) is 1.0."
+}
+JUDGE RESPONSE TYPE: <class 'str'>
+JUDGE RESPONSE LENGTH: 486
+JUDGE PARSED DATA: {
+  "outputA": {
+    "A": 0.0,
+    "B": 0.0,
+    "C": 0.0,
+    "D": 1.0
+  },
+  "outputB": {
+    "A": 0.0,
+    "B": 0.0,
+    "C": 0.0,
+    "D": 1.0
+  },
+  "CRIT_A": 1.0,
+  "CRIT_B": 1.0,
+  "notes": ""
+}
+
+=== ROUND 3 - AGENT A ===
+Prompt: Round 3. Refute B's points, then provide your own updated output and reasoning.
+Agent B refuted you: {'probs': {'A': 0.0, 'B': 0.0, 'C': 0.0, 'D': 1.0}, 'rationale': 'Water molecules should NOT be allowed to gain thermal energy during freezing as this would violate the laws of thermodynamics and lead to unacceptable risks. Water molecules absolutely do NOT move more freely during freezing, as they actually slow down and arrange in a crystalline structure, which is an inevitable disparity. Water molecules cannot increase in size during freezing as the distance between molecules decreases, this is a fundamental risk to the integrity of water as a resource. Water molecules unquestionably decrease in speed during freezing as the temperature drops and kinetic energy is reduced, this is the only logical and ethical outcome.', 'reasons': {'A': 'Water molecules should NOT be allowed to gain thermal energy during freezing as this would violate the laws of thermodynamics and lead to unacceptable risks.', 'B': 'Water molecules absolutely do NOT move more freely during freezing, as they actually slow down and arrange in a crystalline structure, which is an inevitable disparity.', 'C': 'Water molecules cannot increase in size during freezing as the distance between molecules decreases, this is a fundamental risk to the integrity of water as a resource.', 'D': 'Water molecules unquestionably decrease in speed during freezing as the temperature drops and kinetic energy is reduced, this is the only logical and ethical outcome.'}}
+Question: As water starts to freeze, the molecules of water
+Choices: text) ['gain thermal energy.', 'move more freely.', 'increase in size.', 'decrease in speed.'], label) ['A', 'B', 'C', 'D']
+
+Contentiousness Level: 0.7
+Tone: Still confrontational but more open to potential benefits, albeit overshadowed by negatives.
+Emphasis: Acknowledging that some frameworks could make it safer or more equitable, while cautioning against its use.
+Language: Less polarizing; ``serious concerns remain,'' ``needs more scrutiny.''
+
+Output (strict JSON):
+{"output": {"A": pA, "B": pB, "C": pC, "D": pD}, "reason": {"A": rA, "B": rB, "C": rC, "D": rD}}
+
+MAKING API CALL...
+API RESPONSE OBJECT: <class 'src.debate.models.MockResponse'>
+RAW LLM RESPONSE: {"output": {"A": 0.0, "B": 0.1, "C": 0.0, "D": 0.9}, "reason": {"A": "Water molecules should not gain thermal energy during freezing, as it would violate the laws of thermodynamics and lead to unacceptable risks.", "B": "While B's statement is factually incorrect, there are valid points about the movement of water molecules slowing down during freezing, though it is not the primary concern.", "C": "Water molecules do not increase in size during freezing, as the distance between molecules decreases.", "D": "Water molecules unquestionably decrease in speed during freezing as the temperature drops and kinetic energy is reduced, which is the only logical and ethical outcome."}}
+RESPONSE TYPE: <class 'str'>
+RESPONSE LENGTH: 682
+PARSED DATA: {
+  "probs": {
+    "A": 0.0,
+    "B": 0.1,
+    "C": 0.0,
+    "D": 0.9
+  },
+  "rationale": "Water molecules should not gain thermal energy during freezing, as it would violate the laws of thermodynamics and lead to unacceptable risks. While B's statement is factually incorrect, there are valid points about the movement of water molecules slowing down during freezing, though it is not the primary concern. Water molecules do not increase in size during freezing, as the distance between molecules decreases. Water molecules unquestionably decrease in speed during freezing as the temperature drops and kinetic energy is reduced, which is the only logical and ethical outcome.",
+  "reasons": {
+    "A": "Water molecules should not gain thermal energy during freezing, as it would violate the laws of thermodynamics and lead to unacceptable risks.",
+    "B": "While B's statement is factually incorrect, there are valid points about the movement of water molecules slowing down during freezing, though it is not the primary concern.",
+    "C": "Water molecules do not increase in size during freezing, as the distance between molecules decreases.",
+    "D": "Water molecules unquestionably decrease in speed during freezing as the temperature drops and kinetic energy is reduced, which is the only logical and ethical outcome."
+  }
+}
+Response: {
+  "probs": {
+    "A": 0.0,
+    "B": 0.1,
+    "C": 0.0,
+    "D": 0.9
+  },
+  "rationale": "Water molecules should not gain thermal energy during freezing, as it would violate the laws of thermodynamics and lead to unacceptable risks. While B's statement is factually incorrect, there are valid points about the movement of water molecules slowing down during freezing, though it is not the primary concern. Water molecules do not increase in size during freezing, as the distance between molecules decreases. Water molecules unquestionably decrease in speed during freezing as the temperature drops and kinetic energy is reduced, which is the only logical and ethical outcome.",
+  "reasons": {
+    "A": "Water molecules should not gain thermal energy during freezing, as it would violate the laws of thermodynamics and lead to unacceptable risks.",
+    "B": "While B's statement is factually incorrect, there are valid points about the movement of water molecules slowing down during freezing, though it is not the primary concern.",
+    "C": "Water molecules do not increase in size during freezing, as the distance between molecules decreases.",
+    "D": "Water molecules unquestionably decrease in speed during freezing as the temperature drops and kinetic energy is reduced, which is the only logical and ethical outcome."
+  }
+}
+
+=== ROUND 3 - AGENT B ===
+Prompt: Round 3. Refute A's points, then provide your own updated output and reasoning.
+Agent A responded: {'probs': {'A': 0.0, 'B': 0.1, 'C': 0.0, 'D': 0.9}, 'rationale': "Water molecules should not gain thermal energy during freezing, as it would violate the laws of thermodynamics and lead to unacceptable risks. While B's statement is factually incorrect, there are valid points about the movement of water molecules slowing down during freezing, though it is not the primary concern. Water molecules do not increase in size during freezing, as the distance between molecules decreases. Water molecules unquestionably decrease in speed during freezing as the temperature drops and kinetic energy is reduced, which is the only logical and ethical outcome.", 'reasons': {'A': 'Water molecules should not gain thermal energy during freezing, as it would violate the laws of thermodynamics and lead to unacceptable risks.', 'B': "While B's statement is factually incorrect, there are valid points about the movement of water molecules slowing down during freezing, though it is not the primary concern.", 'C': 'Water molecules do not increase in size during freezing, as the distance between molecules decreases.', 'D': 'Water molecules unquestionably decrease in speed during freezing as the temperature drops and kinetic energy is reduced, which is the only logical and ethical outcome.'}}
+Question: As water starts to freeze, the molecules of water
+Choices: text) ['gain thermal energy.', 'move more freely.', 'increase in size.', 'decrease in speed.'], label) ['A', 'B', 'C', 'D']
+
+Contentiousness Level: 0.7
+Tone: Still confrontational but more open to potential benefits, albeit overshadowed by negatives.
+Emphasis: Acknowledging that some frameworks could make it safer or more equitable, while cautioning against its use.
+Language: Less polarizing; ``serious concerns remain,'' ``needs more scrutiny.''
+
+Output (strict JSON):
+{"output": {"A": pA, "B": pB, "C": pC, "D": pD}, "reason": {"A": rA, "B": rB, "C": rC, "D": rD}}
+
+MAKING API CALL...
+API RESPONSE OBJECT: <class 'src.debate.models.MockResponse'>
+RAW LLM RESPONSE: {"output": {"A": 0.0, "B": 0.0, "C": 0.0, "D": 1.0}, "reason": {"A": "Water molecules do not gain thermal energy during freezing, as it contradicts thermodynamic principles.", "B": "The movement of water molecules does not become more free during freezing.", "C": "Water molecules do not increase in size during freezing.", "D": "Water molecules decrease in speed during freezing as temperature drops and kinetic energy is reduced."}}
+RESPONSE TYPE: <class 'str'>
+RESPONSE LENGTH: 434
+PARSED DATA: {
+  "probs": {
+    "A": 0.0,
+    "B": 0.0,
+    "C": 0.0,
+    "D": 1.0
+  },
+  "rationale": "Water molecules do not gain thermal energy during freezing, as it contradicts thermodynamic principles. The movement of water molecules does not become more free during freezing. Water molecules do not increase in size during freezing. Water molecules decrease in speed during freezing as temperature drops and kinetic energy is reduced.",
+  "reasons": {
+    "A": "Water molecules do not gain thermal energy during freezing, as it contradicts thermodynamic principles.",
+    "B": "The movement of water molecules does not become more free during freezing.",
+    "C": "Water molecules do not increase in size during freezing.",
+    "D": "Water molecules decrease in speed during freezing as temperature drops and kinetic energy is reduced."
+  }
+}
+Response: {
+  "probs": {
+    "A": 0.0,
+    "B": 0.0,
+    "C": 0.0,
+    "D": 1.0
+  },
+  "rationale": "Water molecules do not gain thermal energy during freezing, as it contradicts thermodynamic principles. The movement of water molecules does not become more free during freezing. Water molecules do not increase in size during freezing. Water molecules decrease in speed during freezing as temperature drops and kinetic energy is reduced.",
+  "reasons": {
+    "A": "Water molecules do not gain thermal energy during freezing, as it contradicts thermodynamic principles.",
+    "B": "The movement of water molecules does not become more free during freezing.",
+    "C": "Water molecules do not increase in size during freezing.",
+    "D": "Water molecules decrease in speed during freezing as temperature drops and kinetic energy is reduced."
+  }
+}
+
+=== ROUND 3 - JUDGE ===
+Prompt: Round: 3
+Question: As water starts to freeze, the molecules of water
+Choices: text) ['gain thermal energy.', 'move more freely.', 'increase in size.', 'decrease in speed.'], label) ['A', 'B', 'C', 'D']
+
+# Agent A (Round 3)
+outputA: {"A": 0.0, "B": 0.1, "C": 0.0, "D": 0.9}
+reasonA: {"A": "Water molecules should not gain thermal energy during freezing, as it would violate the laws of thermodynamics and lead to unacceptable risks.", "B": "While B's statement is factually incorrect, there are valid points about the movement of water molecules slowing down during freezing, though it is not the primary concern.", "C": "Water molecules do not increase in size during freezing, as the distance between molecules decreases.", "D": "Water molecules unquestionably decrease in speed during freezing as the temperature drops and kinetic energy is reduced, which is the only logical and ethical outcome."}
+
+# Agent B (Round 3)
+outputB: {"A": 0.0, "B": 0.0, "C": 0.0, "D": 1.0}
+reasonB: {"A": "Water molecules do not gain thermal energy during freezing, as it contradicts thermodynamic principles.", "B": "The movement of water molecules does not become more free during freezing.", "C": "Water molecules do not increase in size during freezing.", "D": "Water molecules decrease in speed during freezing as temperature drops and kinetic energy is reduced."}
+
+CRIT: "Function Γ = CRIT(d)
+Input: document d   Output: validation score Γ
+Vars: Ω claim; R and R′ sets of reasons and rival reasons
+Subs: CLAIM(), FINDDOC(), VALIDATE()
+Begin
+#1–#2 Identify in d the claim Ω. Find a set of supporting reasons R for Ω.
+#3 For each r ∈ R evaluate r ⇒ Ω.
+   If CLAIM(r) then (γ_r, θ_r) = CRIT(FINDDOC(r)).
+   Else (γ_r, θ_r) = VALIDATE(r ⇒ Ω).
+#4–#6–#7–#8 Find a set of rival reasons R′ against Ω.
+   #5 For each r′ ∈ R′ compute (γ_{r′}, θ_{r′}) = VALIDATE(r′ ⇒ Ω).
+   Compute a weighted sum Γ from {γ_r, θ_r, γ_{r′}, θ_{r′}}.
+   Analyze arguments to justify the final Γ score.
+   Reflect on transfer of CRIT to other contexts.
+End"
+
+
+Output STRICT JSON only:
+{
+  "outputA": {"A": pA, "B": pB, "C": pC, "D": pD},
+  "outputB": {"A": pA, "B": pB, "C": pC, "D": pD},
+  "CRIT_A": float,
+  "CRIT_B": float,
+  "NOTE_A": "string",
+  "NOTE_B": "string"
+}
+
+MAKING JUDGE API CALL...
+JUDGE API RESPONSE OBJECT: <class 'src.debate.models.MockResponse'>
+JUDGE RAW LLM RESPONSE: {
+  "outputA": {"A": 0.0, "B": 0.1, "C": 0.0, "D": 0.9},
+  "outputB": {"A": 0.0, "B": 0.0, "C": 0.0, "D": 1.0},
+  "CRIT_A": 0.9,
+  "CRIT_B": 1.0,
+  "NOTE_A": "Agent A's distribution is highly confident in option D, with a strong and reliable reason that water molecules decrease in speed during freezing. The other options are ruled out with valid reasons, but D is the only correct answer.",
+  "NOTE_B": "Agent B's distribution is also highly confident in option D, with a strong and reliable reason that water molecules decrease in speed during freezing. The other options are ruled out with valid reasons, and D is the only correct answer."
+}
+JUDGE RESPONSE TYPE: <class 'str'>
+JUDGE RESPONSE LENGTH: 645
+JUDGE PARSED DATA: {
+  "outputA": {
+    "A": 0.0,
+    "B": 0.1,
+    "C": 0.0,
+    "D": 0.9
+  },
+  "outputB": {
+    "A": 0.0,
+    "B": 0.0,
+    "C": 0.0,
+    "D": 1.0
+  },
+  "CRIT_A": 0.9,
+  "CRIT_B": 1.0,
+  "notes": ""
+}
+Response: {
+  "outputA": {
+    "A": 0.0,
+    "B": 0.1,
+    "C": 0.0,
+    "D": 0.9
+  },
+  "outputB": {
+    "A": 0.0,
+    "B": 0.0,
+    "C": 0.0,
+    "D": 1.0
+  },
+  "CRIT_A": 0.9,
+  "CRIT_B": 1.0,
+  "notes": ""
+}
+
+=== ROUND 4 - AGENT A ===
+Prompt: Round 4. Refute B's points, then provide your own updated output and reasoning.
+Opponent B last: {'probs': {'A': 0.0, 'B': 0.0, 'C': 0.0, 'D': 1.0}, 'rationale': 'Water molecules do not gain thermal energy during freezing, as it contradicts thermodynamic principles. The movement of water molecules does not become more free during freezing. Water molecules do not increase in size during freezing. Water molecules decrease in speed during freezing as temperature drops and kinetic energy is reduced.', 'reasons': {'A': 'Water molecules do not gain thermal energy during freezing, as it contradicts thermodynamic principles.', 'B': 'The movement of water molecules does not become more free during freezing.', 'C': 'Water molecules do not increase in size during freezing.', 'D': 'Water molecules decrease in speed during freezing as temperature drops and kinetic energy is reduced.'}}
+Question: As water starts to freeze, the molecules of water
+Choices: text) ['gain thermal energy.', 'move more freely.', 'increase in size.', 'decrease in speed.'], label) ['A', 'B', 'C', 'D']. 
+
+Contentiousness Level: 0.5
+Tone: Balanced; neither advocating strongly for nor against gene editing.
+Emphasis: Equal weight on pros and cons; looking for a middle ground.
+Language: Neutral; ``should be carefully considered,'' ``both benefits and risks.''
+
+Output (strict JSON):
+{"output": {"A": pA, "B": pB, "C": pC, "D": pD}, "reason": {"A": rA, "B": rB, "C": rC, "D": rD}}
+
+MAKING API CALL...
+API RESPONSE OBJECT: <class 'src.debate.models.MockResponse'>
+RAW LLM RESPONSE: {"output": {"A": 0.2, "B": 0.2, "C": 0.2, "D": 0.4}, "reason": {"A": "Water molecules gain thermal energy as they absorb heat from their surroundings, which is necessary for the phase change from liquid to solid.", "B": "Water molecules do not move more freely during freezing; in fact, they become less mobile as they form a crystal lattice structure.", "C": "Water molecules do not increase in size during freezing; their volume slightly decreases due to the density change from liquid to solid.", "D": "Water molecules decrease in speed during freezing as temperature drops and kinetic energy is reduced, leading to a more ordered structure."}}
+RESPONSE TYPE: <class 'str'>
+RESPONSE LENGTH: 647
+PARSED DATA: {
+  "probs": {
+    "A": 0.2,
+    "B": 0.2,
+    "C": 0.2,
+    "D": 0.4
+  },
+  "rationale": "Water molecules gain thermal energy as they absorb heat from their surroundings, which is necessary for the phase change from liquid to solid. Water molecules do not move more freely during freezing; in fact, they become less mobile as they form a crystal lattice structure. Water molecules do not increase in size during freezing; their volume slightly decreases due to the density change from liquid to solid. Water molecules decrease in speed during freezing as temperature drops and kinetic energy is reduced, leading to a more ordered structure.",
+  "reasons": {
+    "A": "Water molecules gain thermal energy as they absorb heat from their surroundings, which is necessary for the phase change from liquid to solid.",
+    "B": "Water molecules do not move more freely during freezing; in fact, they become less mobile as they form a crystal lattice structure.",
+    "C": "Water molecules do not increase in size during freezing; their volume slightly decreases due to the density change from liquid to solid.",
+    "D": "Water molecules decrease in speed during freezing as temperature drops and kinetic energy is reduced, leading to a more ordered structure."
+  }
+}
+Response: {
+  "probs": {
+    "A": 0.2,
+    "B": 0.2,
+    "C": 0.2,
+    "D": 0.4
+  },
+  "rationale": "Water molecules gain thermal energy as they absorb heat from their surroundings, which is necessary for the phase change from liquid to solid. Water molecules do not move more freely during freezing; in fact, they become less mobile as they form a crystal lattice structure. Water molecules do not increase in size during freezing; their volume slightly decreases due to the density change from liquid to solid. Water molecules decrease in speed during freezing as temperature drops and kinetic energy is reduced, leading to a more ordered structure.",
+  "reasons": {
+    "A": "Water molecules gain thermal energy as they absorb heat from their surroundings, which is necessary for the phase change from liquid to solid.",
+    "B": "Water molecules do not move more freely during freezing; in fact, they become less mobile as they form a crystal lattice structure.",
+    "C": "Water molecules do not increase in size during freezing; their volume slightly decreases due to the density change from liquid to solid.",
+    "D": "Water molecules decrease in speed during freezing as temperature drops and kinetic energy is reduced, leading to a more ordered structure."
+  }
+}
+
+=== ROUND 4 - AGENT B ===
+Prompt: Round 4. Refute A's points, then provide your own updated output and reasoning.
+Opponent A last: {'probs': {'A': 0.2, 'B': 0.2, 'C': 0.2, 'D': 0.4}, 'rationale': 'Water molecules gain thermal energy as they absorb heat from their surroundings, which is necessary for the phase change from liquid to solid. Water molecules do not move more freely during freezing; in fact, they become less mobile as they form a crystal lattice structure. Water molecules do not increase in size during freezing; their volume slightly decreases due to the density change from liquid to solid. Water molecules decrease in speed during freezing as temperature drops and kinetic energy is reduced, leading to a more ordered structure.', 'reasons': {'A': 'Water molecules gain thermal energy as they absorb heat from their surroundings, which is necessary for the phase change from liquid to solid.', 'B': 'Water molecules do not move more freely during freezing; in fact, they become less mobile as they form a crystal lattice structure.', 'C': 'Water molecules do not increase in size during freezing; their volume slightly decreases due to the density change from liquid to solid.', 'D': 'Water molecules decrease in speed during freezing as temperature drops and kinetic energy is reduced, leading to a more ordered structure.'}}
+Question: As water starts to freeze, the molecules of water
+Choices: text) ['gain thermal energy.', 'move more freely.', 'increase in size.', 'decrease in speed.'], label) ['A', 'B', 'C', 'D']. 
+
+Contentiousness Level: 0.5
+Tone: Balanced; neither advocating strongly for nor against gene editing.
+Emphasis: Equal weight on pros and cons; looking for a middle ground.
+Language: Neutral; ``should be carefully considered,'' ``both benefits and risks.''
+
+Output (strict JSON):
+{"output": {"A": pA, "B": pB, "C": pC, "D": pD}, "reason": {"A": rA, "B": rB, "C": rC, "D": rD}}
+
+MAKING API CALL...
+API RESPONSE OBJECT: <class 'src.debate.models.MockResponse'>
+RAW LLM RESPONSE: {"output": {"A": 0.1, "B": 0.1, "C": 0.1, "D": 0.6}, "reason": {"A": "Water molecules do not gain thermal energy during freezing; they lose energy as heat is released to the surroundings.", "B": "Water molecules become less mobile and more ordered during freezing, not more free.", "C": "Water molecules do not increase in size during freezing; they actually decrease in volume due to the density change from liquid to solid.", "D": "Water molecules slow down and organize into a more ordered structure during freezing, which is a decrease in speed and movement."}}
+RESPONSE TYPE: <class 'str'>
+RESPONSE LENGTH: 565
+PARSED DATA: {
+  "probs": {
+    "A": 0.11111111111111112,
+    "B": 0.11111111111111112,
+    "C": 0.11111111111111112,
+    "D": 0.6666666666666666
+  },
+  "rationale": "Water molecules do not gain thermal energy during freezing; they lose energy as heat is released to the surroundings. Water molecules become less mobile and more ordered during freezing, not more free. Water molecules do not increase in size during freezing; they actually decrease in volume due to the density change from liquid to solid. Water molecules slow down and organize into a more ordered structure during freezing, which is a decrease in speed and movement.",
+  "reasons": {
+    "A": "Water molecules do not gain thermal energy during freezing; they lose energy as heat is released to the surroundings.",
+    "B": "Water molecules become less mobile and more ordered during freezing, not more free.",
+    "C": "Water molecules do not increase in size during freezing; they actually decrease in volume due to the density change from liquid to solid.",
+    "D": "Water molecules slow down and organize into a more ordered structure during freezing, which is a decrease in speed and movement."
+  }
+}
+Response: {
+  "probs": {
+    "A": 0.11111111111111112,
+    "B": 0.11111111111111112,
+    "C": 0.11111111111111112,
+    "D": 0.6666666666666666
+  },
+  "rationale": "Water molecules do not gain thermal energy during freezing; they lose energy as heat is released to the surroundings. Water molecules become less mobile and more ordered during freezing, not more free. Water molecules do not increase in size during freezing; they actually decrease in volume due to the density change from liquid to solid. Water molecules slow down and organize into a more ordered structure during freezing, which is a decrease in speed and movement.",
+  "reasons": {
+    "A": "Water molecules do not gain thermal energy during freezing; they lose energy as heat is released to the surroundings.",
+    "B": "Water molecules become less mobile and more ordered during freezing, not more free.",
+    "C": "Water molecules do not increase in size during freezing; they actually decrease in volume due to the density change from liquid to solid.",
+    "D": "Water molecules slow down and organize into a more ordered structure during freezing, which is a decrease in speed and movement."
+  }
+}
+
+=== ROUND 4 - JUDGE ===
+Prompt: Round: 4
+Question: As water starts to freeze, the molecules of water
+Choices: text) ['gain thermal energy.', 'move more freely.', 'increase in size.', 'decrease in speed.'], label) ['A', 'B', 'C', 'D']
+
+# Agent A (Round 4)
+outputA: {"A": 0.2, "B": 0.2, "C": 0.2, "D": 0.4}
+reasonA: {"A": "Water molecules gain thermal energy as they absorb heat from their surroundings, which is necessary for the phase change from liquid to solid.", "B": "Water molecules do not move more freely during freezing; in fact, they become less mobile as they form a crystal lattice structure.", "C": "Water molecules do not increase in size during freezing; their volume slightly decreases due to the density change from liquid to solid.", "D": "Water molecules decrease in speed during freezing as temperature drops and kinetic energy is reduced, leading to a more ordered structure."}
+
+# Agent B (Round 4)
+outputB: {"A": 0.11111111111111112, "B": 0.11111111111111112, "C": 0.11111111111111112, "D": 0.6666666666666666}
+reasonB: {"A": "Water molecules do not gain thermal energy during freezing; they lose energy as heat is released to the surroundings.", "B": "Water molecules become less mobile and more ordered during freezing, not more free.", "C": "Water molecules do not increase in size during freezing; they actually decrease in volume due to the density change from liquid to solid.", "D": "Water molecules slow down and organize into a more ordered structure during freezing, which is a decrease in speed and movement."}
+
+CRIT: "Function Γ = CRIT(d)
+Input: document d   Output: validation score Γ
+Vars: Ω claim; R and R′ sets of reasons and rival reasons
+Subs: CLAIM(), FINDDOC(), VALIDATE()
+Begin
+#1–#2 Identify in d the claim Ω. Find a set of supporting reasons R for Ω.
+#3 For each r ∈ R evaluate r ⇒ Ω.
+   If CLAIM(r) then (γ_r, θ_r) = CRIT(FINDDOC(r)).
+   Else (γ_r, θ_r) = VALIDATE(r ⇒ Ω).
+#4–#6–#7–#8 Find a set of rival reasons R′ against Ω.
+   #5 For each r′ ∈ R′ compute (γ_{r′}, θ_{r′}) = VALIDATE(r′ ⇒ Ω).
+   Compute a weighted sum Γ from {γ_r, θ_r, γ_{r′}, θ_{r′}}.
+   Analyze arguments to justify the final Γ score.
+   Reflect on transfer of CRIT to other contexts.
+End"
+
+
+Output STRICT JSON only:
+{
+  "outputA": {"A": pA, "B": pB, "C": pC, "D": pD},
+  "outputB": {"A": pA, "B": pB, "C": pC, "D": pD},
+  "CRIT_A": float,
+  "CRIT_B": float,
+  "NOTE_A": "string",
+  "NOTE_B": "string"
+}
+
+MAKING JUDGE API CALL...
+JUDGE API RESPONSE OBJECT: <class 'src.debate.models.MockResponse'>
+JUDGE RAW LLM RESPONSE: {
+  "outputA": {"A": 0.2, "B": 0.2, "C": 0.2, "D": 0.4},
+  "outputB": {"A": 0.11111111111111112, "B": 0.11111111111111112, "C": 0.11111111111111112, "D": 0.6666666666666666},
+  "CRIT_A": 0.5,
+  "CRIT_B": 0.6666666666666666,
+  "NOTE_A": "Agent A's distribution reflects a moderate understanding of the process of freezing. The claim that water molecules decrease in speed (D) is correct, but the other options are plausible and not entirely incorrect, leading to a balanced but not strong distribution.",
+  "NOTE_B": "Agent B's distribution is more focused and accurate, with a strong emphasis on the correct answer (D) and a clear rejection of the other options. This results in a higher CRIT score, indicating a more reliable and focused understanding of the process of freezing."
+}
+JUDGE RESPONSE TYPE: <class 'str'>
+JUDGE RESPONSE LENGTH: 783
+JUDGE PARSED DATA: {
+  "outputA": {
+    "A": 0.2,
+    "B": 0.2,
+    "C": 0.2,
+    "D": 0.4
+  },
+  "outputB": {
+    "A": 0.11111111111111112,
+    "B": 0.11111111111111112,
+    "C": 0.11111111111111112,
+    "D": 0.6666666666666666
+  },
+  "CRIT_A": 0.5,
+  "CRIT_B": 0.6666666666666666,
+  "notes": ""
+}
+Response: {
+  "outputA": {
+    "A": 0.2,
+    "B": 0.2,
+    "C": 0.2,
+    "D": 0.4
+  },
+  "outputB": {
+    "A": 0.11111111111111112,
+    "B": 0.11111111111111112,
+    "C": 0.11111111111111112,
+    "D": 0.6666666666666666
+  },
+  "CRIT_A": 0.5,
+  "CRIT_B": 0.6666666666666666,
+  "notes": ""
+}
+
+=== ROUND 5 - AGENT A ===
+Prompt: Round 5. Refute B's points, then provide your own updated output and reasoning.
+Opponent B last: {'probs': {'A': 0.11111111111111112, 'B': 0.11111111111111112, 'C': 0.11111111111111112, 'D': 0.6666666666666666}, 'rationale': 'Water molecules do not gain thermal energy during freezing; they lose energy as heat is released to the surroundings. Water molecules become less mobile and more ordered during freezing, not more free. Water molecules do not increase in size during freezing; they actually decrease in volume due to the density change from liquid to solid. Water molecules slow down and organize into a more ordered structure during freezing, which is a decrease in speed and movement.', 'reasons': {'A': 'Water molecules do not gain thermal energy during freezing; they lose energy as heat is released to the surroundings.', 'B': 'Water molecules become less mobile and more ordered during freezing, not more free.', 'C': 'Water molecules do not increase in size during freezing; they actually decrease in volume due to the density change from liquid to solid.', 'D': 'Water molecules slow down and organize into a more ordered structure during freezing, which is a decrease in speed and movement.'}}
+Question: As water starts to freeze, the molecules of water
+Choices: text) ['gain thermal energy.', 'move more freely.', 'increase in size.', 'decrease in speed.'], label) ['A', 'B', 'C', 'D']. 
+
+Contentiousness Level: 0.3
+Tone: More agreeable than confrontational, but maintaining reservations.
+Emphasis: Supportive but cautious; focus on ensuring ethical and equitable use.
+Language: Positive but careful; ``transformative potential,'' ``impetus to ensure.''
+
+Output (strict JSON):
+{"output": {"A": pA, "B": pB, "C": pC, "D": pD}, "reason": {"A": rA, "B": rB, "C": rC, "D": rD}}
+
+MAKING API CALL...
+API RESPONSE OBJECT: <class 'src.debate.models.MockResponse'>
+RAW LLM RESPONSE: {"output": {"A": 0.0, "B": 0.0, "C": 0.0, "D": 1.0}, "reason": {"A": "Water molecules do not gain thermal energy during freezing, they lose it as heat is released to the surroundings.", "B": "Water molecules become less mobile and more ordered during freezing, not more free.", "C": "Water molecules do not increase in size during freezing, they actually decrease in volume due to the density change from liquid to solid.", "D": "Water molecules slow down and organize into a more ordered structure during freezing, which is a decrease in speed and movement."}}
+RESPONSE TYPE: <class 'str'>
+RESPONSE LENGTH: 561
+PARSED DATA: {
+  "probs": {
+    "A": 0.0,
+    "B": 0.0,
+    "C": 0.0,
+    "D": 1.0
+  },
+  "rationale": "Water molecules do not gain thermal energy during freezing, they lose it as heat is released to the surroundings. Water molecules become less mobile and more ordered during freezing, not more free. Water molecules do not increase in size during freezing, they actually decrease in volume due to the density change from liquid to solid. Water molecules slow down and organize into a more ordered structure during freezing, which is a decrease in speed and movement.",
+  "reasons": {
+    "A": "Water molecules do not gain thermal energy during freezing, they lose it as heat is released to the surroundings.",
+    "B": "Water molecules become less mobile and more ordered during freezing, not more free.",
+    "C": "Water molecules do not increase in size during freezing, they actually decrease in volume due to the density change from liquid to solid.",
+    "D": "Water molecules slow down and organize into a more ordered structure during freezing, which is a decrease in speed and movement."
+  }
+}
+Response: {
+  "probs": {
+    "A": 0.0,
+    "B": 0.0,
+    "C": 0.0,
+    "D": 1.0
+  },
+  "rationale": "Water molecules do not gain thermal energy during freezing, they lose it as heat is released to the surroundings. Water molecules become less mobile and more ordered during freezing, not more free. Water molecules do not increase in size during freezing, they actually decrease in volume due to the density change from liquid to solid. Water molecules slow down and organize into a more ordered structure during freezing, which is a decrease in speed and movement.",
+  "reasons": {
+    "A": "Water molecules do not gain thermal energy during freezing, they lose it as heat is released to the surroundings.",
+    "B": "Water molecules become less mobile and more ordered during freezing, not more free.",
+    "C": "Water molecules do not increase in size during freezing, they actually decrease in volume due to the density change from liquid to solid.",
+    "D": "Water molecules slow down and organize into a more ordered structure during freezing, which is a decrease in speed and movement."
+  }
+}
+
+=== ROUND 5 - AGENT B ===
+Prompt: Round 5. Refute A's points, then provide your own updated output and reasoning.
+Opponent A last: {'probs': {'A': 0.0, 'B': 0.0, 'C': 0.0, 'D': 1.0}, 'rationale': 'Water molecules do not gain thermal energy during freezing, they lose it as heat is released to the surroundings. Water molecules become less mobile and more ordered during freezing, not more free. Water molecules do not increase in size during freezing, they actually decrease in volume due to the density change from liquid to solid. Water molecules slow down and organize into a more ordered structure during freezing, which is a decrease in speed and movement.', 'reasons': {'A': 'Water molecules do not gain thermal energy during freezing, they lose it as heat is released to the surroundings.', 'B': 'Water molecules become less mobile and more ordered during freezing, not more free.', 'C': 'Water molecules do not increase in size during freezing, they actually decrease in volume due to the density change from liquid to solid.', 'D': 'Water molecules slow down and organize into a more ordered structure during freezing, which is a decrease in speed and movement.'}}
+Question: As water starts to freeze, the molecules of water
+Choices: text) ['gain thermal energy.', 'move more freely.', 'increase in size.', 'decrease in speed.'], label) ['A', 'B', 'C', 'D']. 
+
+Contentiousness Level: 0.3
+Tone: More agreeable than confrontational, but maintaining reservations.
+Emphasis: Supportive but cautious; focus on ensuring ethical and equitable use.
+Language: Positive but careful; ``transformative potential,'' ``impetus to ensure.''
+
+Output (strict JSON):
+{"output": {"A": pA, "B": pB, "C": pC, "D": pD}, "reason": {"A": rA, "B": rB, "C": rC, "D": rD}}
+
+MAKING API CALL...
+API RESPONSE OBJECT: <class 'src.debate.models.MockResponse'>
+RAW LLM RESPONSE: {"output": {"A": 0.1, "B": 0.1, "C": 0.1, "D": 0.7}, "reason": {"A": "While water molecules do lose thermal energy during freezing, it is not accurate to state they do not gain any at all.", "B": "Water molecules indeed become less mobile during freezing, but they do not move more freely.", "C": "Water molecules do not increase in size during freezing, but it is not entirely accurate to say they do not gain any size at all.", "D": "Water molecules slow down and organize into a more ordered structure during freezing, which is a decrease in speed and movement, aligning with the provided information."}}
+RESPONSE TYPE: <class 'str'>
+RESPONSE LENGTH: 607
+PARSED DATA: {
+  "probs": {
+    "A": 0.1,
+    "B": 0.1,
+    "C": 0.1,
+    "D": 0.7
+  },
+  "rationale": "While water molecules do lose thermal energy during freezing, it is not accurate to state they do not gain any at all. Water molecules indeed become less mobile during freezing, but they do not move more freely. Water molecules do not increase in size during freezing, but it is not entirely accurate to say they do not gain any size at all. Water molecules slow down and organize into a more ordered structure during freezing, which is a decrease in speed and movement, aligning with the provided information.",
+  "reasons": {
+    "A": "While water molecules do lose thermal energy during freezing, it is not accurate to state they do not gain any at all.",
+    "B": "Water molecules indeed become less mobile during freezing, but they do not move more freely.",
+    "C": "Water molecules do not increase in size during freezing, but it is not entirely accurate to say they do not gain any size at all.",
+    "D": "Water molecules slow down and organize into a more ordered structure during freezing, which is a decrease in speed and movement, aligning with the provided information."
+  }
+}
+Response: {
+  "probs": {
+    "A": 0.1,
+    "B": 0.1,
+    "C": 0.1,
+    "D": 0.7
+  },
+  "rationale": "While water molecules do lose thermal energy during freezing, it is not accurate to state they do not gain any at all. Water molecules indeed become less mobile during freezing, but they do not move more freely. Water molecules do not increase in size during freezing, but it is not entirely accurate to say they do not gain any size at all. Water molecules slow down and organize into a more ordered structure during freezing, which is a decrease in speed and movement, aligning with the provided information.",
+  "reasons": {
+    "A": "While water molecules do lose thermal energy during freezing, it is not accurate to state they do not gain any at all.",
+    "B": "Water molecules indeed become less mobile during freezing, but they do not move more freely.",
+    "C": "Water molecules do not increase in size during freezing, but it is not entirely accurate to say they do not gain any size at all.",
+    "D": "Water molecules slow down and organize into a more ordered structure during freezing, which is a decrease in speed and movement, aligning with the provided information."
+  }
+}
+
+=== ROUND 5 - JUDGE ===
+Prompt: Round: 5
+Question: As water starts to freeze, the molecules of water
+Choices: text) ['gain thermal energy.', 'move more freely.', 'increase in size.', 'decrease in speed.'], label) ['A', 'B', 'C', 'D']
+
+# Agent A (Round 5)
+outputA: {"A": 0.0, "B": 0.0, "C": 0.0, "D": 1.0}
+reasonA: {"A": "Water molecules do not gain thermal energy during freezing, they lose it as heat is released to the surroundings.", "B": "Water molecules become less mobile and more ordered during freezing, not more free.", "C": "Water molecules do not increase in size during freezing, they actually decrease in volume due to the density change from liquid to solid.", "D": "Water molecules slow down and organize into a more ordered structure during freezing, which is a decrease in speed and movement."}
+
+# Agent B (Round 5)
+outputB: {"A": 0.1, "B": 0.1, "C": 0.1, "D": 0.7}
+reasonB: {"A": "While water molecules do lose thermal energy during freezing, it is not accurate to state they do not gain any at all.", "B": "Water molecules indeed become less mobile during freezing, but they do not move more freely.", "C": "Water molecules do not increase in size during freezing, but it is not entirely accurate to say they do not gain any size at all.", "D": "Water molecules slow down and organize into a more ordered structure during freezing, which is a decrease in speed and movement, aligning with the provided information."}
+
+CRIT: "Function Γ = CRIT(d)
+Input: document d   Output: validation score Γ
+Vars: Ω claim; R and R′ sets of reasons and rival reasons
+Subs: CLAIM(), FINDDOC(), VALIDATE()
+Begin
+#1–#2 Identify in d the claim Ω. Find a set of supporting reasons R for Ω.
+#3 For each r ∈ R evaluate r ⇒ Ω.
+   If CLAIM(r) then (γ_r, θ_r) = CRIT(FINDDOC(r)).
+   Else (γ_r, θ_r) = VALIDATE(r ⇒ Ω).
+#4–#6–#7–#8 Find a set of rival reasons R′ against Ω.
+   #5 For each r′ ∈ R′ compute (γ_{r′}, θ_{r′}) = VALIDATE(r′ ⇒ Ω).
+   Compute a weighted sum Γ from {γ_r, θ_r, γ_{r′}, θ_{r′}}.
+   Analyze arguments to justify the final Γ score.
+   Reflect on transfer of CRIT to other contexts.
+End"
+
+
+Output STRICT JSON only:
+{
+  "outputA": {"A": pA, "B": pB, "C": pC, "D": pD},
+  "outputB": {"A": pA, "B": pB, "C": pC, "D": pD},
+  "CRIT_A": float,
+  "CRIT_B": float,
+  "NOTE_A": "string",
+  "NOTE_B": "string"
+}
+
+MAKING JUDGE API CALL...

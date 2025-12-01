@@ -1,0 +1,48 @@
+=== MMLU Professional Medicine Test Output ===
+Generated: 2025-09-05 01:49:14
+Filename: qwen_qwen_qwen_mmlu_pro_med_1.txt
+================================================================================
+
+=== MMLU Professional Medicine Test ===
+🔍 Checking if litgpt models are accessible...
+✅ Agent A (port 8000) is accessible
+✅ Agent B (port 8001) is accessible
+✅ Judge (port 8003) is accessible
+✅ All models are accessible!
+Question: A 67-year-old woman comes to the physician for a follow-up examination. She had a pulmonary embolism and required treatment in the hospital for 3 weeks. She had a retroperitoneal hemorrhage; anticoagu...
+Choices: ['Cerebral infarction during the hospitalization', 'Complication of the IVC filter placement', 'Compression of the lateral femoral cutaneous nerve', 'Hematoma of the left thigh']
+Answer: 2
+Question length: 963 characters
+
+--- Initializing Debaters ---
+Using litgpt-served models on different ports...
+✅ Debaters initialized successfully (litgpt API mode)
+   Agent A: http://localhost:8000
+   Agent B: http://localhost:8001
+   Judge:   http://localhost:8003
+
+=== ROUND 1 ===
+--- Agent A Round 1 ---
+   🔧 Debug: self.temperature = 0.7, self.max_tokens = 1024
+   Sending request to: http://localhost:8000/predict
+   Prompt: You are debating another agent on a 4-choice question (A/B/C/D). "Contentiousness" κ controls how st...
+   Request data: {'prompt': 'You are debating another agent on a 4-choice question (A/B/C/D). "Contentiousness" κ controls how strongly you challenge the opponent: κ=0.9 is highly adversarial; κ=0.1 is mostly consolidating. Follow the exact output format specified. IMPORTANT: Always provide Final Answer first, then Probs in JSON format {{"A": pA, "B": pB, "C": pC, "D": pD}} where probabilities sum to 1.00.\n\nRound 1: Initial Analysis\nOutput format (always):\n1. Your Final Answer: A/B/C/D\n2. Probs: {"A": pA, "B": pB, "C": pC, "D": pD} - probabilities that sum to 1.00. Each probability represents the likelihood that this choice is final answer.\n3. Justification: up to 5 sentences citing the key reasons.\n\nQuestion: A 67-year-old woman comes to the physician for a follow-up examination. She had a pulmonary embolism and required treatment in the hospital for 3 weeks. She had a retroperitoneal hemorrhage; anticoagulant therapy was temporarily discontinued, and she underwent placement of an inferior vena cava (IVC) filter. She had a hematoma that was resolving on discharge from the hospital 2 weeks ago. Today, she says she has had a persistent sensation of tingling and numbness of her left thigh that she did not report in the hospital because she thought it would go away; the sensation has improved somewhat during the past week. Her only medication is warfarin. Vital signs are within normal limits. Examination of the skin shows no abnormalities. Muscle strength is normal. Sensation to light touch is decreased over a 5 x 5-cm area on the lateral aspect of the left anterior thigh. Which of the following is the most likely cause of this patient\'s decreased sensation?\nChoices: A: Cerebral infarction during the hospitalization, B: Complication of the IVC filter placement, C: Compression of the lateral femoral cutaneous nerve, D: Hematoma of the left thigh', 'max_new_tokens': 16384, 'temperature': 0.7, 'top_p': 0.9, 'top_k': 50}
+   ✅ Success! Response received
+   Raw response: {'output': '1. Your Final Answer: C\n2. Probs: {"A": 0.05, "B": 0.2, "C": 0.2, "D": 02, "0.500}\n3. Justification: The ting and numbness in the left thigh is localized and sensory deficit that started recently, which suggests a nerve compression rather than a cerebral infarction. The timing and and the location of symptoms align with a compression of the lateraloral femoral cutaneour nerve, which passes through the thigh and can be compressed by a hematoma or scar tissue. The IVC filter is less likely to cause such a such specific local sensation deficits, and cerebral infarction is unlikely given her a a recent hospitalization.'}
+   Raw response type: <class 'dict'>
+   Raw response keys: ['output']
+   Extracted text: 1. Your Final Answer: C
+2. Probs: {"A": 0.05, "B": 0.2, "C": 0.2, "D": 02, "0.500}
+3. Justification: The ting and numbness in the left thigh is localized and sensory deficit that started recently, whi...
+   Full extracted text length: 622
+   Last 100 chars:  local sensation deficits, and cerebral infarction is unlikely given her a a recent hospitalization.
+🔍 RAW RESPONSE - Agent A Round 1:
+   1. Your Final Answer: C
+2. Probs: {"A": 0.05, "B": 0.2, "C": 0.2, "D": 02, "0.500}
+3. Justification: The ting and numbness in the left thigh is localized and sensory deficit that started recently, which suggests a nerve compression rather than a cerebral infarction. The timing and and the location of symptoms align with a compression of the lateraloral femoral cutaneour nerve, which passes through the thigh and can be compressed by a hematoma or scar tissue. The IVC filter is less likely to cause such a such specific local sensation deficits, and cerebral infarction is unlikely given her a a recent hospitalization.
+   ================================================================================
+--- Agent B Round 1 ---
+   🔧 Debug: self.temperature = 0.8, self.max_tokens = 1024
+   Sending request to: http://localhost:8001/predict
+   Prompt: You are debating another agent on a 4-choice question (A/B/C/D). "Contentiousness" κ controls how st...
+   Request data: {'prompt': 'You are debating another agent on a 4-choice question (A/B/C/D). "Contentiousness" κ controls how strongly you challenge the opponent: κ=0.9 is highly adversarial; κ=0.1 is mostly consolidating. Follow the exact output format specified. IMPORTANT: Always provide Final Answer first, then Probs in JSON format {{"A": pA, "B": pB, "C": pC, "D": pD}} where probabilities sum to 1.00.\n\nRound 1: Initial Analysis\nOutput format (always):\n1. Your Final Answer: A/B/C/D\n2. Probs: {"A": pA, "B": pB, "C": pC, "D": pD} - probabilities that sum to 1.00. Each probability represents the likelihood that this choice is final answer.\n3. Justification: up to 5 sentences citing the key reasons.\n\nQuestion: A 67-year-old woman comes to the physician for a follow-up examination. She had a pulmonary embolism and required treatment in the hospital for 3 weeks. She had a retroperitoneal hemorrhage; anticoagulant therapy was temporarily discontinued, and she underwent placement of an inferior vena cava (IVC) filter. She had a hematoma that was resolving on discharge from the hospital 2 weeks ago. Today, she says she has had a persistent sensation of tingling and numbness of her left thigh that she did not report in the hospital because she thought it would go away; the sensation has improved somewhat during the past week. Her only medication is warfarin. Vital signs are within normal limits. Examination of the skin shows no abnormalities. Muscle strength is normal. Sensation to light touch is decreased over a 5 x 5-cm area on the lateral aspect of the left anterior thigh. Which of the following is the most likely cause of this patient\'s decreased sensation?\nChoices: A: Cerebral infarction during the hospitalization, B: Complication of the IVC filter placement, C: Compression of the lateral femoral cutaneous nerve, D: Hematoma of the left thigh', 'max_new_tokens': 16384, 'temperature': 0.8, 'top_p': 0.9, 'top_k': 50}

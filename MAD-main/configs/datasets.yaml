@@ -1,0 +1,13 @@
+# Custom arithmetic dataset - 1 example for testing (Closed-form)
+# arithmetic: {type: local, path: ./MAD/data/arithmetic/dev.jsonl, max_examples: 1}
+
+# MMLU Professional Medicine - 1 example for testing (Closed-form)
+mmlu_pro_med: {type: hf, name: cais/mmlu, subset: professional_medicine, split: test, max_examples: 1}
+
+# MMLU Formal Logic - 1 example for testing (Closed-form)
+mmlu_formal_logic: {type: hf, name: cais/mmlu, subset: formal_logic, split: test, max_examples: 1}
+
+# Commonsense reasoning - 1 example for testing (Closed-form)
+hellaswag: {type: hf, name: Rowan/hellaswag, split: validation, max_examples: 1}
+
+

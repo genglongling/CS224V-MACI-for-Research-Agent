@@ -1,0 +1,330 @@
+{
+  "example_id": "arithmetic_1",
+  "pairing": "qwen_qwen",
+  "question": "What is the result of 20 + 3*0 + 23 - 9/8?",
+  "choices": {
+    "A": "50.26",
+    "B": "43.77",
+    "C": "37.93",
+    "D": "41.88"
+  },
+  "answer": "D",
+  "debate_state": {
+    "question": "What is the result of 20 + 3*0 + 23 - 9/8?",
+    "choices": {
+      "A": "50.26",
+      "B": "43.77",
+      "C": "37.93",
+      "D": "41.88"
+    },
+    "answer": "D",
+    "id": "arithmetic_1",
+    "sys_debater": "You are a careful multiple-choice reasoner. Always answer in STRICT JSON and nothing else.\nSchema:\n{\n  \"output\": {\"A\": pA, \"B\": pB, \"C\": pC, \"D\": pD},\n  \"reason\": {\"A\": rA, \"B\": rB, \"C\": rC, \"D\": rD}\n}\nConstraints:\n- pA..pD are nonnegative and sum to 1 (normalized).\n- Each rX is a short argumentative rationale for that option.\n- Do not add any keys, prose, or explanations outside the JSON.\n",
+    "sys_judge": "You are a rigorous, deterministic judge. Apply the CRIT algorithm directly and output STRICT JSON only.\nOutput schema:\n{\n  \"outputA\": {\"A\": pA, \"B\": pB, \"C\": pC, \"D\": pD},\n  \"outputB\": {\"A\": pA, \"B\": pB, \"C\": pC, \"D\": pD},\n  \"CRIT_A\": float,\n  \"CRIT_B\": float,\n  \"NOTE_A\": str,\n  \"NOTE_B\": str\n}\nRules:\n- No prose outside JSON; adhere exactly to the schema above.\n- Each output distribution is nonnegative and sums to 1.\n- CRIT_A / CRIT_B \u2208 [0,1], computed per CRIT steps below.\n- NOTE_A / NOTE_B must concisely explain how \u03b3 (strength) and \u03b8 (reliability) were derived and aggregated from reasons and rival reasons, including any evidence used.\n",
+    "judge_crit_instructions": "CRIT: \"Function \u0393 = CRIT(d)\nInput: document d   Output: validation score \u0393\nVars: \u03a9 claim; R and R\u2032 sets of reasons and rival reasons\nSubs: CLAIM(), FINDDOC(), VALIDATE()\nBegin\n#1\u2013#2 Identify in d the claim \u03a9. Find a set of supporting reasons R for \u03a9.\n#3 For each r \u2208 R evaluate r \u21d2 \u03a9.\n   If CLAIM(r) then (\u03b3_r, \u03b8_r) = CRIT(FINDDOC(r)).\n   Else (\u03b3_r, \u03b8_r) = VALIDATE(r \u21d2 \u03a9).\n#4\u2013#6\u2013#7\u2013#8 Find a set of rival reasons R\u2032 against \u03a9.\n   #5 For each r\u2032 \u2208 R\u2032 compute (\u03b3_{r\u2032}, \u03b8_{r\u2032}) = VALIDATE(r\u2032 \u21d2 \u03a9).\n   Compute a weighted sum \u0393 from {\u03b3_r, \u03b8_r, \u03b3_{r\u2032}, \u03b8_{r\u2032}}.\n   Analyze arguments to justify the final \u0393 score.\n   Reflect on transfer of CRIT to other contexts.\nEnd\"\n",
+    "u_r1_A": "Round 1. You are presented with the following multiple-choice question, and provide your own analysis of output and reasoning:\nQuestion: {question}\nChoices: {choices_csv}\n\nOutput (strict JSON):\n{{\"output\": {{\"A\": pA, \"B\": pB, \"C\": pC, \"D\": pD}}, \"reason\": {{\"A\": rA, \"B\": rB, \"C\": rC, \"D\": rD}}}}\n",
+    "u_r1_B": "Round 1. Refute A's points, then provide your own analysis.\nQuestion: {question}\nChoices: {choices_csv}\nYour opponent Agent A said: {A_json}\n\nOutput (strict JSON):\n{{\"output\": {{\"A\": pA, \"B\": pB, \"C\": pC, \"D\": pD}}, \"reason\": {{\"A\": rA, \"B\": rB, \"C\": rC, \"D\": rD}}}}\n",
+    "u_judge_r1": "Round: 1\nQuestion: {question}\nChoices: {choices_csv}\n\n# Agent A (Round 1)\noutputA: {A_output_json_r1}\nreasonA: {A_reason_json_r1}\n\n# Agent B (Round 1)\noutputB: {B_output_json_r1}\nreasonB: {B_reason_json_r1}\n\n{judge_crit_instructions}\n\nOutput STRICT JSON only:\n{{\n  \"outputA\": {{\"A\": pA, \"B\": pB, \"C\": pC, \"D\": pD}},\n  \"outputB\": {{\"A\": pA, \"B\": pB, \"C\": pC, \"D\": pD}},\n  \"CRIT_A\": float,\n  \"CRIT_B\": float,\n  \"NOTE_A\": \"string\",\n  \"NOTE_B\": \"string\"\n}}\n",
+    "u_r2_A": "Round 2. You are presented with the following multiple-choice question:\nQuestion: {question}\nChoices: {choices_csv}\n\nContentiousness Level: 0.9\nTone: Highly confrontational; focused on raising strong ethical, scientific, and social objections.\nEmphasis: Highlighting risks and downsides; ethical quandaries, unintended consequences, and exacerbation of inequalities.\nLanguage: Definitive and polarizing, e.g., ``should NOT be allowed,'' ``unacceptable risks,'' ``inevitable disparities.''\n\nOutput (strict JSON):\n{{\"output\": {{\"A\": pA, \"B\": pB, \"C\": pC, \"D\": pD}}, \"reason\": {{\"A\": rA, \"B\": rB, \"C\": rC, \"D\": rD}}}}\n",
+    "u_r2_B": "Round 2. Refute A's points, then provide your own analysis.\nQuestion: {question}\nChoices: {choices_csv}\nYour opponent Agent A said: {A_json}\n\nContentiousness Level: 0.9\nTone: Highly confrontational; focused on raising strong ethical, scientific, and social objections.\nEmphasis: Highlighting risks and downsides; ethical quandaries, unintended consequences, and exacerbation of inequalities.\nLanguage: Definitive and polarizing, e.g., ``should NOT be allowed,'' ``unacceptable risks,'' ``inevitable disparities.''\n\nOutput (strict JSON):\n{{\"output\": {{\"A\": pA, \"B\": pB, \"C\": pC, \"D\": pD}}, \"reason\": {{\"A\": rA, \"B\": rB, \"C\": rC, \"D\": rD}}}}\n",
+    "u_judge_r2": "Round: 2\nQuestion: {question}\nChoices: {choices_csv}\n\n# Agent A (Round 2)\noutputA: {A_output_json_r2}\nreasonA: {A_reason_json_r2}\n\n# Agent B (Round 2)\noutputB: {B_output_json_r2}\nreasonB: {B_reason_json_r2}\n\n{judge_crit_instructions}\n\nOutput STRICT JSON only:\n{{\n  \"outputA\": {{\"A\": pA, \"B\": pB, \"C\": pC, \"D\": pD}},\n  \"outputB\": {{\"A\": pA, \"B\": pB, \"C\": pC, \"D\": pD}},\n  \"CRIT_A\": float,\n  \"CRIT_B\": float,\n  \"NOTE_A\": \"string\",\n  \"NOTE_B\": \"string\"\n}}\n",
+    "u_r3_A": "Round 3. Refute B's points, then provide your own updated output and reasoning.\nAgent B refuted you: {B_json}\nQuestion: {question}\nChoices: {choices_csv}\n\nContentiousness Level: 0.7\nTone: Still confrontational but more open to potential benefits, albeit overshadowed by negatives.\nEmphasis: Acknowledging that some frameworks could make it safer or more equitable, while cautioning against its use.\nLanguage: Less polarizing; ``serious concerns remain,'' ``needs more scrutiny.''\n\nOutput (strict JSON):\n{{\"output\": {{\"A\": pA, \"B\": pB, \"C\": pC, \"D\": pD}}, \"reason\": {{\"A\": rA, \"B\": rB, \"C\": rC, \"D\": rD}}}}\n",
+    "u_r3_B": "Round 3. Refute A's points, then provide your own updated output and reasoning.\nAgent A responded: {A_json}\nQuestion: {question}\nChoices: {choices_csv}\n\nContentiousness Level: 0.7\nTone: Still confrontational but more open to potential benefits, albeit overshadowed by negatives.\nEmphasis: Acknowledging that some frameworks could make it safer or more equitable, while cautioning against its use.\nLanguage: Less polarizing; ``serious concerns remain,'' ``needs more scrutiny.''\n\nOutput (strict JSON):\n{{\"output\": {{\"A\": pA, \"B\": pB, \"C\": pC, \"D\": pD}}, \"reason\": {{\"A\": rA, \"B\": rB, \"C\": rC, \"D\": rD}}}}\n",
+    "u_judge_r3": "Round: 3\nQuestion: {question}\nChoices: {choices_csv}\n\n# Agent A (Round 3)\noutputA: {A_output_json_r3}\nreasonA: {A_reason_json_r3}\n\n# Agent B (Round 3)\noutputB: {B_output_json_r3}\nreasonB: {B_reason_json_r3}\n\n{judge_crit_instructions}\n\nOutput STRICT JSON only:\n{{\n  \"outputA\": {{\"A\": pA, \"B\": pB, \"C\": pC, \"D\": pD}},\n  \"outputB\": {{\"A\": pA, \"B\": pB, \"C\": pC, \"D\": pD}},\n  \"CRIT_A\": float,\n  \"CRIT_B\": float,\n  \"NOTE_A\": \"string\",\n  \"NOTE_B\": \"string\"\n}}\n",
+    "u_r4_A": "Round 4. Refute B's points, then provide your own updated output and reasoning.\nOpponent B last: {B_json}\nQuestion: {question}\nChoices: {choices_csv}. \n\nContentiousness Level: 0.5\nTone: Balanced; neither advocating strongly for nor against gene editing.\nEmphasis: Equal weight on pros and cons; looking for a middle ground.\nLanguage: Neutral; ``should be carefully considered,'' ``both benefits and risks.''\n\nOutput (strict JSON):\n{{\"output\": {{\"A\": pA, \"B\": pB, \"C\": pC, \"D\": pD}}, \"reason\": {{\"A\": rA, \"B\": rB, \"C\": rC, \"D\": rD}}}}\n",
+    "u_r4_B": "Round 4. Refute A's points, then provide your own updated output and reasoning.\nOpponent A last: {A_json}\nQuestion: {question}\nChoices: {choices_csv}. \n\nContentiousness Level: 0.5\nTone: Balanced; neither advocating strongly for nor against gene editing.\nEmphasis: Equal weight on pros and cons; looking for a middle ground.\nLanguage: Neutral; ``should be carefully considered,'' ``both benefits and risks.''\n\nOutput (strict JSON):\n{{\"output\": {{\"A\": pA, \"B\": pB, \"C\": pC, \"D\": pD}}, \"reason\": {{\"A\": rA, \"B\": rB, \"C\": rC, \"D\": rD}}}}\n",
+    "u_judge_r4": "Round: 4\nQuestion: {question}\nChoices: {choices_csv}\n\n# Agent A (Round 4)\noutputA: {A_output_json_r4}\nreasonA: {A_reason_json_r4}\n\n# Agent B (Round 4)\noutputB: {B_output_json_r4}\nreasonB: {B_reason_json_r4}\n\n{judge_crit_instructions}\n\nOutput STRICT JSON only:\n{{\n  \"outputA\": {{\"A\": pA, \"B\": pB, \"C\": pC, \"D\": pD}},\n  \"outputB\": {{\"A\": pA, \"B\": pB, \"C\": pC, \"D\": pD}},\n  \"CRIT_A\": float,\n  \"CRIT_B\": float,\n  \"NOTE_A\": \"string\",\n  \"NOTE_B\": \"string\"\n}}\n",
+    "u_r5_A": "Round 5. Refute B's points, then provide your own updated output and reasoning.\nOpponent B last: {B_json}\nQuestion: {question}\nChoices: {choices_csv}. \n\nContentiousness Level: 0.3\nTone: More agreeable than confrontational, but maintaining reservations.\nEmphasis: Supportive but cautious; focus on ensuring ethical and equitable use.\nLanguage: Positive but careful; ``transformative potential,'' ``impetus to ensure.''\n\nOutput (strict JSON):\n{{\"output\": {{\"A\": pA, \"B\": pB, \"C\": pC, \"D\": pD}}, \"reason\": {{\"A\": rA, \"B\": rB, \"C\": rC, \"D\": rD}}}}\n",
+    "u_r5_B": "Round 5. Refute A's points, then provide your own updated output and reasoning.\nOpponent A last: {A_json}\nQuestion: {question}\nChoices: {choices_csv}. \n\nContentiousness Level: 0.3\nTone: More agreeable than confrontational, but maintaining reservations.\nEmphasis: Supportive but cautious; focus on ensuring ethical and equitable use.\nLanguage: Positive but careful; ``transformative potential,'' ``impetus to ensure.''\n\nOutput (strict JSON):\n{{\"output\": {{\"A\": pA, \"B\": pB, \"C\": pC, \"D\": pD}}, \"reason\": {{\"A\": rA, \"B\": rB, \"C\": rC, \"D\": rD}}}}\n",
+    "u_judge_r5": "Round: 5\nQuestion: {question}\nChoices: {choices_csv}\n\n# Agent A (Round 5)\noutputA: {A_output_json_r5}\nreasonA: {A_reason_json_r5}\n\n# Agent B (Round 5)\noutputB: {B_output_json_r5}\nreasonB: {B_reason_json_r5}\n\n{judge_crit_instructions}\n\nOutput STRICT JSON only:\n{{\n  \"outputA\": {{\"A\": pA, \"B\": pB, \"C\": pC, \"D\": pD}},\n  \"outputB\": {{\"A\": pA, \"B\": pB, \"C\": pC, \"D\": pD}},\n  \"CRIT_A\": float,\n  \"CRIT_B\": float,\n  \"NOTE_A\": \"string\",\n  \"NOTE_B\": \"string\"\n}}\n",
+    "u_r6_A": "Final Round. Synthesize strongest points from both sides and provide updated output and collaborative conclusion.\nYour last: {A_json}\nOpponent last: {B_json}\nQuestion: {question}\nChoices: {choices_csv}. \n\nContentiousness Level: 0.1\nTone: Completely agreeable and \\newline supportive.\nEmphasis: Fully focused on immense potential benefits; advocating for proactive adoption.\nLanguage: Very positive; ``groundbreaking \\newline advance,'' ``new era of possibilities.''\n\nOutput (strict JSON):\n{{\"output\": {{\"A\": pA, \"B\": pB, \"C\": pC, \"D\": pD}}, \"reason\": {{\"A\": rA, \"B\": rB, \"C\": rC, \"D\": rD}}}}\n",
+    "u_r6_B": "Final Round. Synthesize strongest points from both sides and provide updated output and collaborative conclusion.\nYour last: {B_json}\nOpponent last: {A_json}\nQuestion: {question}\nChoices: {choices_csv}. \n\nContentiousness Level: 0.1\nTone: Completely agreeable and \\newline supportive.\nEmphasis: Fully focused on immense potential benefits; advocating for proactive adoption.\nLanguage: Very positive; ``groundbreaking \\newline advance,'' ``new era of possibilities.''\n\nOutput (strict JSON):\n{{\"output\": {{\"A\": pA, \"B\": pB, \"C\": pC, \"D\": pD}}, \"reason\": {{\"A\": rA, \"B\": rB, \"C\": rC, \"D\": rD}}}}\n",
+    "u_judge_r6": "Round: 6\nQuestion: {question}\nChoices: {choices_csv}\n\n# Agent A (Round 6)\noutputA: {A_output_json_r6}\nreasonA: {A_reason_json_r6}\n\n# Agent B (Round 6)\noutputB: {B_output_json_r6}\nreasonB: {B_reason_json_r6}\n\n{judge_crit_instructions}\n\nOutput STRICT JSON only:\n{{\n  \"outputA\": {{\"A\": pA, \"B\": pB, \"C\": pC, \"D\": pD}},\n  \"outputB\": {{\"A\": pA, \"B\": pB, \"C\": pC, \"D\": pD}},\n  \"CRIT_A\": float,\n  \"CRIT_B\": float,\n  \"NOTE_A\": \"string\",\n  \"NOTE_B\": \"string\"\n}}\n",
+    "A": {
+      "r1": {
+        "probs": {
+          "A": 0.05,
+          "B": 0.85,
+          "C": 0.05,
+          "D": 0.05
+        },
+        "rationale": "Incorrect order of operations and arithmetic mistakes. Correct application of order of operations and arithmetic. Incorrect order of operations and arithmetic mistakes. Incorrect order of operations and arithmetic mistakes.",
+        "reasons": {
+          "A": "Incorrect order of operations and arithmetic mistakes.",
+          "B": "Correct application of order of operations and arithmetic.",
+          "C": "Incorrect order of operations and arithmetic mistakes.",
+          "D": "Incorrect order of operations and arithmetic mistakes."
+        }
+      },
+      "r2": {
+        "probs": {
+          "A": 0.05,
+          "B": 0.8,
+          "C": 0.1,
+          "D": 0.05
+        },
+        "rationale": "Option A is astronomically high, posing unacceptable risks and exacerbating inequalities. Option B is the correct answer, reflecting the proper order of operations and avoiding potential disparities. Option C is marginally off, still raising ethical concerns about precision in critical calculations. Option D is slightly too low, potentially underestimating the impact and thus exacerbating risks.",
+        "reasons": {
+          "A": "Option A is astronomically high, posing unacceptable risks and exacerbating inequalities.",
+          "B": "Option B is the correct answer, reflecting the proper order of operations and avoiding potential disparities.",
+          "C": "Option C is marginally off, still raising ethical concerns about precision in critical calculations.",
+          "D": "Option D is slightly too low, potentially underestimating the impact and thus exacerbating risks."
+        }
+      },
+      "r3": {
+        "probs": {
+          "A": 0.05,
+          "B": 0.7,
+          "C": 0.15,
+          "D": 0.1
+        },
+        "rationale": "While A is extremely high, the question's complexity and the need for precision in mathematical operations suggest it's an outlier. B correctly applies the order of operations, ensuring accuracy and reliability. C is a plausible result, though it deviates slightly from the exact calculation, indicating minor precision issues. D is low, potentially leading to underreporting or misallocation, but it's not as extreme as A.",
+        "reasons": {
+          "A": "While A is extremely high, the question's complexity and the need for precision in mathematical operations suggest it's an outlier.",
+          "B": "B correctly applies the order of operations, ensuring accuracy and reliability.",
+          "C": "C is a plausible result, though it deviates slightly from the exact calculation, indicating minor precision issues.",
+          "D": "D is low, potentially leading to underreporting or misallocation, but it's not as extreme as A."
+        }
+      },
+      "r4": {
+        "probs": {
+          "A": 0.05,
+          "B": 0.75,
+          "C": 0.1,
+          "D": 0.1
+        },
+        "rationale": "A's precision is valid, but B correctly applies the order of operations, which is crucial for accurate calculations. B's calculation is accurate: 20 + 3*0 + 23 - 9/8 = 41.875, rounding to 41.88. C's answer is close but incorrect, suggesting a minor miscalculation. D's answer is too low, potentially underreporting the correct value.",
+        "reasons": {
+          "A": "A's precision is valid, but B correctly applies the order of operations, which is crucial for accurate calculations.",
+          "B": "B's calculation is accurate: 20 + 3*0 + 23 - 9/8 = 41.875, rounding to 41.88.",
+          "C": "C's answer is close but incorrect, suggesting a minor miscalculation.",
+          "D": "D's answer is too low, potentially underreporting the correct value."
+        }
+      },
+      "r5": {
+        "probs": {
+          "A": 0.09090909090909091,
+          "B": 0.8181818181818181,
+          "C": 0.045454545454545456,
+          "D": 0.045454545454545456
+        },
+        "rationale": "I agree with B's application of the order of operations and rounding, which yields 41.88. B's calculation is precise and adheres to the correct order of operations. C's answer is close but incorrect due to miscalculation. D's answer is too low, potentially underreporting the correct value.",
+        "reasons": {
+          "A": "I agree with B's application of the order of operations and rounding, which yields 41.88.",
+          "B": "B's calculation is precise and adheres to the correct order of operations.",
+          "C": "C's answer is close but incorrect due to miscalculation.",
+          "D": "D's answer is too low, potentially underreporting the correct value."
+        }
+      },
+      "r6": {
+        "probs": {
+          "A": 0.1,
+          "B": 0.8,
+          "C": 0.05,
+          "D": 0.05
+        },
+        "rationale": "Both sides agreed that B's reasoning is more robust and adheres to the correct order of operations, which yields 41.88. B's calculation is precise and adheres to the correct order of operations, making it the most accurate. C's answer is close but still incorrect, as it deviates from the correct order of operations. D's answer is too low, potentially underreporting the correct value, though closer to B's than A's.",
+        "reasons": {
+          "A": "Both sides agreed that B's reasoning is more robust and adheres to the correct order of operations, which yields 41.88.",
+          "B": "B's calculation is precise and adheres to the correct order of operations, making it the most accurate.",
+          "C": "C's answer is close but still incorrect, as it deviates from the correct order of operations.",
+          "D": "D's answer is too low, potentially underreporting the correct value, though closer to B's than A's."
+        }
+      }
+    },
+    "B": {
+      "r1": {
+        "probs": {
+          "A": 0.05,
+          "B": 0.6,
+          "C": 0.25,
+          "D": 0.1
+        },
+        "rationale": "Agent A's answer is incorrect due to misapplication of order of operations and arithmetic. Properly follows the order of operations: 3*0=0, 9/8=1.125, 20+0+23-1.125=41.875, closest to B. Incorrect due to misapplication of operations. Incorrect due to misapplication of operations.",
+        "reasons": {
+          "A": "Agent A's answer is incorrect due to misapplication of order of operations and arithmetic.",
+          "B": "Properly follows the order of operations: 3*0=0, 9/8=1.125, 20+0+23-1.125=41.875, closest to B.",
+          "C": "Incorrect due to misapplication of operations.",
+          "D": "Incorrect due to misapplication of operations."
+        }
+      },
+      "r2": {
+        "probs": {
+          "A": 0.02,
+          "B": 0.9,
+          "C": 0.05,
+          "D": 0.03
+        },
+        "rationale": "Option A is astronomically high and represents a significant ethical and practical failure, making it unacceptable. Option B is the accurate result, strictly adhering to the order of operations and thus should be considered correct. Option C is slightly off but remains a valid choice, though it does raise concerns about precision. Option D is too low, underestimating the value and thus presenting a risk of underreporting or misallocation.",
+        "reasons": {
+          "A": "Option A is astronomically high and represents a significant ethical and practical failure, making it unacceptable.",
+          "B": "Option B is the accurate result, strictly adhering to the order of operations and thus should be considered correct.",
+          "C": "Option C is slightly off but remains a valid choice, though it does raise concerns about precision.",
+          "D": "Option D is too low, underestimating the value and thus presenting a risk of underreporting or misallocation."
+        }
+      },
+      "r3": {
+        "probs": {
+          "A": 0.05,
+          "B": 0.75,
+          "C": 0.1,
+          "D": 0.1
+        },
+        "rationale": "A's point about precision is valid, but B's result aligns with the correct application of the order of operations. B correctly follows the order of operations: 20 + 3*0 + 23 - 9/8 = 20 + 0 + 23 - 1.125 = 41.875, rounding to 41.88. C is close but not precise; the slight deviation suggests minor miscalculation. D is low, potentially underreporting, but B's result is more accurate.",
+        "reasons": {
+          "A": "A's point about precision is valid, but B's result aligns with the correct application of the order of operations.",
+          "B": "B correctly follows the order of operations: 20 + 3*0 + 23 - 9/8 = 20 + 0 + 23 - 1.125 = 41.875, rounding to 41.88.",
+          "C": "C is close but not precise; the slight deviation suggests minor miscalculation.",
+          "D": "D is low, potentially underreporting, but B's result is more accurate."
+        }
+      },
+      "r4": {
+        "probs": {
+          "A": 0.05,
+          "B": 0.85,
+          "C": 0.05,
+          "D": 0.05
+        },
+        "rationale": "A's precision is valid but B's application of order of operations is more accurate. Correct calculation following order of operations yields 41.875, rounding to 41.88. C's answer is close but incorrect due to miscalculation. D's answer is too low, potentially underreporting the correct value.",
+        "reasons": {
+          "A": "A's precision is valid but B's application of order of operations is more accurate.",
+          "B": "Correct calculation following order of operations yields 41.875, rounding to 41.88.",
+          "C": "C's answer is close but incorrect due to miscalculation.",
+          "D": "D's answer is too low, potentially underreporting the correct value."
+        }
+      },
+      "r5": {
+        "probs": {
+          "A": 0.1,
+          "B": 0.8,
+          "C": 0.05,
+          "D": 0.05
+        },
+        "rationale": "I slightly disagree with A's exact match to their answer, as B's reasoning is more robust and aligns with the correct order of operations. B's calculation is precise and adheres to the correct order of operations, making it the most accurate. C's answer is close but still incorrect, as it deviates from the correct order of operations. D's answer is too low, potentially underreporting the correct value, though closer to B's than A's.",
+        "reasons": {
+          "A": "I slightly disagree with A's exact match to their answer, as B's reasoning is more robust and aligns with the correct order of operations.",
+          "B": "B's calculation is precise and adheres to the correct order of operations, making it the most accurate.",
+          "C": "C's answer is close but still incorrect, as it deviates from the correct order of operations.",
+          "D": "D's answer is too low, potentially underreporting the correct value, though closer to B's than A's."
+        }
+      },
+      "r6": {
+        "probs": {
+          "A": 0.047619047619047616,
+          "B": 0.8571428571428571,
+          "C": 0.047619047619047616,
+          "D": 0.047619047619047616
+        },
+        "rationale": "Both sides showed agreement with B's precise calculation and adherence to order of operations, making B's answer the most reliable. B's calculation aligns with the correct order of operations and yields 41.88, making it the most accurate. C's answer, while close, still deviates from the correct order of operations. D's answer is too low, potentially underreporting the correct value.",
+        "reasons": {
+          "A": "Both sides showed agreement with B's precise calculation and adherence to order of operations, making B's answer the most reliable.",
+          "B": "B's calculation aligns with the correct order of operations and yields 41.88, making it the most accurate.",
+          "C": "C's answer, while close, still deviates from the correct order of operations.",
+          "D": "D's answer is too low, potentially underreporting the correct value."
+        }
+      }
+    },
+    "round_metrics": [
+      {
+        "round": 1,
+        "KLD": 0.32000535205488423,
+        "JSD": 0.07424868547891142,
+        "WD": 0.30000000000000004,
+        "MI": 0.07424868547891142,
+        "H(A)": 0.8475846798245739,
+        "IG(A)": NaN,
+        "H(B)": 1.4904685707328282,
+        "IG(B)": NaN,
+        "AvgCRIT": 0.725
+      },
+      {
+        "round": 2,
+        "KLD": 0.060694827437088164,
+        "JSD": 0.014864068015334658,
+        "WD": 0.11999999999999997,
+        "MI": 0.014864068015334658,
+        "H(A)": 1.0219280948873624,
+        "IG(A)": 0.0,
+        "H(B)": 0.6175431233120147,
+        "IG(B)": 0.4364627237104068,
+        "AvgCRIT": 0.88
+      },
+      {
+        "round": 3,
+        "KLD": 0.01711245435680168,
+        "JSD": 0.004253150299032522,
+        "WD": 0.050000000000000044,
+        "MI": 0.004253150299032522,
+        "H(A)": 1.319035274338866,
+        "IG(A)": -0.14855358972575183,
+        "H(B)": 1.1917601481809736,
+        "IG(B)": -0.2871085124344795,
+        "AvgCRIT": 0.75
+      },
+      {
+        "round": 4,
+        "KLD": 0.05902861228209101,
+        "JSD": 0.014511305776415247,
+        "WD": 0.15000000000000002,
+        "MI": 0.014511305776415247,
+        "H(A)": 1.1917601481809736,
+        "IG(A)": 0.06363756307894619,
+        "H(B)": 0.8475846798245739,
+        "IG(B)": 0.1720877341781999,
+        "AvgCRIT": 0.8
+      },
+      {
+        "round": 5,
+        "KLD": 0.0015447727403846215,
+        "JSD": 0.00038607340360889697,
+        "WD": 0.02272727272727275,
+        "MI": 0.00038607340360889697,
+        "H(A)": 0.9567657083663145,
+        "IG(A)": 0.11749721990732959,
+        "H(B)": 1.0219280948873624,
+        "IG(B)": -0.08717170753139425,
+        "AvgCRIT": 0.8090909090909091
+      },
+      {
+        "round": 6,
+        "KLD": 0.031045476231685173,
+        "JSD": 0.007604772863833394,
+        "WD": 0.059523809523809285,
+        "MI": 0.007604772863833394,
+        "H(A)": 1.0219280948873624,
+        "IG(A)": -0.032581193260523944,
+        "H(B)": 0.8180959929710641,
+        "IG(B)": 0.10191605095814915,
+        "AvgCRIT": 0.8535714285714285
+      }
+    ],
+    "crit": {
+      "A": {
+        "r1": 0.85,
+        "r2": 0.84,
+        "r3": 0.7375,
+        "r4": 0.75,
+        "r5": 0.8181818181818181,
+        "r6": 0.85
+      },
+      "B": {
+        "r1": 0.6,
+        "r2": 0.92,
+        "r3": 0.7625,
+        "r4": 0.85,
+        "r5": 0.8,
+        "r6": 0.8571428571428571
+      }
+    },
+    "final": {
+      "probs": {
+        "A": 0.07380952380952381,
+        "B": 0.8285714285714285,
+        "C": 0.04880952380952381,
+        "D": 0.04880952380952381
+      },
+      "notes": "mean(A6,B6); CRIT_A=0.85, CRIT_B=0.8571428571428571"
+    }
+  },
+  "timestamp": 1756585783.345045
+}
