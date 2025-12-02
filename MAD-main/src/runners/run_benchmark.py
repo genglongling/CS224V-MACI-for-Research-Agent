@@ -162,21 +162,22 @@ def load_dataset_from_config(dataset_config: Dict[str, Any]) -> List[Dict[str, A
         print(f"Error loading dataset {dataset_config.get('name', dataset_config.get('path', 'unknown'))}: {e}")
         return []
 
-def run_single_debate(example: Dict[str, Any], pairing: str, cfg_models: Dict, 
+def run_single_debate(example: Dict[str, Any], pairing: str, cfg_models: Dict,
                      cfg_prompts: Dict, cfg_run: Dict) -> Dict[str, Any]:
     """Run a single debate for one example"""
+    logger = logging.getLogger(__name__)
     try:
-        print(f"    Starting debate for example {example.get('id', 'unknown')}")
-        print(f"    Question: {example['question'][:100]}...")
-        print(f"    Choices: {example['choices']}")
-        print(f"    Answer: {example['answer']}")
-        
-        # Print prompt lengths for this debate
-        print(f"    Prompt lengths:")
+        logger.info("    Starting debate for example %s", example.get("id", "unknown"))
+        logger.debug("    Question: %s", example.get("question", "")[:200])
+        logger.debug("    Choices: %s", example.get("choices"))
+        logger.debug("    Answer: %s", example.get("answer"))
+
+        # Print prompt lengths for this debate (debug level to avoid noise)
+        logger.debug("    Prompt lengths for this debate:")
         for prompt_name, prompt_content in cfg_prompts.items():
             if isinstance(prompt_content, str):
-                print(f"      {prompt_name}: {len(prompt_content)} characters")
-        
+                logger.debug("      %s: %s characters", prompt_name, len(prompt_content))
+
         # Build the debate graph
         graph = build_graph(cfg_prompts, cfg_models, pairing, cfg_run.get('with_judge', True))
         
@@ -188,6 +189,18 @@ def run_single_debate(example: Dict[str, Any], pairing: str, cfg_models: Dict,
             'id': example['id'],
             'sys_debater': cfg_prompts['system_debater'],
             'sys_judge': cfg_prompts['system_judge'],
+            # Mini-research agent prompts (optional; fall back to debater if not provided)
+            'sys_researcher': cfg_prompts.get('system_researcher', cfg_prompts['system_debater']),
+            'u_research': cfg_prompts.get(
+                'user_research',
+                (
+                    "You are a research assistant. Before the debate starts, analyze the following "
+                    "multiple-choice question and its options. Provide concise background facts, "
+                    "relevant definitions, and any useful context that will help debaters reason.\n\n"
+                    "Question: {question}\nChoices: {choices_csv}\n\n"
+                    "Output a short paragraph or bullet list of key points."
+                ),
+            ),
             'judge_crit_instructions': cfg_prompts['judge_crit_instructions'],
             'u_r1_A': cfg_prompts['user_round1_A'],
             'u_r1_B': cfg_prompts['user_round1_B'],

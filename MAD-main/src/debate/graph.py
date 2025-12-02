@@ -1,6 +1,7 @@
 
 from typing import Dict, Any
 import json
+import logging
 from langgraph.graph import StateGraph, END
 from .models import LLMFactory
 from .prompts import parse_json_or_fallback, normalize_probs, get_choice_keys, parse_judge_json
@@ -9,40 +10,49 @@ from .metrics import compute_round_metrics
 # DebateState is now just a regular dict
 DebateState = dict
 
+logger = logging.getLogger(__name__)
+
+
 def _ask(model, system: str, user: str, choice_keys: list[str]) -> Dict[str, Any]:
-    print(f"MAKING API CALL...")
+    logger.info("Making debater API call...")
     max_retries = 3
     retry_delay = 2  # seconds
     
     for attempt in range(max_retries):
         try:
-            resp = model.invoke([{"role":"system","content":system}, {"role":"user","content":user}])
-            print(f"API RESPONSE OBJECT: {resp}")
+            resp = model.invoke(
+                [
+                    {"role": "system", "content": system},
+                    {"role": "user", "content": user},
+                ]
+            )
+            logger.debug("Debater API response object: %s", resp)
             content = getattr(resp, "content", str(resp))
-            print(f"RAW LLM RESPONSE: {content}")
-            print(f"RESPONSE TYPE: {type(content)}")
-            print(f"RESPONSE LENGTH: {len(content) if content else 0}")
+            logger.debug("Raw LLM response type=%s length=%s", type(content), len(content) if content else 0)
             
             # Check if we got a valid response
             if content and len(content.strip()) > 0:
                 break
             else:
-                print(f"Empty response on attempt {attempt + 1}, retrying...")
+                logger.warning("Empty debater response on attempt %s, retrying...", attempt + 1)
                 if attempt < max_retries - 1:
                     import time
                     time.sleep(retry_delay)
                     retry_delay *= 2  # Exponential backoff
                 
         except Exception as e:
-            print(f"API CALL FAILED on attempt {attempt + 1}: {e}")
+            logger.exception("Debater API call failed on attempt %s: %s", attempt + 1, e)
             if attempt < max_retries - 1:
                 import time
                 time.sleep(retry_delay)
                 retry_delay *= 2  # Exponential backoff
             content = ""
-    
+    if not content:
+        logger.error("Debater API returned no content after %s attempts", max_retries)
+        content = ""
+
     data = parse_json_or_fallback(content, choice_keys)
-    print(f"PARSED DATA: {json.dumps(data, indent=2)}")
+    logger.debug("Parsed debater data: %s", json.dumps(data, indent=2, ensure_ascii=False))
     # The parse_json_or_fallback function already handles the new schema and returns "probs"
     # We just need to ensure it exists
     if "probs" not in data:
@@ -50,40 +60,95 @@ def _ask(model, system: str, user: str, choice_keys: list[str]) -> Dict[str, Any
     return data
 
 def _ask_judge(model, system: str, user: str, choice_keys: list[str]) -> Dict[str, Any]:
-    print(f"MAKING JUDGE API CALL...")
+    logger.info("Making judge API call...")
     max_retries = 3
     retry_delay = 2  # seconds
     
     for attempt in range(max_retries):
         try:
-            resp = model.invoke([{"role":"system","content":system}, {"role":"user","content":user}])
-            print(f"JUDGE API RESPONSE OBJECT: {resp}")
+            resp = model.invoke(
+                [
+                    {"role": "system", "content": system},
+                    {"role": "user", "content": user},
+                ]
+            )
+            logger.debug("Judge API response object: %s", resp)
             content = getattr(resp, "content", str(resp))
-            print(f"JUDGE RAW LLM RESPONSE: {content}")
-            print(f"JUDGE RESPONSE TYPE: {type(content)}")
-            print(f"JUDGE RESPONSE LENGTH: {len(content) if content else 0}")
+            logger.debug("Judge raw LLM response type=%s length=%s", type(content), len(content) if content else 0)
             
             # Check if we got a valid response
             if content and len(content.strip()) > 0:
                 break
             else:
-                print(f"Empty judge response on attempt {attempt + 1}, retrying...")
+                logger.warning("Empty judge response on attempt %s, retrying...", attempt + 1)
                 if attempt < max_retries - 1:
                     import time
                     time.sleep(retry_delay)
                     retry_delay *= 2  # Exponential backoff
                 
         except Exception as e:
-            print(f"JUDGE API CALL FAILED on attempt {attempt + 1}: {e}")
+            logger.exception("Judge API call failed on attempt %s: %s", attempt + 1, e)
             if attempt < max_retries - 1:
                 import time
                 time.sleep(retry_delay)
                 retry_delay *= 2  # Exponential backoff
             content = ""
-    
+    if not content:
+        logger.error("Judge API returned no content after %s attempts", max_retries)
+        content = ""
+
     data = parse_judge_json(content, choice_keys)
-    print(f"JUDGE PARSED DATA: {json.dumps(data, indent=2)}")
+    logger.debug("Judge parsed data: %s", json.dumps(data, indent=2, ensure_ascii=False))
     return data
+
+
+def _ask_research(model, system: str, user: str) -> str:
+    """
+    Lightweight helper for the mini-research agent.
+    Returns raw text; caller is responsible for any further parsing.
+    """
+    if model is None:
+        return ""
+
+    logger.info("Making mini-research API call...")
+    max_retries = 3
+    retry_delay = 2  # seconds
+
+    content = ""
+    for attempt in range(max_retries):
+        try:
+            resp = model.invoke(
+                [
+                    {"role": "system", "content": system},
+                    {"role": "user", "content": user},
+                ]
+            )
+            logger.debug("Research API response object: %s", resp)
+            content = getattr(resp, "content", str(resp))
+            logger.debug(
+                "Research raw LLM response type=%s length=%s",
+                type(content),
+                len(content) if content else 0,
+            )
+            if content and len(content.strip()) > 0:
+                break
+            else:
+                logger.warning("Empty research response on attempt %s, retrying...", attempt + 1)
+                if attempt < max_retries - 1:
+                    import time
+                    time.sleep(retry_delay)
+                    retry_delay *= 2
+        except Exception as e:
+            logger.exception("Research API call failed on attempt %s: %s", attempt + 1, e)
+            if attempt < max_retries - 1:
+                import time
+                time.sleep(retry_delay)
+                retry_delay *= 2
+
+    if not content:
+        logger.error("Research API returned no content after %s attempts", max_retries)
+        return ""
+    return str(content)
 
 def build_graph(cfg_prompts, cfg_models, pairing, with_judge: bool=True):
     # Handle both old and new config structures
@@ -95,8 +160,60 @@ def build_graph(cfg_prompts, cfg_models, pairing, with_judge: bool=True):
     A = LLMFactory.make(**pairing_config['A'])
     B = LLMFactory.make(**pairing_config['B'])
     J = LLMFactory.make(**pairing_config['judge']) if with_judge else None
+    # Optional mini-research agent; if not provided, we can still run debates normally
+    R = None
+    if 'researcher' in pairing_config:
+        try:
+            R = LLMFactory.make(**pairing_config['researcher'])
+        except Exception as e:
+            logger.error("Failed to initialize mini-research agent for pairing %s: %s", pairing, e)
+            R = None
 
     g = StateGraph(DebateState)
+
+    def do_research(s: DebateState):
+        """
+        Mini-research agent that runs once before Round 1.
+        It can annotate the state with additional context under s['research'].
+        """
+        logger.info("Starting mini-research for example id=%s", s.get("id"))
+        # Ensure state dicts exist
+        s.setdefault("meta", {})
+
+        # If no researcher model or prompts are configured, skip gracefully
+        sys_researcher = s.get("sys_researcher")
+        u_research = s.get("u_research")
+        if R is None or not sys_researcher or not u_research:
+            logger.info("Mini-research agent or prompts not configured; skipping research step.")
+            s["research"] = ""
+            s["meta"]["research_used"] = False
+            return s
+
+        # Build choices CSV similarly to other rounds
+        try:
+            choices_csv = ", ".join(
+                f"{k}) {str(v).replace('{', '{{').replace('}', '}}')}"
+                for k, v in s.get("choices", {}).items()
+            )
+        except Exception:
+            choices_csv = ""
+
+        prompt = u_research.format(
+            question=s.get("question", ""),
+            choices_csv=choices_csv,
+        )
+        logger.debug("Mini-research prompt: %s", prompt)
+
+        research_text = _ask_research(R, sys_researcher, prompt)
+        s["research"] = research_text
+        s["meta"]["research_used"] = True
+        logger.info(
+            "Mini-research completed for example id=%s; length=%s",
+            s.get("id"),
+            len(research_text) if research_text else 0,
+        )
+        logger.debug("Mini-research raw output: %s", research_text)
+        return s
 
     def start_A1(s: DebateState):
         s.setdefault('A', {}); s.setdefault('B', {})
@@ -108,13 +225,19 @@ def build_graph(cfg_prompts, cfg_models, pairing, with_judge: bool=True):
         reason_dict = ", ".join([f'"{k}": r{k}' for k in choice_keys])
         # Escape curly braces in choices to prevent format string issues
         choices_csv = ", ".join([f"{k}) {str(v).replace('{', '{{').replace('}', '}}')}" for k,v in s['choices'].items()])
-        prompt = s['u_r1_A'].format(question=s['question'], choices_csv=choices_csv, choice_dict=choice_dict, reason_dict=reason_dict)
-        print(f"\n=== ROUND 1 - AGENT A ===")
-        print(f"Question: {s['question']}")
-        print(f"Choices: {choices_csv}")
-        print(f"Prompt: {prompt}")
+        prompt = s['u_r1_A'].format(
+            question=s['question'],
+            choices_csv=choices_csv,
+            choice_dict=choice_dict,
+            reason_dict=reason_dict,
+            research=s.get("research", ""),
+        )
+        logger.info("=== ROUND 1 - AGENT A ===")
+        logger.debug("Question: %s", s['question'])
+        logger.debug("Choices: %s", choices_csv)
+        logger.debug("Prompt: %s", prompt)
         s['A']['r1'] = _ask(A, s['sys_debater'], prompt, choice_keys)
-        print(f"Response: {json.dumps(s['A']['r1'], indent=2)}")
+        logger.debug("Agent A Round 1 response: %s", json.dumps(s['A']['r1'], indent=2, ensure_ascii=False))
         return s
 
     def judge_r1(s: DebateState):
@@ -141,10 +264,10 @@ def build_graph(cfg_prompts, cfg_models, pairing, with_judge: bool=True):
             choice_dict=choice_dict,
             uniform_dict=uniform_dict
         )
-        print(f"\n=== ROUND 1 - JUDGE ===")
-        print(f"Prompt: {prompt}")
+        logger.info("=== ROUND 1 - JUDGE ===")
+        logger.debug("Judge Round 1 prompt: %s", prompt)
         resp = _ask_judge(J, s['sys_judge'], prompt, choice_keys)
-        print(f"Response: {json.dumps(resp, indent=2)}")
+        logger.debug("Judge Round 1 response: %s", json.dumps(resp, indent=2, ensure_ascii=False))
         s.setdefault('crit', {}); s['crit'].setdefault('A', {}); s['crit'].setdefault('B', {})
         s['crit']['A']['r1'] = resp.get('CRIT_A', None)
         s['crit']['B']['r1'] = resp.get('CRIT_B', None)
@@ -160,11 +283,18 @@ def build_graph(cfg_prompts, cfg_models, pairing, with_judge: bool=True):
         choice_dict = ", ".join([f'"{k}": p{k}' for k in choice_keys])
         reason_dict = ", ".join([f'"{k}": r{k}' for k in choice_keys])
         choices_csv = ", ".join([f"{k}) {str(v).replace('{', '{{').replace('}', '}}')}" for k,v in s['choices'].items()])
-        prompt = s['u_r1_B'].format(question=s['question'], choices_csv=choices_csv, A_json=s['A']['r1'], choice_dict=choice_dict, reason_dict=reason_dict)
-        print(f"\n=== ROUND 1 - AGENT B ===")
-        print(f"Prompt: {prompt}")
+        prompt = s['u_r1_B'].format(
+            question=s['question'],
+            choices_csv=choices_csv,
+            A_json=s['A']['r1'],
+            choice_dict=choice_dict,
+            reason_dict=reason_dict,
+            research=s.get("research", ""),
+        )
+        logger.info("=== ROUND 1 - AGENT B ===")
+        logger.debug("Agent B Round 1 prompt: %s", prompt)
         s['B']['r1'] = _ask(B, s['sys_debater'], prompt, choice_keys)
-        print(f"Response: {json.dumps(s['B']['r1'], indent=2)}")
+        logger.debug("Agent B Round 1 response: %s", json.dumps(s['B']['r1'], indent=2, ensure_ascii=False))
         return s
 
     def do_A2(s: DebateState):
@@ -175,10 +305,10 @@ def build_graph(cfg_prompts, cfg_models, pairing, with_judge: bool=True):
         reason_dict = ", ".join([f'"{k}": r{k}' for k in choice_keys])
         choices_csv = ", ".join([f"{k}) {str(v).replace('{', '{{').replace('}', '}}')}" for k,v in s['choices'].items()])
         prompt = s['u_r2_A'].format(question=s['question'], choices_csv=choices_csv, B_json=s['B']['r1'], choice_dict=choice_dict, reason_dict=reason_dict)
-        print(f"\n=== ROUND 2 - AGENT A ===")
-        print(f"Prompt: {prompt}")
+        logger.info("=== ROUND 2 - AGENT A ===")
+        logger.debug("Agent A Round 2 prompt: %s", prompt)
         s['A']['r2'] = _ask(A, s['sys_debater'], prompt, choice_keys)
-        print(f"Response: {json.dumps(s['A']['r2'], indent=2)}")
+        logger.debug("Agent A Round 2 response: %s", json.dumps(s['A']['r2'], indent=2, ensure_ascii=False))
         return s
 
     def judge_r2(s: DebateState):
@@ -192,7 +322,7 @@ def build_graph(cfg_prompts, cfg_models, pairing, with_judge: bool=True):
         uniform_prob = 1.0 / len(choice_keys)
         uniform_dict = ", ".join([f'"{k}": {uniform_prob}' for k in choice_keys])
         choices_csv = ", ".join([f"{k}) {v}" for k,v in s['choices'].items()])
-        resp = _ask_judge(J, s['sys_judge'], s['u_judge_r2'].format(
+        judge_prompt = s['u_judge_r2'].format(
             question=s['question'], 
             choices_csv=choices_csv,
             A_output_json_r2=json.dumps(s['A']['r2']['probs']),
@@ -202,7 +332,10 @@ def build_graph(cfg_prompts, cfg_models, pairing, with_judge: bool=True):
             judge_crit_instructions=s['judge_crit_instructions'],
             choice_dict=choice_dict,
             uniform_dict=uniform_dict
-        ), choice_keys)
+        )
+        logger.info("=== ROUND 2 - JUDGE ===")
+        logger.debug("Judge Round 2 prompt: %s", judge_prompt)
+        resp = _ask_judge(J, s['sys_judge'], judge_prompt, choice_keys)
         s['crit']['A']['r2'] = resp.get('CRIT_A', None)
         s['crit']['B']['r2'] = resp.get('CRIT_B', None)
         rm = compute_round_metrics(s['A']['r2']['probs'], s['B']['r2']['probs'], s['A']['r2']['probs'], s['B']['r1']['probs'],
@@ -226,10 +359,10 @@ def build_graph(cfg_prompts, cfg_models, pairing, with_judge: bool=True):
         choice_keys = get_choice_keys(s['choices'])
         choices_csv = ", ".join([f"{k}) {str(v).replace('{', '{{').replace('}', '}}')}" for k,v in s['choices'].items()])
         prompt = s['u_r3_A'].format(question=s['question'], choices_csv=choices_csv, B_json=s['B']['r2'])
-        print(f"\n=== ROUND 3 - AGENT A ===")
-        print(f"Prompt: {prompt}")
+        logger.info("=== ROUND 3 - AGENT A ===")
+        logger.debug("Agent A Round 3 prompt: %s", prompt)
         s['A']['r3'] = _ask(A, s['sys_debater'], prompt, choice_keys)
-        print(f"Response: {json.dumps(s['A']['r3'], indent=2)}")
+        logger.debug("Agent A Round 3 response: %s", json.dumps(s['A']['r3'], indent=2, ensure_ascii=False))
         return s
 
     def judge_r3(s: DebateState):
@@ -248,10 +381,10 @@ def build_graph(cfg_prompts, cfg_models, pairing, with_judge: bool=True):
             B_reason_json_r3=json.dumps(s['B']['r3'].get('reasons', {})),
             judge_crit_instructions=s['judge_crit_instructions']
         )
-        print(f"\n=== ROUND 3 - JUDGE ===")
-        print(f"Prompt: {prompt}")
+        logger.info("=== ROUND 3 - JUDGE ===")
+        logger.debug("Judge Round 3 prompt: %s", prompt)
         resp = _ask_judge(J, s['sys_judge'], prompt, choice_keys)
-        print(f"Response: {json.dumps(resp, indent=2)}")
+        logger.debug("Judge Round 3 response: %s", json.dumps(resp, indent=2, ensure_ascii=False))
         s['crit']['A']['r3'] = resp.get('CRIT_A', None)
         s['crit']['B']['r3'] = resp.get('CRIT_B', None)
         rm = compute_round_metrics(s['A']['r3']['probs'], s['B']['r3']['probs'], s['A']['r2']['probs'], s['B']['r2']['probs'],
@@ -264,10 +397,10 @@ def build_graph(cfg_prompts, cfg_models, pairing, with_judge: bool=True):
         choice_keys = get_choice_keys(s['choices'])
         choices_csv = ", ".join([f"{k}) {str(v).replace('{', '{{').replace('}', '}}')}" for k,v in s['choices'].items()])
         prompt = s['u_r3_B'].format(question=s['question'], choices_csv=choices_csv, A_json=s['A']['r3'])
-        print(f"\n=== ROUND 3 - AGENT B ===")
-        print(f"Prompt: {prompt}")
+        logger.info("=== ROUND 3 - AGENT B ===")
+        logger.debug("Agent B Round 3 prompt: %s", prompt)
         s['B']['r3'] = _ask(B, s['sys_debater'], prompt, choice_keys)
-        print(f"Response: {json.dumps(s['B']['r3'], indent=2)}")
+        logger.debug("Agent B Round 3 response: %s", json.dumps(s['B']['r3'], indent=2, ensure_ascii=False))
         return s
 
     def do_A4(s: DebateState):
@@ -275,10 +408,10 @@ def build_graph(cfg_prompts, cfg_models, pairing, with_judge: bool=True):
         choice_keys = get_choice_keys(s['choices'])
         choices_csv = ", ".join([f"{k}) {str(v).replace('{', '{{').replace('}', '}}')}" for k,v in s['choices'].items()])
         prompt = s['u_r4_A'].format(question=s['question'], choices_csv=choices_csv, B_json=s['B']['r3'])
-        print(f"\n=== ROUND 4 - AGENT A ===")
-        print(f"Prompt: {prompt}")
+        logger.info("=== ROUND 4 - AGENT A ===")
+        logger.debug("Agent A Round 4 prompt: %s", prompt)
         s['A']['r4'] = _ask(A, s['sys_debater'], prompt, choice_keys)
-        print(f"Response: {json.dumps(s['A']['r4'], indent=2)}")
+        logger.debug("Agent A Round 4 response: %s", json.dumps(s['A']['r4'], indent=2, ensure_ascii=False))
         return s
 
     def judge_r4(s: DebateState):
@@ -297,10 +430,10 @@ def build_graph(cfg_prompts, cfg_models, pairing, with_judge: bool=True):
             B_reason_json_r4=json.dumps(s['B']['r4'].get('reasons', {})),
             judge_crit_instructions=s['judge_crit_instructions']
         )
-        print(f"\n=== ROUND 4 - JUDGE ===")
-        print(f"Prompt: {prompt}")
+        logger.info("=== ROUND 4 - JUDGE ===")
+        logger.debug("Judge Round 4 prompt: %s", prompt)
         resp = _ask_judge(J, s['sys_judge'], prompt, choice_keys)
-        print(f"Response: {json.dumps(resp, indent=2)}")
+        logger.debug("Judge Round 4 response: %s", json.dumps(resp, indent=2, ensure_ascii=False))
         s['crit']['A']['r4'] = resp.get('CRIT_A', None)
         s['crit']['B']['r4'] = resp.get('CRIT_B', None)
         rm = compute_round_metrics(s['A']['r4']['probs'], s['B']['r4']['probs'], s['A']['r3']['probs'], s['B']['r3']['probs'],
@@ -313,10 +446,10 @@ def build_graph(cfg_prompts, cfg_models, pairing, with_judge: bool=True):
         choice_keys = get_choice_keys(s['choices'])
         choices_csv = ", ".join([f"{k}) {str(v).replace('{', '{{').replace('}', '}}')}" for k,v in s['choices'].items()])
         prompt = s['u_r4_B'].format(question=s['question'], choices_csv=choices_csv, A_json=s['A']['r4'])
-        print(f"\n=== ROUND 4 - AGENT B ===")
-        print(f"Prompt: {prompt}")
+        logger.info("=== ROUND 4 - AGENT B ===")
+        logger.debug("Agent B Round 4 prompt: %s", prompt)
         s['B']['r4'] = _ask(B, s['sys_debater'], prompt, choice_keys)
-        print(f"Response: {json.dumps(s['B']['r4'], indent=2)}")
+        logger.debug("Agent B Round 4 response: %s", json.dumps(s['B']['r4'], indent=2, ensure_ascii=False))
         return s
 
     def do_A5(s: DebateState):
@@ -324,10 +457,10 @@ def build_graph(cfg_prompts, cfg_models, pairing, with_judge: bool=True):
         choice_keys = get_choice_keys(s['choices'])
         choices_csv = ", ".join([f"{k}) {str(v).replace('{', '{{').replace('}', '}}')}" for k,v in s['choices'].items()])
         prompt = s['u_r5_A'].format(question=s['question'], choices_csv=choices_csv, B_json=s['B']['r4'])
-        print(f"\n=== ROUND 5 - AGENT A ===")
-        print(f"Prompt: {prompt}")
+        logger.info("=== ROUND 5 - AGENT A ===")
+        logger.debug("Agent A Round 5 prompt: %s", prompt)
         s['A']['r5'] = _ask(A, s['sys_debater'], prompt, choice_keys)
-        print(f"Response: {json.dumps(s['A']['r5'], indent=2)}")
+        logger.debug("Agent A Round 5 response: %s", json.dumps(s['A']['r5'], indent=2, ensure_ascii=False))
         return s
 
     def judge_r5(s: DebateState):
@@ -346,10 +479,10 @@ def build_graph(cfg_prompts, cfg_models, pairing, with_judge: bool=True):
             B_reason_json_r5=json.dumps(s['B']['r5'].get('reasons', {})),
             judge_crit_instructions=s['judge_crit_instructions']
         )
-        print(f"\n=== ROUND 5 - JUDGE ===")
-        print(f"Prompt: {prompt}")
+        logger.info("=== ROUND 5 - JUDGE ===")
+        logger.debug("Judge Round 5 prompt: %s", prompt)
         resp = _ask_judge(J, s['sys_judge'], prompt, choice_keys)
-        print(f"Response: {json.dumps(resp, indent=2)}")
+        logger.debug("Judge Round 5 response: %s", json.dumps(resp, indent=2, ensure_ascii=False))
         s['crit']['A']['r5'] = resp.get('CRIT_A', None)
         s['crit']['B']['r5'] = resp.get('CRIT_B', None)
         rm = compute_round_metrics(s['A']['r5']['probs'], s['B']['r5']['probs'], s['A']['r4']['probs'], s['B']['r4']['probs'],
@@ -362,10 +495,10 @@ def build_graph(cfg_prompts, cfg_models, pairing, with_judge: bool=True):
         choice_keys = get_choice_keys(s['choices'])
         choices_csv = ", ".join([f"{k}) {str(v).replace('{', '{{').replace('}', '}}')}" for k,v in s['choices'].items()])
         prompt = s['u_r5_B'].format(question=s['question'], choices_csv=choices_csv, A_json=s['A']['r5'])
-        print(f"\n=== ROUND 5 - AGENT B ===")
-        print(f"Prompt: {prompt}")
+        logger.info("=== ROUND 5 - AGENT B ===")
+        logger.debug("Agent B Round 5 prompt: %s", prompt)
         s['B']['r5'] = _ask(B, s['sys_debater'], prompt, choice_keys)
-        print(f"Response: {json.dumps(s['B']['r5'], indent=2)}")
+        logger.debug("Agent B Round 5 response: %s", json.dumps(s['B']['r5'], indent=2, ensure_ascii=False))
         return s
 
     def do_A6(s: DebateState):
@@ -373,10 +506,10 @@ def build_graph(cfg_prompts, cfg_models, pairing, with_judge: bool=True):
         choice_keys = get_choice_keys(s['choices'])
         choices_csv = ", ".join([f"{k}) {str(v).replace('{', '{{').replace('}', '}}')}" for k,v in s['choices'].items()])
         prompt = s['u_r6_A'].format(question=s['question'], choices_csv=choices_csv, A_json=s['A']['r5'], B_json=s['B']['r5'])
-        print(f"\n=== ROUND 6 (FINAL) - AGENT A ===")
-        print(f"Prompt: {prompt}")
+        logger.info("=== ROUND 6 (FINAL) - AGENT A ===")
+        logger.debug("Agent A Round 6 prompt: %s", prompt)
         s['A']['r6'] = _ask(A, s['sys_debater'], prompt, choice_keys)
-        print(f"Response: {json.dumps(s['A']['r6'], indent=2)}")
+        logger.debug("Agent A Round 6 response: %s", json.dumps(s['A']['r6'], indent=2, ensure_ascii=False))
         return s
 
     def judge_r6(s: DebateState):
@@ -395,10 +528,10 @@ def build_graph(cfg_prompts, cfg_models, pairing, with_judge: bool=True):
             B_reason_json_r6=json.dumps(s['B']['r6'].get('reasons', {})),
             judge_crit_instructions=s['judge_crit_instructions']
         )
-        print(f"\n=== ROUND 6 (FINAL) - JUDGE ===")
-        print(f"Prompt: {prompt}")
+        logger.info("=== ROUND 6 (FINAL) - JUDGE ===")
+        logger.debug("Judge Round 6 prompt: %s", prompt)
         resp = _ask_judge(J, s['sys_judge'], prompt, choice_keys)
-        print(f"Response: {json.dumps(resp, indent=2)}")
+        logger.debug("Judge Round 6 response: %s", json.dumps(resp, indent=2, ensure_ascii=False))
         s['crit']['A']['r6'] = resp.get('CRIT_A', None)
         s['crit']['B']['r6'] = resp.get('CRIT_B', None)
         rm = compute_round_metrics(s['A']['r6']['probs'], s['B']['r6']['probs'], s['A']['r5']['probs'], s['B']['r5']['probs'],
@@ -411,10 +544,10 @@ def build_graph(cfg_prompts, cfg_models, pairing, with_judge: bool=True):
         choice_keys = get_choice_keys(s['choices'])
         choices_csv = ", ".join([f"{k}) {str(v).replace('{', '{{').replace('}', '}}')}" for k,v in s['choices'].items()])
         prompt = s['u_r6_B'].format(question=s['question'], choices_csv=choices_csv, B_json=s['B']['r5'], A_json=s['A']['r5'])
-        print(f"\n=== ROUND 6 (FINAL) - AGENT B ===")
-        print(f"Prompt: {prompt}")
+        logger.info("=== ROUND 6 (FINAL) - AGENT B ===")
+        logger.debug("Agent B Round 6 prompt: %s", prompt)
         s['B']['r6'] = _ask(B, s['sys_debater'], prompt, choice_keys)
-        print(f"Response: {json.dumps(s['B']['r6'], indent=2)}")
+        logger.debug("Agent B Round 6 response: %s", json.dumps(s['B']['r6'], indent=2, ensure_ascii=False))
         return s
 
     def final_judge(s: DebateState):
@@ -430,6 +563,7 @@ def build_graph(cfg_prompts, cfg_models, pairing, with_judge: bool=True):
         return s
 
     # Add all nodes
+    g.add_node("Research", do_research)
     g.add_node("A1", start_A1)
     g.add_node("Judge1", judge_r1)
     g.add_node("B1", do_B1)
@@ -450,8 +584,9 @@ def build_graph(cfg_prompts, cfg_models, pairing, with_judge: bool=True):
     g.add_node("B6", do_B6)
     g.add_node("FinalJudge", final_judge)
 
-    # Set up the graph flow
-    g.set_entry_point("A1")
+    # Set up the graph flow: mini-research runs once before Round 1
+    g.set_entry_point("Research")
+    g.add_edge("Research", "A1")
     g.add_edge("A1", "B1")
     g.add_edge("B1", "Judge1")
     g.add_edge("Judge1", "A2")

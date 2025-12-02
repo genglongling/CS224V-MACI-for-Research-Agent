@@ -1,0 +1,52 @@
+## configs/benchmark_small.yaml
+## 极简 smoke test 配置：只跑一个 pairing + 一个数据集 + 少量样本
+
+pairings:
+  - qwen_qwen
+
+datasets:
+  - mmlu_pro_med
+
+run:
+  # 每个数据集最多几道题（可以按需调大）
+  max_examples: 3
+  shuffle: true
+  seed: 42
+
+  num_workers: 1
+  batch_size: 1
+
+  request_timeout_s: 600
+  max_retries: 8
+  retry_backoff_s: 15
+
+  rounds: 6
+  with_judge: true
+  save_raw_model_output: true
+
+  facts_jsonl: null
+
+io:
+  output_dir_runs: "results/runs"
+  output_dir_metrics: "results/metrics"
+  cache_dir: ".cache"
+
+configs:
+  models: "configs/models.yaml"
+  datasets: "configs/datasets.yaml"
+  prompts: "configs/prompts.yaml"
+
+export:
+  latex_accuracy:
+    outfile: "results/tables/accuracy_small.tex"
+    caption: "Accuracy (%) for small benchmark"
+    label: "tab:accuracy-small"
+
+  latex_metrics:
+    enabled: false
+    outfile: "results/tables/round_metrics_small.tex"
+    metrics: ["KLD", "JSD", "WD", "MI", "H(A)", "IG(A)", "H(B)", "IG(B)", "AvgCRIT"]
+    caption: "Per-round metrics (small benchmark)"
+    label: "tab:round-metrics-small"
+
+

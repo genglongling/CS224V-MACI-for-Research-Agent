@@ -88,6 +88,11 @@ pairings:
       model: Qwen/Qwen2.5-7B-Instruct
       temperature: 0.2
       max_tokens: 8192  # Increased for judge to allow longer responses
+    researcher:
+      provider: local
+      model: Qwen/Qwen2.5-7B-Instruct
+      temperature: 0.3
+      max_tokens: 1024
 
   llama_llama:   # Llama self-debate
       A:
@@ -105,6 +110,11 @@ pairings:
         model: meta-llama/Meta-Llama-3.1-8B-Instruct # [note:] test others
         temperature: 0.2
         max_tokens: 8192  # Increased for judge to allow longer responses
+      researcher:
+        provider: local
+        model: meta-llama/Meta-Llama-3.1-8B-Instruct
+        temperature: 0.3
+        max_tokens: 1024
 
   # qwen_llama:   # Qwen vs Llama
   #   A:

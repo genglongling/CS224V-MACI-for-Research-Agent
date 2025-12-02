@@ -46,11 +46,32 @@ judge_crit_instructions: |
      Reflect on transfer of CRIT to other contexts.
   End"
 
+system_researcher: |
+  You are a focused mini-research assistant that supports a debate between two agents.
+  Before the debate starts, you will be given a multiple-choice question and its options.
+  Your job is to quickly surface key background facts, relevant definitions, and useful context.
+  Be concise, factual, and avoid taking a stance for any particular option.
+
+user_research: |
+  You are preparing background research for a debate.
+  Question: {question}
+  Choices: {choices_csv}
+
+  Please provide:
+  - 3–6 bullet points of key factual information or definitions
+  - Any important nuances or caveats that debaters should know
+  - Keep it under ~200 words.
+
+
 # ---------------- Round 1 (NA) ----------------
 user_round1_A: |
   Round 1. You are presented with the following multiple-choice question, and provide your own analysis of output and reasoning:
   Question: {question}
   Choices: {choices_csv}
+
+  You are given the following background research prepared by a separate assistant.
+  Use it only as factual/contextual support; do not copy sentences verbatim:
+  {research}
 
   Output (strict JSON):
   {{"output": {{"A": pA, "B": pB, "C": pC, "D": pD}}, "reason": {{"A": rA, "B": rB, "C": rC, "D": rD}}}}
@@ -60,6 +81,10 @@ user_round1_B: |
   Question: {question}
   Choices: {choices_csv}
   Your opponent Agent A said: {A_json}
+
+  You are given the following background research prepared by a separate assistant.
+  Use it only as factual/contextual support; do not copy sentences verbatim:
+  {research}
 
   Output (strict JSON):
   {{"output": {{"A": pA, "B": pB, "C": pC, "D": pD}}, "reason": {{"A": rA, "B": rB, "C": rC, "D": rD}}}}
