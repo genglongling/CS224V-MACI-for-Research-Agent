@@ -71,28 +71,29 @@ pairings:
   #     temperature: 0.2
   #     max_tokens: 1024
 
-  # New pairings with Qwen2.5-7B-Instruct and Llama3.1-8B-Instruct
-  qwen_qwen:   # Qwen self-debate
+  # OpenAI single-provider setup: debaters, judge, and researcher all use OpenAI API.
+  # This way you only need OPENAI_API_KEY configured to run MAD-main.
+  qwen_qwen:   # naming kept for compatibility; now OpenAI self-debate (gpt-5.1)
     A:
-      provider: local
-      model: Qwen/Qwen2.5-7B-Instruct
+      provider: openai
+      model: gpt-5.1
       temperature: 0.7
-      max_tokens: 1024
+      max_tokens: 512
     B:
-      provider: local
-      model: Qwen/Qwen2.5-7B-Instruct
+      provider: openai
+      model: gpt-5.1
       temperature: 0.8
-      max_tokens: 1024
+      max_tokens: 512
     judge:
-      provider: local
-      model: Qwen/Qwen2.5-7B-Instruct
+      provider: openai
+      model: gpt-5.1
       temperature: 0.2
-      max_tokens: 8192  # Increased for judge to allow longer responses
-    researcher:
-      provider: local
-      model: Qwen/Qwen2.5-7B-Instruct
-      temperature: 0.3
       max_tokens: 1024
+    researcher:
+      provider: openai
+      model: gpt-5.1
+      temperature: 0.3
+      max_tokens: 512
 
   llama_llama:   # Llama self-debate
       A:

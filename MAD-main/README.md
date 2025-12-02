@@ -47,7 +47,8 @@ MAD/
     ├── datasets/              # Dataset loaders
     └── runners/               # Execution scripts
         ├── run_benchmark.py   # Main benchmark runner
-        └── export_table.py    # Results export
+        ├── export_table.py    # Results export
+        └── interactive_debate.py  # Interactive user-topic debate (no datasets)
 ```
 
 ---
@@ -58,6 +59,8 @@ git clone <this-repo>
 cd MAD
 pip install -r requirements.txt
 ```
+
+> If you only want to use the OpenAI-based interactive debate (no local models), it is enough to install `requirements.txt` and set `OPENAI_API_KEY`.
 
 ### Setting up Local Models
 To use the local models (Qwen2.5-7B-Instruct and Llama3.1-8B-Instruct), you need to download them first:
@@ -78,6 +81,107 @@ python scripts/setup_local_models.py --llama  # Llama3.1-8B-Instruct (~16GB)
 - HuggingFace account with access to Llama models (for Llama3.1-8B-Instruct)
 
 **Note for Llama models:** You may need to request access to Llama models on HuggingFace and login with `huggingface-cli login`.
+
+---
+
+## 🔹 Interactive Debate Playground (User-defined topics)
+
+This repo also includes an **interactive front-end** where a user can type any free-form topic, automatically generate multiple viewpoints (agents), run a multi-round debate, and receive a **professor-level final report**.
+
+### Backend setup (once per machine)
+
+1. Make sure dependencies are installed:
+   ```bash
+   cd MAD-main
+   pip install -r requirements.txt
+   # make sure FastAPI + Uvicorn are available
+   pip install fastapi "uvicorn[standard]"
+   ```
+2. Set your OpenAI API key (the same key will be used for research agent, debaters, judge, and final report):
+   ```bash
+   export OPENAI_API_KEY="your_key_here"
+   ```
+3. Ensure `configs/models.yaml` has at least one OpenAI pairing (we use `qwen_qwen` as the base), for example:
+   ```yaml
+   pairings:
+     qwen_qwen:
+       A:
+         provider: openai
+         model: gpt-5.1        # or any model id your account can use
+         temperature: 0.7
+         max_tokens: 512
+       B:
+         provider: openai
+         model: gpt-5.1
+         temperature: 0.8
+         max_tokens: 512
+       judge:
+         provider: openai
+         model: gpt-5.1
+         temperature: 0.2
+         max_tokens: 1024
+       researcher:
+         provider: openai
+         model: gpt-5.1
+         temperature: 0.3
+         max_tokens: 512
+   ```
+
+### Run the interactive server
+
+From `MAD-main` directory:
+
+```bash
+export OPENAI_API_KEY="your_key_here"   # if not already set
+
+uvicorn app_interactive:app --reload --port 8001
+```
+
+- The server will be available at `http://127.0.0.1:8001`.
+- The main UI lives at: `http://127.0.0.1:8001/interactive`.
+
+### Using the front-end
+
+1. Open `http://127.0.0.1:8001/interactive` in a browser.
+2. Input a **Debate topic** (any English or Chinese sentence).
+3. Choose:
+   - **Max agents (viewpoints)** – how many distinct viewpoints to generate (2–5).
+   - **Rounds** – how many debate rounds (1–4).
+4. Click **Run debate**.
+
+The system will:
+- Round 0: run a *research/setup* step to generate multiple viewpoints and turn them into agents.
+- Rounds 1..N: let all agents take turns attacking each other’s arguments with explicit quotes (“you said X, but ignore Y…”).
+- Judge: synthesize a **final report** with academic-style structure:
+  1. Research question & context  
+  2. Summary of viewpoints  
+  3. Comparative analysis & key conflicts  
+  4. Tentative conclusion & recommendation  
+  5. Limitations & suggestions for further investigation  
+
+The front-end shows:
+- **Viewpoints / Agents**: automatically generated personas and positions.
+- **Final Report**: long-form synthesis suitable for including in project reports or appendices.
+- **Debate Transcript**: all agent turns, with explicit `Round 0 (research)` and `Round k` labels.
+
+### Programmatic use (without front-end)
+
+You can also call the interactive debate runner directly from the CLI:
+
+```bash
+python -m src.runners.interactive_debate \
+  --topic "Should autonomous driving vehicles operate without human labor?" \
+  --max_agents 5 \
+  --rounds 3 \
+  --models configs/models.yaml \
+  --pairing qwen_qwen \
+  --output_dir results/interactive
+```
+
+This will save a JSON file under `results/interactive/interactive_debate_*.json` containing:
+- topic, viewpoints, agent messages per round  
+- conversation_log (with round numbers)  
+- judge_summary and final_report  
 
 ---
 
