@@ -56,7 +56,40 @@ MACI is designed to overcome these LLM limitations using a three-layer approach:
 
 ---
 
-## 📅 3. Project Plan  
+## 🔄 3. Multi-Agent Debate System: Pairs & Features
+
+The system supports **both local model pairs and OpenAI API pairs**, providing flexible deployment options for different use cases and resource constraints.
+
+### 🤝 Supported Model Pairs
+
+- **Local Model Pairs**: Qwen2.5-7B-Instruct, Llama3.1-8B-Instruct (self-debate and cross-model debates)
+- **OpenAI API Pairs**: GPT-4o, GPT-5-search-api, GPT-3.5-turbo, and other OpenAI models
+- **Hybrid Configurations**: Mix local and API models for cost-effective experimentation
+
+### 🎯 Key Feature Pairs
+
+The system offers four key feature dimensions that can be configured based on your needs:
+
+| Feature Pair | Option 1 | Option 2 | Use Case |
+|--------------|----------|----------|----------|
+| **Agent Architecture** | Multi-Agent System | Single Agent | Multi-agent enables diverse perspectives and debate; Single agent for focused analysis |
+| **Interaction Mode** | Debate Mode | Collaboration Mode | Debate for adversarial reasoning; Collaboration for consensus-building |
+| **Memory Management** | File Logging | Context Window | File logging for persistent history; Context for in-memory efficiency |
+| **Information Source** | Real-Time Search | Closed Database | Real-time search for current information; Closed database for controlled experiments |
+
+### 🔧 Configuration Examples
+
+**Debate Mode with Real-Time Search:**
+- Best for: Research tasks requiring current information
+- Configuration: Multi-agent + Debate + Real-Time Search + File Logging
+
+**Collaboration Mode with Closed Database:**
+- Best for: Reproducible experiments on fixed datasets
+- Configuration: Multi-agent + Collaboration + Closed Database + Context Window
+
+---
+
+## 📅 4. Project Plan  
 
 ### 🤖 3.1 Functionalities:  
 Different LLMs agent tailored for **Decision-making task**:
@@ -68,7 +101,7 @@ Different LLMs agent tailored for **Decision-making task**:
   
 ---
 
-## ⚙️ 4. Experiment Set-up  
+## ⚙️ 5. Experiment Set-up  
 
 ### 📜 4.1 Datasets:
 
@@ -82,116 +115,181 @@ Different LLMs agent tailored for **Decision-making task**:
 
 ---
 
-## 🎓 5. Contribution  
+## 🎓 6. Previous Publications  
 
 1. 📄 **Paper: Into the Unknown Unknowns: Engaged Human Learning through Participation in Language Model Agent Conversations** -*Yucheng Jiang, Yijia Shao, Dekun Ma, Sina J. Semnani, Monica S. Lam*
 2. 📄 **Paper: Multi-Agent Collaborative Intelligence for Robust Temporal Planning** – *Edward Y. Chang*  
 3. 📄 **Paper: REALM-Bench: A Real-World Planning Benchmark for LLMs and Multi-Agent Systems** – *Longling Gloria Geng, Edward Y. Chang*  
-4. 💻 **GitHub Setup, App Development, and Experiments** – *Longling Gloria Geng*  
+4. 💻 **GitHub Setup, App Development, and Experiments** – *Gloria Longling Geng and Henry Zengxiao He*  
 
 ---
-# 🚀 How to Run the Code
 
-## A. Base Experiments
-## 1) (Optional) Create and Activate a Virtual Environment
-It is recommended to use a virtual environment to manage dependencies:
+## 🔹 7. Multi-Agent Debate System Architecture
 
-```sh
-python3 -m venv env
-source env/bin/activate  # On macOS/Linux
-env\Scripts\activate     # On Windows
-```
+### Architecture Overview
+- **Debate Protocol**: 2 agents (A, B) exchange arguments in 6 rounds, probabilities + rationales per choice.
+- **Per-Round Judge**: Independent judge model evaluates outputs after each round, computes CRIT_A / CRIT_B.
+- **CRIT Scoring**: LLM-based algorithm using judge prompts to evaluate argument quality and reliability.
+- **Metrics**: KL Divergence, JSD, Wasserstein Distance, Mutual Information, Entropy, Information Gain, AvgCRIT.
+- **Datasets**: 7 benchmarks covering arithmetic, medical knowledge, logic, commonsense, and ethical reasoning.
 
-## 2) Install Dependencies
-Ensure you have all necessary dependencies installed:
+### Supported Question Types
 
-```sh
+The system can handle **17 types of questions** across different reasoning and decision-making domains:
+
+| Category | ID | Question Type | Description |
+|----------|----|--------------|-------------|
+| Basic Selection | 1 | Single-Choice QA | Select one correct answer from multiple options |
+| Basic Selection | 2 | Multiple-Choice QA | Select one or more correct answers from multiple options |
+| Basic Selection | 3 | Decision-Making (Yes/No) | Binary decisions requiring clear yes/no answers with justification |
+| Analytical | 4 | Factor Brainstorming | Identify 1 to N factors, each with different levels of possibilities/probabilities |
+| Analytical | 5 | Mathematical Questions | Calculation, prediction, and regression problems requiring numerical reasoning |
+| Analytical | 6 | Ranking/Ordering | Rank options from most to least important/effective/feasible with justification |
+| Analytical | 7 | Comparative Analysis | Compare and contrast multiple options across several dimensions |
+| Strategic | 8 | Trade-off Analysis | Analyze trade-offs between competing factors or options |
+| Strategic | 9 | Scenario-Based/Conditional | Answer questions based on hypothetical scenarios ("If X happens, then...") |
+| Strategic | 10 | Counterfactual | Explore alternative outcomes ("What would happen if X had not occurred?") |
+| Strategic | 11 | Preference Elicitation | Determine preferred combinations of factors or multi-attribute preferences |
+| Assessment | 12 | Risk Assessment | Quantify risks, probabilities, and uncertainties associated with decisions |
+| Assessment | 13 | Causal Reasoning | Identify causes and effects, analyze causal chains and mechanisms |
+| Assessment | 14 | Policy/Strategy | Recommend concrete policies or strategies to achieve specific goals |
+| Complex Reasoning | 15 | Open-Ended Synthesis | Generate solutions or approaches without fixed answer choices |
+| Complex Reasoning | 16 | Temporal/Sequential | Determine ordering of actions or events over time |
+| Complex Reasoning | 17 | Resource Allocation | Optimize resource distribution under constraints and budgets |
+
+---
+
+## 🚀 8. How to Run the Multi-Agent Debate System
+
+### Installation
+
+```bash
+cd MAD-main
 pip install -r requirements.txt
 ```
 
-Or install manually:
+> If you only want to use the OpenAI-based interactive debate (no local models), it is enough to install `requirements.txt` and set `OPENAI_API_KEY`.
 
-```sh
-pip install pandas numpy matplotlib prophet
+### Setting up Local Models (Optional)
+
+To use local models (Qwen2.5-7B-Instruct and Llama3.1-8B-Instruct):
+
+```bash
+# Setup both models (~30GB total)
+python scripts/setup_local_models.py --all
+
+# Or setup individually
+python scripts/setup_local_models.py --qwen   # Qwen2.5-7B-Instruct (~14GB)
+python scripts/setup_local_models.py --llama  # Llama3.1-8B-Instruct (~16GB)
 ```
 
-## 3) Download & Place the S&P 500 Stocks Data
-The dataset is available on Kaggle:  
-🔗 [S&P 500 Stocks Dataset](https://www.kaggle.com/datasets/andrewmvd/sp-500-stocks)
+**Requirements for local models:**
+- Sufficient RAM (16GB+ recommended)
+- GPU with sufficient VRAM (8GB+ recommended for 7B/8B models)
+- Stable internet connection for initial download
+- HuggingFace account with access to Llama models (for Llama3.1-8B-Instruct)
 
-Extract and place the CSV file inside the `sp500_stocks/` directory:
+### Interactive Debate Playground
 
-```sh
-mkdir -p sp500_stocks
-mv path/to/sp500_stocks.csv sp500_stocks/
+This repo includes an **interactive front-end** where a user can type any free-form topic, automatically generate multiple viewpoints (agents), run a multi-round debate, and receive a **professor-level final report**.
+
+#### Backend Setup
+
+1. Make sure dependencies are installed:
+   ```bash
+   cd MAD-main
+   pip install -r requirements.txt
+   pip install fastapi "uvicorn[standard]"
+   ```
+
+2. Set your OpenAI API key:
+   ```bash
+   export OPENAI_API_KEY="your_key_here"
+   ```
+
+3. Ensure `configs/models.yaml` has at least one OpenAI pairing configured.
+
+#### Run the Interactive Server
+
+```bash
+cd MAD-main
+export OPENAI_API_KEY="your_key_here"
+uvicorn app_interactive:app --reload --port 8001
 ```
 
-## 4) Execute the Python Script
-Run the stock prediction script:
+- The server will be available at `http://127.0.0.1:8001`
+- The main UI lives at: `http://127.0.0.1:8001/interactive`
 
-```sh
-python3 main.py
+#### Using the Front-End
+
+1. Open `http://127.0.0.1:8001/interactive` in a browser
+2. Input a **Debate topic** (any English or Chinese sentence)
+3. Choose:
+   - **Max agents (viewpoints)** – how many distinct viewpoints to generate (2–8)
+   - **Rounds** – how many debate rounds (1–6)
+4. Click **Run debate**
+
+The system will:
+- Round 0: run a *research/setup* step to generate multiple viewpoints and turn them into agents
+- Rounds 1..N: let all agents take turns attacking each other's arguments
+- Judge: synthesize a **final report** with academic-style structure
+
+### Running Benchmark Debates
+
+#### Quick Start (Single Example)
+```bash
+cd MAD-main
+python -m src.runners.run_benchmark \
+  --benchmark configs/benchmark.yaml \
+  --models configs/models.yaml \
+  --datasets configs/datasets.yaml \
+  --prompts configs/prompts.yaml
 ```
 
-## 5) Wait for the Script to Finish
-The script will:  
-✅ Predict stock prices for **2 years into the future**  
-✅ Load and preprocess the stock data  
-✅ Train a **Prophet forecasting model**  
-✅ Generate & save plots showing historical vs. forecasted values
-
-## 6) View Generated Plots
-Once the script completes, you’ll find the forecasted plots in the project folder:  
-- `AAPL_forecast.png` → Forecast for **Apple**  
-- `TSLA_forecast.png` → Forecast for **Tesla**  
-- `META_forecast.png` → Forecast for **Meta**
-- other plots etc.
-
-## B. Front-End Demo
-```sh
-cd checkco
-```
-then open index.html
-
-## C. Back-End Demo
-```sh
-cd checkco
-python3 server.py
-```
-then open front.html
-
-## D. MACI for Stock Prediction Demo (final)
-```sh
-cd MACI_stock_prediction
-```
-then follow README file to set up your own multi-agent framework and pipeline.
-
-✅ Step 1: Run FastAPI with Uvicorn
-Make sure you're in the same directory as main.py and then run:
-```sh
-export OPENAI_API_KEY=
-export...
-uvicorn main:app --reload
+#### Full Benchmark Run
+```bash
+# Run all pairings × datasets
+python -m src.runners.run_benchmark \
+  --benchmark configs/benchmark.yaml \
+  --models configs/models.yaml \
+  --datasets configs/datasets.yaml \
+  --prompts configs/prompts.yaml
 ```
 
-✅ Step 2: 
-go to 127.0.0.1.8000/static/front.html
+### Supported Datasets
 
-Check File Structure
-Your project should be organized like this:
-```sh
-MACI-Stock-Prediction/
-│── main.py  # ✅ FastAPI app entry point
-│── static/  # ✅ HTML, CSS, and JavaScript for UI
-│   ├── index.html
-│   ├── style.css
-│   ├── script.js
-│── templates/  # (Optional) Jinja2 templates
-│── utils/  # ✅ Helper functions (e.g., API calls)
-│   ├── indicators.py
-│   ├── charts.py
-│── .env  # ✅ API Keys
-│── requirements.txt  # ✅ Python dependencies
-│── README.md  # ✅ Project documentation
-```
+1. **Arithmetic** (100 questions): Custom arithmetic reasoning dataset
+2. **GSM8K** (300 questions): Mathematical word problems
+3. **MMLU Professional Medicine** (272 questions): Medical knowledge assessment
+4. **MMLU Formal Logic** (126 questions): Logical reasoning problems
+5. **HellaSwag** (300 questions): Commonsense reasoning
+6. **CommonSenseQA** (300 questions): Commonsense question answering
+7. **HH-RLHF** (300 questions): Helpful and Harmless RLHF dataset
+
+### Debate Protocol
+
+#### Round Structure
+1. **Round 1**: Initial analysis (contentiousness: 0.9)
+2. **Round 2**: Confrontational debate (contentiousness: 0.9)
+3. **Round 3**: Balanced discussion (contentiousness: 0.7)
+4. **Round 4**: Middle ground exploration (contentiousness: 0.5)
+5. **Round 5**: Supportive discussion (contentiousness: 0.3)
+6. **Round 6**: Final synthesis (contentiousness: 0.1)
+
+### Metrics
+
+#### Information-Theoretic Metrics
+- **KL Divergence**: Measures disagreement between agents
+- **Jensen-Shannon Distance**: Symmetric measure of distribution difference
+- **Wasserstein Distance**: Earth mover's distance between distributions
+- **Mutual Information**: Information shared between agents
+- **Entropy**: Uncertainty in agent responses
+- **Information Gain**: Reduction in uncertainty over rounds
+
+#### CRIT Scores
+- **CRIT_A/CRIT_B**: Judge's evaluation of argument quality (0-1)
+- **AvgCRIT**: Average CRIT score across agents
+
+---
+
 This **README** provides an overview of the **CS224V-MACI-for-Research-Agent** project, highlighting its **motivations, project plan, methodologies, demo, and future directions.** 🚀  
