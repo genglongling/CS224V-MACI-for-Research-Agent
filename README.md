@@ -8,8 +8,8 @@ A conversational agent based on multi-agent system for research tasks
 
 
 # 🏗️ **6 Multi-Agent tools**  
-   - Our current version MACI support Magentic multi-agent tool.
-   - Our previous MACI-framework could support 5 multi-agent tools: SagaLLM, LangGraph, AutoGen, Crewai, LangChain, and to be extended on LlamaIndex, Haystack.
+   - Our current version MACI support LangGraph multi-agent tool.
+   - Our previous MACI-framework could support 6 multi-agent tools: SagaLLM, Magentic, AutoGen, Crewai, LangChain, and to be extended on LlamaIndex, Haystack.
 
 # 🤝 **20+ LLM Agents**  
    - **[OpenAI LLMs:](https://openai.com/)** including gpt-5.1, gpt-5-search-api, gpt-4, gpt-4o, gpt-4o-mini, etc.
