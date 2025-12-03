@@ -1,4 +1,10 @@
-# 🚀 CS224V: ResearchMAS: A conversational agent based on multi-agent system for research tasks
+# 🚀 CS224V: CollectiveMind: Multi-Agent Deliberation for High-Stakes Decision Reasoning 
+
+```
+A conversational agent based on multi-agent system for research tasks
+
+--- CollectiveMind Authors
+```
 
 
 # 🏗️ **6 Multi-Agent tools**  
@@ -292,7 +298,7 @@ python -m src.runners.run_benchmark \
 
 ---
 
-This **README** provides an overview of the **CS224V-MACI-for-Research-Agent** project, highlighting its **motivations, project plan, methodologies, demo, and future directions.** 🚀 
+This **README** provides an overview of the **CS224V-MACI-for-Research-Agent** project, highlighting its **motivations, project plan, methodologies, demo, and future directions.** 🚀  
 
 ---
 
