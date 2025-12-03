@@ -96,7 +96,7 @@ The system offers four key feature dimensions that can be configured based on yo
 
 ## 📅 4. Project Plan  
 
-### 🤖 3.1 Functionalities:  
+### 🤖 4.1 Functionalities:  
 Different LLMs agent tailored for **Decision-making task**:
 
 - 🔍 **(1) Stock Prediction(buy/sell)✅**: Real-time data integration (Alphaventage API)
@@ -106,30 +106,7 @@ Different LLMs agent tailored for **Decision-making task**:
   
 ---
 
-## ⚙️ 5. Experiment Set-up  
-
-### 📜 4.1 Datasets:
-
-### ⚖️ 4.2 Baselines:  
-
-1. 📊 **OpenAI Deepresearch**  
-
-2. 🆚 **STORM/CO-STORM**  
-
-### ⚖️ 4.3 Metrics (Human evaluation): 
-
----
-
-## 🎓 6. Previous Publications  
-
-1. 📄 **Paper: Into the Unknown Unknowns: Engaged Human Learning through Participation in Language Model Agent Conversations** -*Yucheng Jiang, Yijia Shao, Dekun Ma, Sina J. Semnani, Monica S. Lam*
-2. 📄 **Paper: Multi-Agent Collaborative Intelligence for Robust Temporal Planning** – *Edward Y. Chang*  
-3. 📄 **Paper: REALM-Bench: A Real-World Planning Benchmark for LLMs and Multi-Agent Systems** – *Longling Gloria Geng, Edward Y. Chang*  
-4. 💻 **GitHub Setup, App Development, and Experiments** – *Gloria Longling Geng and Henry Zengxiao He*  
-
----
-
-## 🔹 7. Multi-Agent Debate System Architecture
+## 🔹 5. Multi-Agent Debate System Architecture
 
 ### Architecture Overview
 - **Debate Protocol**: 2 agents (A, B) exchange arguments in 6 rounds, probabilities + rationales per choice.
@@ -164,7 +141,7 @@ The system can handle **17 types of questions** across different reasoning and d
 
 ---
 
-## 🚀 8. How to Run the Multi-Agent Debate System
+## 🚀 6. How to Run the Multi-Agent Debate System
 
 ### Installation
 
@@ -261,17 +238,12 @@ python -m src.runners.run_benchmark \
   --prompts configs/prompts.yaml
 ```
 
-### Supported Datasets
+---
 
-1. **Arithmetic** (100 questions): Custom arithmetic reasoning dataset
-2. **GSM8K** (300 questions): Mathematical word problems
-3. **MMLU Professional Medicine** (272 questions): Medical knowledge assessment
-4. **MMLU Formal Logic** (126 questions): Logical reasoning problems
-5. **HellaSwag** (300 questions): Commonsense reasoning
-6. **CommonSenseQA** (300 questions): Commonsense question answering
-7. **HH-RLHF** (300 questions): Helpful and Harmless RLHF dataset
+## ⚙️ 7. Experiment and Evaluation
 
-### Debate Protocol
+### 7.1 Set-up:
+7.1.1 Debate Protocol
 
 #### Round Structure
 1. **Round 1**: Initial analysis (contentiousness: 0.9)
@@ -281,9 +253,30 @@ python -m src.runners.run_benchmark \
 5. **Round 5**: Supportive discussion (contentiousness: 0.3)
 6. **Round 6**: Final synthesis (contentiousness: 0.1)
 
-### Metrics
 
-#### Information-Theoretic Metrics
+### 📜 7.2 Datasets:
+
+7.2.1 QA datasets:
+1. **Arithmetic** (100 questions): Custom arithmetic reasoning dataset
+2. **GSM8K** (300 questions): Mathematical word problems
+3. **MMLU Professional Medicine** (272 questions): Medical knowledge assessment
+4. **MMLU Formal Logic** (126 questions): Logical reasoning problems
+5. **HellaSwag** (300 questions): Commonsense reasoning
+6. **CommonSenseQA** (300 questions): Commonsense question answering
+7. **HH-RLHF** (300 questions): Helpful and Harmless RLHF dataset
+
+7.2.2 Human evaluation datasets
+
+
+### ⚖️ 7.3 Baselines:  
+
+7.3.1. 📊 **OpenAI Deepresearch**  
+
+7.3.2. 🆚 **STORM/CO-STORM**  
+
+### ⚖️ 7.4 Metrics: 
+
+#### 7.4.1: Information-Theoretic Metrics
 - **KL Divergence**: Measures disagreement between agents
 - **Jensen-Shannon Distance**: Symmetric measure of distribution difference
 - **Wasserstein Distance**: Earth mover's distance between distributions
@@ -291,9 +284,19 @@ python -m src.runners.run_benchmark \
 - **Entropy**: Uncertainty in agent responses
 - **Information Gain**: Reduction in uncertainty over rounds
 
-#### CRIT Scores
+#### 7.4.2: CRIT Scores
 - **CRIT_A/CRIT_B**: Judge's evaluation of argument quality (0-1)
 - **AvgCRIT**: Average CRIT score across agents
+
+---
+
+## 🎓 8. Previous Publications  
+
+1. 📄 **Paper: Into the Unknown Unknowns: Engaged Human Learning through Participation in Language Model Agent Conversations** -*Yucheng Jiang, Yijia Shao, Dekun Ma, Sina J. Semnani, Monica S. Lam*
+2. 📄 **Paper: Multi-Agent Collaborative Intelligence for Robust Temporal Planning** – *Edward Y. Chang*  
+3. 📄 **Paper: REALM-Bench: A Real-World Planning Benchmark for LLMs and Multi-Agent Systems** – *Longling Gloria Geng, Edward Y. Chang*  
+4. 💻 **GitHub Setup, App Development, and Experiments** – *Gloria Longling Geng and Henry Zengxiao He*  
+
 
 ---
 
@@ -310,4 +313,8 @@ If you use this code, please cite:
   author={...},
   journal={...},
   year={2024}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 3b6b5d98dd7e5c6ad811bfb109337cf0dc54e8b4
