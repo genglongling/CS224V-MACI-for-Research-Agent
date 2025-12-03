@@ -292,4 +292,17 @@ python -m src.runners.run_benchmark \
 
 ---
 
-This **README** provides an overview of the **CS224V-MACI-for-Research-Agent** project, highlighting its **motivations, project plan, methodologies, demo, and future directions.** 🚀  
+This **README** provides an overview of the **CS224V-MACI-for-Research-Agent** project, highlighting its **motivations, project plan, methodologies, demo, and future directions.** 🚀 
+
+---
+
+## 🔹 Citation
+
+If you use this code, please cite:
+```bibtex
+@article{collectivemind2024,
+  title={CollectiveMind: Multi-Agent Deliberation for High-Stakes Decision Reasoning},
+  author={...},
+  journal={...},
+  year={2024}
+}
