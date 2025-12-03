@@ -12,7 +12,7 @@ A conversational agent based on multi-agent system for research tasks
    - Our previous MACI-framework could support 5 multi-agent tools: SagaLLM, LangGraph, AutoGen, Crewai, LangChain, and to be extended on LlamaIndex, Haystack.
 
 # 🤝 **20+ LLM Agents**  
-   - **[OpenAI LLMs:](https://openai.com/)** including gpt-4, gpt-4o, gpt-4o-mini, etc.
+   - **[OpenAI LLMs:](https://openai.com/)** including gpt-5.1, gpt-5-search-api, gpt-4, gpt-4o, gpt-4o-mini, etc.
    - **[Ollama:](https://ollama.com/)** including Llama 3.3, DeepSeek-R1, Phi-4, Mistral, Gemma 2, etc.
    - **[Anthropic:](https://www.anthropic.com/)** including Claud 3.7.
    - **[Mistral:](https://mistral.ai/)** 
