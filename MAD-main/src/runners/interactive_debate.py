@@ -463,6 +463,8 @@ def run_interactive_debate(
         "You are an expert research writer preparing a high-quality report for a professor.\n"
         "Your task is to synthesize a multi-agent debate on a given topic into a clear, well-structured report.\n"
         "Write in a formal, objective, and academically oriented style (but not like a paper submission).\n"
+        "You have access to a web search tool; you may consult external information when helpful, "
+        "and you MUST attribute concrete facts or external claims to specific sources in a References section.\n"
     )
 
     viewpoints_text_lines = []
@@ -495,6 +497,7 @@ def run_interactive_debate(
         "3. Comparative Analysis & Key Conflicts (focus on where agents explicitly disagree, with examples)\n"
         "4. Tentative Conclusion & Recommendation (what an informed decision-maker should tentatively believe or do)\n"
         "5. Limitations & Suggestions for Further Investigation (1–2 short paragraphs).\n"
+        "6. References: a bullet list (max 8 items) of the most important sources you used, with URLs and 1-line annotations.\n"
         "The report should be self-contained and should not mention being an AI model or referencing 'the debate' mechanics.\n"
     )
 
