@@ -1,4 +1,10 @@
-# 🚀 CS224V: ResearchMAS: A conversational agent based on multi-agent system for research tasks
+# 🚀 CS224V: CollectiveMind: Multi-Agent Deliberation for High-Stakes Decision Reasoning 
+
+```
+A conversational agent based on multi-agent system for research tasks
+
+--- CollectiveMind Authors
+```
 
 
 # 🏗️ **6 Multi-Agent tools**  
@@ -12,9 +18,8 @@
    - **[Mistral:](https://mistral.ai/)** 
    - **[LiteLLM:](https://docs.litellm.ai/)** 
    - **or any other OpenAI schema-compatible model** 
-   - **FinAgent(ours)**
+   - **FinAgent(ours, previous work):** **Access to financial database such as [Alphavantage](https://www.alphavantage.co/documentation/), and yahoo api.** adapts to unexpected changes in real-time financial information.
    - **Your Self-developed LLMs(ours)**
-   - **Access to financial database such as [Alphavantage](https://www.alphavantage.co/documentation/), and yahoo api.** adapts to unexpected changes in real-time financial information.
 
 # 🤖 **Interactive Back-End App**  
 ## ⚠️ 1. LLM Limitations in Complex Planning  
@@ -137,25 +142,25 @@ Different LLMs agent tailored for **Decision-making task**:
 
 The system can handle **17 types of questions** across different reasoning and decision-making domains:
 
-| Category | ID | Question Type | Description |
-|----------|----|--------------|-------------|
-| Basic Selection | 1 | Single-Choice QA | Select one correct answer from multiple options |
-| Basic Selection | 2 | Multiple-Choice QA | Select one or more correct answers from multiple options |
-| Basic Selection | 3 | Decision-Making (Yes/No) | Binary decisions requiring clear yes/no answers with justification |
-| Analytical | 4 | Factor Brainstorming | Identify 1 to N factors, each with different levels of possibilities/probabilities |
-| Analytical | 5 | Mathematical Questions | Calculation, prediction, and regression problems requiring numerical reasoning |
-| Analytical | 6 | Ranking/Ordering | Rank options from most to least important/effective/feasible with justification |
-| Analytical | 7 | Comparative Analysis | Compare and contrast multiple options across several dimensions |
-| Strategic | 8 | Trade-off Analysis | Analyze trade-offs between competing factors or options |
-| Strategic | 9 | Scenario-Based/Conditional | Answer questions based on hypothetical scenarios ("If X happens, then...") |
-| Strategic | 10 | Counterfactual | Explore alternative outcomes ("What would happen if X had not occurred?") |
-| Strategic | 11 | Preference Elicitation | Determine preferred combinations of factors or multi-attribute preferences |
-| Assessment | 12 | Risk Assessment | Quantify risks, probabilities, and uncertainties associated with decisions |
-| Assessment | 13 | Causal Reasoning | Identify causes and effects, analyze causal chains and mechanisms |
-| Assessment | 14 | Policy/Strategy | Recommend concrete policies or strategies to achieve specific goals |
-| Complex Reasoning | 15 | Open-Ended Synthesis | Generate solutions or approaches without fixed answer choices |
-| Complex Reasoning | 16 | Temporal/Sequential | Determine ordering of actions or events over time |
-| Complex Reasoning | 17 | Resource Allocation | Optimize resource distribution under constraints and budgets |
+| Category | ID | Question Type | Description | Example |
+|----------|----|--------------|-------------|---------|
+| Basic Selection | 1 | Single-Choice QA | Select one correct answer from multiple options | Which is the best investment strategy: A) Diversification, B) All-in tech stocks, C) Real estate only, D) Cryptocurrency? |
+| Basic Selection | 2 | Multiple-Choice QA | Select one or more correct answers from multiple options | Which factors affect stock prices? (Select all) A) Interest rates, B) Company earnings, C) Market sentiment, D) Weather |
+| Basic Selection | 3 | Decision-Making (Yes/No) | Binary decisions requiring clear yes/no answers with justification | Should I buy Apple stock on 2026/1/1? |
+| Analytical | 4 | Factor Brainstorming | Identify 1 to N factors, each with different levels of possibilities/probabilities | Should autonomous driving allow human intervention during operation? What factors should be considered? |
+| Analytical | 5 | Mathematical Questions | Calculation, prediction, and regression problems requiring numerical reasoning | How much will Apple stock increase/decrease from 2025/12/2 to 2026/1/1? |
+| Analytical | 6 | Ranking/Ordering | Rank options from most to least important/effective/feasible with justification | Rank these investment options from most to least risky: Stocks, Bonds, Real Estate, Cryptocurrency |
+| Analytical | 7 | Comparative Analysis | Compare and contrast multiple options across several dimensions | Compare and contrast the benefits and risks of electric vehicles vs. traditional gasoline vehicles |
+| Strategic | 8 | Trade-off Analysis | Analyze trade-offs between competing factors or options | What are the trade-offs between investing in growth stocks vs. value stocks? |
+| Strategic | 9 | Scenario-Based/Conditional | Answer questions based on hypothetical scenarios ("If X happens, then...") | If the Federal Reserve raises interest rates by 2%, how should I adjust my investment portfolio? |
+| Strategic | 10 | Counterfactual | Explore alternative outcomes ("What would happen if X had not occurred?") | What would have happened to the stock market if the 2008 financial crisis had been prevented? |
+| Strategic | 11 | Preference Elicitation | Determine preferred combinations of factors or multi-attribute preferences | What combination of risk tolerance, time horizon, and return expectations would you prefer for your investment portfolio? |
+| Assessment | 12 | Risk Assessment | Quantify risks, probabilities, and uncertainties associated with decisions | What are the risks and probabilities of investing in emerging market stocks? |
+| Assessment | 13 | Causal Reasoning | Identify causes and effects, analyze causal chains and mechanisms | What caused the recent volatility in tech stocks? |
+| Assessment | 14 | Policy/Strategy | Recommend concrete policies or strategies to achieve specific goals | What investment strategy should be implemented to achieve 10% annual returns with moderate risk? |
+| Complex Reasoning | 15 | Open-Ended Synthesis | Generate solutions or approaches without fixed answer choices | How should I approach building a diversified investment portfolio? |
+| Complex Reasoning | 16 | Temporal/Sequential | Determine ordering of actions or events over time | What should be the sequence of steps for launching a new product: market research, product development, testing, or marketing? |
+| Complex Reasoning | 17 | Resource Allocation | Optimize resource distribution under constraints and budgets | How should I allocate $100,000 across stocks (60%), bonds (30%), and cash (10%) to maximize returns while minimizing risk? |
 
 ---
 
@@ -293,3 +298,16 @@ python -m src.runners.run_benchmark \
 ---
 
 This **README** provides an overview of the **CS224V-MACI-for-Research-Agent** project, highlighting its **motivations, project plan, methodologies, demo, and future directions.** 🚀  
+
+---
+
+## 🔹 Citation
+
+If you use this code, please cite:
+```bibtex
+@article{collectivemind2024,
+  title={CollectiveMind: Multi-Agent Deliberation for High-Stakes Decision Reasoning},
+  author={...},
+  journal={...},
+  year={2024}
+}
