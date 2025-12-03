@@ -6,35 +6,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
       margin: 0;
       padding: 0;
-      background: #0f172a;
-      color: #e5e7eb;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      min-height: 100vh;
+      color: #e5e7eb;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.25), transparent 55%),
+        radial-gradient(circle at 100% 0%, rgba(52, 211, 153, 0.2), transparent 55%),
+        radial-gradient(circle at 50% 100%, rgba(129, 140, 248, 0.25), #020617);
     }
     .container {
-      max-width: 960px;
+      max-width: 1080px;
       margin: 0 auto;
-      padding: 24px 16px 40px;
+      padding: 28px 18px 42px;
     }
     h1 {
-      font-size: 1.8rem;
-      margin-bottom: 4px;
+      font-size: 2rem;
+      margin-bottom: 6px;
+      letter-spacing: 0.03em;
+      background: linear-gradient(120deg, #a5b4fc, #22c55e, #0ea5e9);
+      -webkit-background-clip: text;
+      color: transparent;
     }
     .subtitle {
-      font-size: 0.9rem;
+      font-size: 0.92rem;
       color: #9ca3af;
-      margin-bottom: 20px;
+      margin-bottom: 22px;
     }
     .card {
-      background: #020617;
-      border-radius: 14px;
-      padding: 16px 18px 18px;
-      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.8);
-      border: 1px solid #1f2937;
+      background: rgba(2, 6, 23, 0.92);
+      border-radius: 18px;
+      padding: 18px 20px 20px;
+      box-shadow:
+        0 24px 60px rgba(15, 23, 42, 0.9),
+        0 0 0 1px rgba(148, 163, 184, 0.16);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      backdrop-filter: blur(18px);
     }
     label {
       display: block;
@@ -68,19 +78,35 @@
       flex: 1 1 120px;
     }
     button {
-      margin-top: 14px;
-      padding: 9px 16px;
+      margin-top: 16px;
+      padding: 10px 18px;
       border-radius: 999px;
       border: none;
-      background: linear-gradient(135deg, #22c55e, #0ea5e9);
+      background: radial-gradient(circle at 0 0, #22c55e, #0ea5e9);
       color: #020617;
       font-weight: 600;
-      font-size: 0.95rem;
+      font-size: 0.96rem;
       cursor: pointer;
-      box-shadow: 0 12px 30px rgba(34, 197, 94, 0.4);
+      box-shadow:
+        0 0 0 1px rgba(34, 197, 94, 0.35),
+        0 18px 40px rgba(15, 118, 110, 0.75);
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+    }
+    button:hover:not(:disabled) {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      box-shadow:
+        0 0 0 1px rgba(34, 197, 94, 0.45),
+        0 22px 50px rgba(8, 47, 73, 0.9);
+    }
+    button:active:not(:disabled) {
+      transform: translateY(0);
+      box-shadow:
+        0 0 0 1px rgba(34, 197, 94, 0.35),
+        0 12px 30px rgba(8, 47, 73, 0.7);
     }
     button:disabled {
       opacity: 0.6;
@@ -104,11 +130,12 @@
       }
     }
     .panel {
-      background: #020617;
-      border-radius: 14px;
+      background: radial-gradient(circle at top left, rgba(31, 41, 55, 0.9), rgba(15, 23, 42, 0.96));
+      border-radius: 16px;
       padding: 14px 16px 16px;
-      border: 1px solid #1f2937;
+      border: 1px solid rgba(30, 64, 175, 0.6);
       min-height: 120px;
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.85);
     }
     .panel h2 {
       font-size: 0.95rem;
@@ -134,6 +161,10 @@
     .viewpoints-list li:last-child {
       border-bottom: none;
     }
+    .brief-select {
+      margin-top: 10px;
+      font-size: 0.85rem;
+    }
     .tag {
       display: inline-block;
       padding: 1px 6px;
@@ -152,9 +183,9 @@
     .bubble {
       margin-bottom: 10px;
       padding: 8px 10px;
-      border-radius: 10px;
-      background: #020617;
-      border: 1px solid #111827;
+      border-radius: 12px;
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.9));
+      border: 1px solid rgba(55, 65, 81, 0.9);
     }
     .bubble-header {
       display: flex;
@@ -227,6 +258,13 @@
         <h2>Viewpoints / Agents</h2>
         <small>Automatically generated personas for this topic.</small>
         <ul class="viewpoints-list" id="viewpoints"></ul>
+        <div class="brief-select">
+          <label for="briefAgent">Agent preparation file</label>
+          <select id="briefAgent">
+            <option value="">Select an agent to view its preparation file</option>
+          </select>
+          <div class="summary" id="briefContent" style="margin-top:6px; max-height:220px; overflow-y:auto;"></div>
+        </div>
       </div>
       <div class="panel">
         <h2>Final Report</h2>
@@ -247,6 +285,8 @@
     const statusEl = document.getElementById("status");
     const viewpointsEl = document.getElementById("viewpoints");
     const summaryEl = document.getElementById("summary");
+    const briefSelectEl = document.getElementById("briefAgent");
+    const briefContentEl = document.getElementById("briefContent");
     const convoEl = document.getElementById("conversation");
 
     async function runDebate() {
@@ -263,6 +303,8 @@
       statusEl.textContent = "Running debate... This may take a little while.";
       viewpointsEl.innerHTML = "";
       summaryEl.textContent = "";
+      briefSelectEl.innerHTML = '<option value="">Select an agent to view its preparation file</option>';
+      briefContentEl.textContent = "";
       convoEl.innerHTML = "";
 
       try {
@@ -282,6 +324,7 @@
         const data = await resp.json();
         statusEl.textContent = "Debate completed.";
         renderViewpoints(data.viewpoints || []);
+        renderBriefs(data.agent_briefs || []);
         const summaryText = data.final_report || data.judge_summary || "";
         renderSummary(summaryText);
         renderConversation(data.conversation_log || []);
@@ -316,6 +359,83 @@
         return;
       }
       summaryEl.textContent = text;
+    }
+
+    function renderBriefs(briefs) {
+      briefSelectEl.innerHTML = '<option value="">Select an agent to view its preparation file</option>';
+      briefContentEl.textContent = "";
+
+      if (!briefs.length) {
+        briefContentEl.textContent = "No preparation files generated.";
+        return;
+      }
+
+      briefs.forEach((brief, idx) => {
+        const opt = document.createElement("option");
+        opt.value = String(idx);
+        opt.textContent = brief.name || `Agent ${idx + 1}`;
+        briefSelectEl.appendChild(opt);
+      });
+
+      briefSelectEl.onchange = () => {
+        const idx = parseInt(briefSelectEl.value, 10);
+        if (Number.isNaN(idx)) {
+          briefContentEl.textContent = "";
+          return;
+        }
+        const brief = briefs[idx];
+        briefContentEl.innerHTML = formatBrief(brief);
+      };
+    }
+
+    function formatBrief(brief) {
+      if (!brief) return "No preparation file available.";
+
+      // Prefer long-form dossier text if available
+      if (brief.raw_brief && typeof brief.raw_brief === "string" && brief.raw_brief.trim().length > 0) {
+        return `<strong>Position</strong>: ${escapeHtml(brief.position || "")}<br/><br/>` +
+               `<strong>Role summary</strong>: ${escapeHtml(brief.role_summary || "")}<br/><br/>` +
+               `<pre style="white-space: pre-wrap; font-family: inherit; font-size: 0.85rem; margin: 0;">${escapeHtml(brief.raw_brief)}</pre>`;
+      }
+
+      const parts = [];
+      parts.push(`<strong>Position</strong>: ${escapeHtml(brief.position || "")}`);
+      if (brief.role_summary) {
+        parts.push(`<strong>Role summary</strong>: ${escapeHtml(brief.role_summary)}`);
+      }
+
+      const supp = Array.isArray(brief.supporting_arguments) ? brief.supporting_arguments : [];
+      if (supp.length) {
+        parts.push("<strong>Supporting arguments</strong>:");
+        supp.forEach((arg, i) => {
+          const claim = escapeHtml(arg.claim || "");
+          const logic = escapeHtml(arg.logic || "");
+          parts.push(`&nbsp;&nbsp;${i + 1}. ${claim}${logic ? " — " + logic : ""}`);
+        });
+      }
+
+      const opp = Array.isArray(brief.anticipated_opponent_arguments) ? brief.anticipated_opponent_arguments : [];
+      if (opp.length) {
+        parts.push("<strong>Anticipated opponent arguments & counters</strong>:");
+        opp.forEach((arg, i) => {
+          const attack = escapeHtml(arg.attack || "");
+          const counter = escapeHtml(arg.counter_strategy || arg.prewritten_counter || "");
+          parts.push(`&nbsp;&nbsp;${i + 1}. Attack: ${attack}${counter ? "<br/>&nbsp;&nbsp;&nbsp;&nbsp;Counter: " + counter : ""}`);
+        });
+      }
+
+      const questions = Array.isArray(brief.questions_to_ask) ? brief.questions_to_ask : [];
+      if (questions.length) {
+        parts.push("<strong>Questions to ask</strong>:");
+        questions.forEach((q, i) => {
+          parts.push(`&nbsp;&nbsp;${i + 1}. ${escapeHtml(q)}`);
+        });
+      }
+
+      if (!parts.length) {
+        return "Preparation file exists but is empty.";
+      }
+      return parts.join("<br/>");
     }
 
     function renderConversation(log) {

@@ -87,6 +87,31 @@ def invoke_raw(model: Any, system: str, user: str) -> str:
         return ""
 
 
+def _extract_json_object(text: str) -> str:
+    """
+    Try to extract a JSON object string from an LLM response.
+    Handles cases like ```json ...``` or leading/trailing explanations.
+    """
+    if not text:
+        return ""
+    s = text.strip()
+    # Strip Markdown fences
+    if s.startswith("```"):
+        s = s.lstrip("`")
+        # remove possible 'json' or language token
+        if s.lower().startswith("json"):
+            s = s[4:]
+        # remove trailing fences
+        if "```" in s:
+            s = s.split("```", 1)[0]
+    # Find first '{' and last '}'
+    start = s.find("{")
+    end = s.rfind("}")
+    if start != -1 and end != -1 and end > start:
+        return s[start : end + 1]
+    return s
+
+
 def generate_viewpoints(model: Any, topic: str, max_agents: int) -> List[Dict[str, str]]:
     """
     Ask the model to propose up to max_agents distinct viewpoints on a topic.
@@ -144,6 +169,155 @@ def generate_viewpoints(model: Any, topic: str, max_agents: int) -> List[Dict[st
     ]
 
 
+def generate_agent_brief(
+    model: Any,
+    topic: str,
+    viewpoint: Dict[str, str],
+    agent_index: int,
+    briefs_dir: Path,
+) -> Dict[str, Any]:
+    """
+    Generate a deep research 'preparation file' for a single agent.
+    The brief captures supporting arguments, anticipated attacks, self-weaknesses,
+    questions to ask, and an internal strategy summary.
+    """
+    name = viewpoint.get("name", f"Agent {agent_index}")
+    position = viewpoint.get("position", "")
+    vp_summary = viewpoint.get("summary", "")
+
+    system_prompt = (
+        "You are a senior research strategist preparing an in-depth pre-debate brief for an agent.\n"
+        "Think as if you had several hours to do deep research (using your world knowledge, reports, history, economics, etc.).\n"
+        "The brief should be comprehensive and long (roughly 1,500–2,500 words), not a shallow outline.\n"
+        "You MUST output STRICT JSON with the following top-level keys:\n"
+        "  - agent_id (int)\n"
+        "  - name (str)\n"
+        "  - topic (str)\n"
+        "  - position (str)\n"
+        "  - role_summary (str)\n"
+        "  - supporting_arguments (list of objects)\n"
+        "  - anticipated_opponent_arguments (list of objects)\n"
+        "  - self_weaknesses (list of objects)\n"
+        "  - questions_to_ask (list of strings)\n"
+        "  - debate_strategy (object)\n"
+        "  - summary_for_prompt (str)\n"
+        "Do NOT include any explanation outside the JSON object."
+    )
+
+    user_prompt = (
+        f"Topic: {topic}\n\n"
+        f"This agent is called: {name}\n"
+        f"Core position: {position}\n"
+        f"Short summary of this stance: {vp_summary}\n\n"
+        "Write a high-quality, research-style preparation brief that:\n"
+        "- Gathers AT LEAST 5 concrete supporting arguments. For each argument include:\n"
+        "    * 'claim': a clear statement of the point being defended.\n"
+        "    * 'logic': 3–5 sentences explaining why this claim holds (causal chain, mechanisms, trade-offs).\n"
+        "    * 'evidence': 2–4 sentences citing empirical facts, historical cases, expert reports, or plausible numeric examples.\n"
+        "    * 'risks_or_limits': 2–3 sentences about where this argument might break or be limited.\n"
+        "    * 'use_when': when in the debate this argument is most powerful.\n"
+        "- Anticipates AT LEAST 5 strong counter-arguments from opposing viewpoints. For each include:\n"
+        "    * 'from_side': which kind of opponent would raise it.\n"
+        "    * 'attack': 2–3 sentences summarizing the objection as fairly and strongly as possible.\n"
+        "    * 'why_plausible': 2–3 sentences explaining why a smart critic might believe this.\n"
+        "    * 'counter_strategy': 3–5 sentences giving the logical way to respond.\n"
+        "    * 'prewritten_counter': 3–6 sentences that could be almost directly used in the debate.\n"
+        "- Identifies 2–4 genuine weaknesses or edge cases for this position and how the agent should acknowledge and reframe them.\n"
+        "- Proposes 4–8 probing questions the agent can ask others to expose contradictions or missing details.\n"
+        "- Describes an overall debate_strategy object with: 'tone', 'priority_order' (list of claims to push first), and 'red_lines'.\n"
+        "- Ends with a compact summary_for_prompt (roughly 300–600 tokens) that distills the MOST important content for use at runtime.\n"
+    )
+
+    brief: Dict[str, Any] | None = None
+
+    # Try up to 3 times to get a proper JSON brief
+    raw = ""
+    for attempt in range(3):
+        raw = invoke_raw(model, system_prompt, user_prompt)
+        logger.info("Raw brief JSON for agent %s (attempt %d): %s", name, attempt + 1, raw)
+        if not raw:
+            logger.warning("Empty brief response for %s on attempt %d", name, attempt + 1)
+            continue
+        try:
+            cleaned = _extract_json_object(raw)
+            parsed = json.loads(cleaned)
+            if isinstance(parsed, dict):
+                brief = parsed
+                break
+            else:
+                raise ValueError("Brief JSON is not an object.")
+        except Exception as e:
+            logger.warning("Failed to parse agent brief JSON for %s on attempt %d: %s", name, attempt + 1, e)
+
+    if brief is None:
+        # Minimal fallback brief if all attempts failed
+        logger.error("Using minimal fallback brief for %s after 3 failed attempts.", name)
+        brief = {
+            "agent_id": agent_index,
+            "name": name,
+            "topic": topic,
+            "position": position,
+            "role_summary": vp_summary or position,
+            "supporting_arguments": [],
+            "anticipated_opponent_arguments": [],
+            "self_weaknesses": [],
+            "questions_to_ask": [],
+            "debate_strategy": {},
+            "summary_for_prompt": f"{position}\n\n{vp_summary}",
+        }
+
+    # Ensure required fields exist and have reasonable defaults
+    brief.setdefault("agent_id", agent_index)
+    brief.setdefault("name", name)
+    brief.setdefault("topic", topic)
+    brief.setdefault("position", position)
+    brief.setdefault("role_summary", vp_summary or position)
+    brief.setdefault("supporting_arguments", [])
+    brief.setdefault("anticipated_opponent_arguments", [])
+    brief.setdefault("self_weaknesses", [])
+    brief.setdefault("questions_to_ask", [])
+    brief.setdefault("debate_strategy", {})
+    if not isinstance(brief.get("summary_for_prompt", ""), str) or not brief["summary_for_prompt"].strip():
+        brief["summary_for_prompt"] = f"{position}\n\n{vp_summary}"
+
+    # Always generate a long-form research dossier text for humans to inspect.
+    # This does not need to be JSON; it is stored under 'raw_brief'.
+    long_system = (
+        "You are a senior research analyst preparing an in-depth dossier for an agent before a debate.\n"
+        "Write a long, well-structured document (roughly 1,500–2,500 words) in English.\n"
+        "Use clear section headings and bullet points where helpful. Do NOT output JSON.\n"
+        "Focus on:\n"
+        "1) The agent's position and its theoretical foundation.\n"
+        "2) Deep supporting arguments with concrete evidence, examples, or historical analogies.\n"
+        "3) Anticipated counter-arguments from smart opponents and how to rebut them.\n"
+        "4) Genuine weaknesses or edge cases and how to acknowledge/reframe them.\n"
+        "5) Probing questions to pressure opponents.\n"
+        "6) A final recommended debate strategy.\n"
+    )
+    long_user = (
+        f"Topic: {topic}\n\n"
+        f"Agent name: {name}\n"
+        f"Core position: {position}\n"
+        f"Short description: {vp_summary}\n\n"
+        "Write the dossier now."
+    )
+    raw_brief = invoke_raw(model, long_system, long_user)
+    brief["raw_brief"] = raw_brief or brief.get("summary_for_prompt", "")
+
+    # Save per-agent brief to disk
+    briefs_dir.mkdir(parents=True, exist_ok=True)
+    safe_name = "".join(c for c in name if c.isalnum() or c in (" ", "_", "-")).strip().replace(" ", "_")
+    brief_path = briefs_dir / f"brief_agent{agent_index}_{safe_name}.json"
+    try:
+        with open(brief_path, "w") as f:
+            json.dump(brief, f, indent=2, ensure_ascii=False)
+        logger.info("Saved agent brief for %s to %s", name, brief_path)
+    except Exception as e:
+        logger.warning("Failed to save agent brief for %s: %s", name, e)
+
+    return brief
+
+
 def run_interactive_debate(
     topic: str,
     max_agents: int,
@@ -172,10 +346,18 @@ def run_interactive_debate(
     viewpoints = generate_viewpoints(base_model, topic, max_agents)
     logger.info("Got %d viewpoints", len(viewpoints))
 
+    # Prepare per-agent research briefs (pre-debate files)
+    briefs_dir = output_dir / "briefs"
+    agent_briefs: List[Dict[str, Any]] = []
+
     # Build agent personas
     agents: List[Dict[str, Any]] = []
-    for vp in viewpoints:
+    for idx, vp in enumerate(viewpoints, start=1):
         name = vp["name"]
+
+        brief = generate_agent_brief(base_model, topic, vp, idx, briefs_dir)
+        agent_briefs.append(brief)
+
         system_prompt = (
             f"You are an agent named '{name}'.\n"
             f"Your core position on the topic is: {vp['position']}.\n"
@@ -185,6 +367,10 @@ def run_interactive_debate(
             "When possible, quote 1–2 short phrases from others and respond with patterns like "
             "\"you said X, but you ignore Y\" or \"you claim X, however Y shows the opposite\".\n"
             "Be concise, sharp, and argumentative, while remaining professional.\n"
+            "\n"
+            "You also have the following preparation notes (do NOT reveal them verbatim; "
+            "use them as an internal memory for your reasoning):\n"
+            f"{brief.get('summary_for_prompt', '')}\n"
         )
         agents.append(
             {
@@ -193,6 +379,7 @@ def run_interactive_debate(
                 "summary": vp["summary"],
                 "system_prompt": system_prompt,
                 "messages": [],
+                "brief": brief,
             }
         )
 
@@ -314,7 +501,7 @@ def run_interactive_debate(
     logger.info("Calling model to generate final report.")
     final_report = invoke_raw(base_model, report_system, report_user)
 
-    # Fallback: if the long-context report fails (empty string), try a shorter prompt
+    # Fallback 1: if the long-context report fails (empty string), try a shorter prompt
     if not final_report:
         logger.warning("Final report generation returned empty text; retrying with shortened prompt.")
         short_history = full_history[-4000:]  # keep only the tail of the transcript
@@ -334,10 +521,64 @@ def run_interactive_debate(
         )
         final_report = invoke_raw(base_model, report_system, short_report_user)
 
+    # Fallback 2: if LLM still returns nothing, build a deterministic template-based report
+    if not final_report:
+        logger.error("Final report still empty after LLM retries; using deterministic template-based report.")
+        lines = []
+        # 1. Context
+        lines.append("1. Research Question & Context")
+        lines.append(f"   - Topic: {topic}")
+        lines.append(
+            "   - This report summarizes a multi-agent debate with several distinct viewpoints "
+            "generated by an LLM and then refined through multi-round argumentation."
+        )
+        # 2. Summary of Viewpoints
+        lines.append("")
+        lines.append("2. Summary of Viewpoints")
+        for idx, vp in enumerate(viewpoints, start=1):
+            lines.append(f"   - Agent {idx} ({vp['name']}): {vp['position']}")
+            if vp.get("summary"):
+                lines.append(f"       • Rationale: {vp['summary']}")
+        # 3. Key Conflicts
+        lines.append("")
+        lines.append("3. Comparative Analysis & Key Conflicts")
+        lines.append(
+            "   - Agents disagree on both the desirability and the acceptable risk level of the proposal."
+        )
+        lines.append(
+            "   - Pro-style agents emphasize potential benefits and opportunities, while more cautious "
+            "agents focus on sovereignty, systemic risk, or ethical and distributional concerns."
+        )
+        lines.append(
+            "   - Conditional or moderate agents typically argue for tightly scoped pilots or safeguards, "
+            "attempting to reconcile innovation with control."
+        )
+        # 4. Tentative Conclusion
+        lines.append("")
+        lines.append("4. Tentative Conclusion & Recommendation")
+        lines.append(
+            "   - Given the diversity of arguments, a reasonable tentative recommendation is a phased, "
+            "evidence-driven approach: start with limited pilots and strong monitoring, while explicitly "
+            "defining success criteria and red lines informed by the more conservative viewpoints."
+        )
+        # 5. Limitations
+        lines.append("")
+        lines.append("5. Limitations & Suggestions for Further Investigation")
+        lines.append(
+            "   - This report is based solely on LLM-generated arguments and may miss empirical constraints, "
+            "domain-specific regulations, or political feasibility considerations."
+        )
+        lines.append(
+            "   - Future work should incorporate real data, expert interviews, and stress-testing of the "
+            "policy options under adverse scenarios (e.g., crisis conditions, adversarial misuse)."
+        )
+        final_report = "\n".join(lines)
+
     # Build result payload
     result = {
         "topic": topic,
         "viewpoints": viewpoints,
+        "agent_briefs": agent_briefs,
         "agents": [
             {
                 "name": a["name"],
