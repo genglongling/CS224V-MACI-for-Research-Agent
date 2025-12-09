@@ -1,0 +1,22 @@
+{
+  "stats": {
+    "baseline_kps": 11,
+    "collective_kps": 10,
+    "baseline_evidence_count": 11,
+    "collective_evidence_count": 10,
+    "cm_wins": 15,
+    "cm_losses": 6,
+    "ties": 0,
+    "topics": 1
+  },
+  "topics": [
+    {
+      "topic": "Should central banks issue retail digital currencies (CBDCs)?",
+      "baseline_kps": 11,
+      "cm_kps": 10,
+      "wins": 15,
+      "losses": 6,
+      "ties": 0
+    }
+  ]
+}
