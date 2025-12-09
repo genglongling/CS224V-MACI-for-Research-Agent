@@ -1,5 +1,0 @@
-db/traces.db
-/venv
-__pycache__
-.env
-.cache

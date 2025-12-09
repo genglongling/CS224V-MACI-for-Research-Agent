@@ -19,6 +19,32 @@ The systems support LangGraph + 6-Round Protocol + LLM-as-a-Judge (CRIT).
   3. Qwen2.5-7B-Instruct vs Llama3.1-8B-Instruct
 ---
 
+## 🔹 Supported Question Types
+
+The system can handle **17 types of questions** across different reasoning domains:
+
+| Category | ID | Question Type | Description |
+|----------|----|--------------|-------------|
+| Basic Selection | 1 | Single-Choice QA | Select one correct answer from multiple options |
+| Basic Selection | 2 | Multiple-Choice QA | Select one or more correct answers from multiple options |
+| Basic Selection | 3 | Decision-Making (Yes/No) | Binary decisions requiring clear yes/no answers with justification |
+| Analytical | 4 | Factor Brainstorming | Identify 1 to N factors, each with different levels of possibilities/probabilities |
+| Analytical | 5 | Mathematical Questions | Calculation, prediction, and regression problems requiring numerical reasoning |
+| Analytical | 6 | Ranking/Ordering | Rank options from most to least important/effective/feasible with justification |
+| Analytical | 7 | Comparative Analysis | Compare and contrast multiple options across several dimensions |
+| Strategic | 8 | Trade-off Analysis | Analyze trade-offs between competing factors or options |
+| Strategic | 9 | Scenario-Based/Conditional | Answer questions based on hypothetical scenarios ("If X happens, then...") |
+| Strategic | 10 | Counterfactual | Explore alternative outcomes ("What would happen if X had not occurred?") |
+| Strategic | 11 | Preference Elicitation | Determine preferred combinations of factors or multi-attribute preferences |
+| Assessment | 12 | Risk Assessment | Quantify risks, probabilities, and uncertainties associated with decisions |
+| Assessment | 13 | Causal Reasoning | Identify causes and effects, analyze causal chains and mechanisms |
+| Assessment | 14 | Policy/Strategy | Recommend concrete policies or strategies to achieve specific goals |
+| Complex Reasoning | 15 | Open-Ended Synthesis | Generate solutions or approaches without fixed answer choices |
+| Complex Reasoning | 16 | Temporal/Sequential | Determine ordering of actions or events over time |
+| Complex Reasoning | 17 | Resource Allocation | Optimize resource distribution under constraints and budgets |
+
+---
+
 ## 🔹 Code Structure
 
 ```
