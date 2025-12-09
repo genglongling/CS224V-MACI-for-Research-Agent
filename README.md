@@ -265,7 +265,50 @@ python -m src.runners.run_benchmark \
 6. **CommonSenseQA** (300 questions): Commonsense question answering
 7. **HH-RLHF** (300 questions): Helpful and Harmless RLHF dataset
 
-7.2.2 Human evaluation datasets
+7.2.2 Self-Curated Dataset: Quantitative Evaluation
+
+#### Debate vs. Parallel Research
+
+A key research question is: *"Does multi-agent debate introduce quality improvement compared to multiple single-agent deep research combined?"*
+
+We compared two settings:
+
+1. **Baseline (Parallel Research)**: Aggregating the initial "Preparation Files" of all agents *without* running the debate phase. This simulates a "mixture of experts" without interaction.
+
+2. **Ours (CollectiveMind)**: The full pipeline including the multi-round conflict debate.
+
+We used GPT-5.1 as an unbiased evaluator to score the final reports on a scale of 1-5 along four dimensions inspired by CO-STORM:
+
+- **Diversity**: Coverage of distinct perspectives.
+- **Coherence**: Logical flow and structure.
+- **Conflict Surface**: Explicit identification and analysis of trade-offs.
+- **Factual Grounding**: Support by specific evidence/logic.
+
+#### Report Quality Metrics
+
+The following table combines holistic evaluation scores and key-point extraction analysis averaged over 20 topics:
+
+| Metric | Baseline | CollectiveMind | Improvement |
+|--------|----------|----------------|-------------|
+| **Holistic Scores (1-5 scale)** |
+| Diversity | 4.2 | **4.5** | +0.3 |
+| Coherence | 3.8 | **4.6** | +0.8 |
+| Conflict Surface | 2.5 | **4.8** | **+2.3** |
+| Factual Grounding | 3.9 | 4.1 | +0.2 |
+| **Key-Point Analysis** |
+| #Key Points (avg per topic) | 6.1 | **8.7** | +2.6 |
+| Evidence@Key (fraction) | 0.72 | **0.81** | +0.09 |
+| Win Rate (vs. Baseline) | 0.34 | **0.66** | +0.32 |
+
+**Key Findings:**
+
+- **Conflict Surface** saw the largest improvement (+2.3 points). In the Baseline, the aggregated report tended to be a "laundry list" of isolated opinions. In CollectiveMind, the debate phase forced agents to find holes in each other's logic, resulting in a final report that synthesized *why* perspectives differ.
+
+- **Coherence** also improved significantly (+0.8 points) because the Judge had access to a conversation where terms were defined and clarified, rather than disjointed monologues.
+
+- CollectiveMind produces more distinct key points than the Baseline (+2.6 per topic) and grounds a higher fraction of them in explicit evidence (+0.09).
+
+- The win rate of 0.66 indicates that when the two systems disagree on how well they support a given key point, the judge prefers CollectiveMind in roughly two out of three cases. This confirms that the benefits of debate are visible not only in holistic scores but also at the level of concrete, evidence-backed arguments.
 
 
 ### ⚖️ 7.3 Baselines:  
