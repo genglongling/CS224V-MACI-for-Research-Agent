@@ -134,8 +134,16 @@ def generate_viewpoints(model: Any, topic: str, max_agents: int) -> List[Dict[st
     )
 
     raw = invoke_raw(model, system_prompt, user_prompt)
-    logger.info("Raw viewpoints JSON: %s", raw)
+    
+    print(f"\n{'='*80}")
+    print(f"VIEWPOINTS RAW OUTPUT:")
+    print(f"{'='*80}")
+    print(raw)
+    print(f"{'='*80}\n")
+    
+    logger.info("Raw viewpoints output (full): %s", raw)
 
+    # Try to parse, but don't fail if it doesn't work
     try:
         data = json.loads(raw)
         if isinstance(data, list):
@@ -149,9 +157,10 @@ def generate_viewpoints(model: Any, topic: str, max_agents: int) -> List[Dict[st
                 if name and pos:
                     result.append({"name": name, "position": pos, "summary": summ})
             if len(result) >= 2:
+                logger.info("Successfully parsed viewpoints JSON")
                 return result[:max_agents]
     except Exception as e:
-        logger.warning("Failed to parse viewpoints JSON: %s", e)
+        logger.info("JSON parsing skipped for viewpoints (using fallback): %s", str(e))
 
     # Fallback: fabricate two generic viewpoints
     logger.warning("Falling back to generic 2-agent viewpoints.")
@@ -228,43 +237,47 @@ def generate_agent_brief(
         "- Ends with a compact summary_for_prompt (roughly 300–600 tokens) that distills the MOST important content for use at runtime.\n"
     )
 
-    brief: Dict[str, Any] | None = None
-
-    # Try up to 3 times to get a proper JSON brief
-    raw = ""
-    for attempt in range(3):
-        raw = invoke_raw(model, system_prompt, user_prompt)
-        logger.info("Raw brief JSON for agent %s (attempt %d): %s", name, attempt + 1, raw)
-        if not raw:
-            logger.warning("Empty brief response for %s on attempt %d", name, attempt + 1)
-            continue
+    # Get raw response - no JSON parsing, just use raw output
+    raw = invoke_raw(model, system_prompt, user_prompt)
+    
+    print(f"\n{'='*80}")
+    print(f"AGENT BRIEF RAW OUTPUT for {name}:")
+    print(f"{'='*80}")
+    print(raw)
+    print(f"{'='*80}\n")
+    
+    logger.info("Raw brief output for agent %s (full): %s", name, raw)
+    
+    # Create brief structure with raw output stored
+    brief = {
+        "agent_id": agent_index,
+        "name": name,
+        "topic": topic,
+        "position": position,
+        "role_summary": vp_summary or position,
+        "supporting_arguments": [],
+        "anticipated_opponent_arguments": [],
+        "self_weaknesses": [],
+        "questions_to_ask": [],
+        "debate_strategy": {},
+        "summary_for_prompt": f"{position}\n\n{vp_summary}",
+        "raw_json_response": raw,  # Store the raw response
+    }
+    
+    # Try to parse JSON if possible, but don't fail if it doesn't work
+    if raw:
         try:
             cleaned = _extract_json_object(raw)
             parsed = json.loads(cleaned)
             if isinstance(parsed, dict):
-                brief = parsed
-                break
-            else:
-                raise ValueError("Brief JSON is not an object.")
+                # Merge parsed fields into brief, but keep raw response
+                for key, value in parsed.items():
+                    if key not in ["raw_json_response"]:
+                        brief[key] = value
+                logger.info("Successfully parsed JSON for %s", name)
         except Exception as e:
-            logger.warning("Failed to parse agent brief JSON for %s on attempt %d: %s", name, attempt + 1, e)
-
-    if brief is None:
-        # Minimal fallback brief if all attempts failed
-        logger.error("Using minimal fallback brief for %s after 3 failed attempts.", name)
-        brief = {
-            "agent_id": agent_index,
-            "name": name,
-            "topic": topic,
-            "position": position,
-            "role_summary": vp_summary or position,
-            "supporting_arguments": [],
-            "anticipated_opponent_arguments": [],
-            "self_weaknesses": [],
-            "questions_to_ask": [],
-            "debate_strategy": {},
-            "summary_for_prompt": f"{position}\n\n{vp_summary}",
-        }
+            logger.info("JSON parsing skipped for %s (using raw output): %s", name, str(e))
+            # Continue with raw output - no error
 
     # Ensure required fields exist and have reasonable defaults
     brief.setdefault("agent_id", agent_index)
@@ -277,7 +290,8 @@ def generate_agent_brief(
     brief.setdefault("self_weaknesses", [])
     brief.setdefault("questions_to_ask", [])
     brief.setdefault("debate_strategy", {})
-    if not isinstance(brief.get("summary_for_prompt", ""), str) or not brief["summary_for_prompt"].strip():
+    brief.setdefault("summary_for_prompt", f"{position}\n\n{vp_summary}")
+    if not isinstance(brief.get("summary_for_prompt", ""), str) or not brief.get("summary_for_prompt", "").strip():
         brief["summary_for_prompt"] = f"{position}\n\n{vp_summary}"
 
     # Always generate a long-form research dossier text for humans to inspect.
@@ -325,6 +339,7 @@ def run_interactive_debate(
     models_cfg_path: str,
     pairing: str,
     output_dir: Path,
+    question_type_id: str = "1",
 ) -> Dict[str, Any]:
     """
     Main interactive pipeline:
@@ -347,7 +362,7 @@ def run_interactive_debate(
     logger.info("Got %d viewpoints", len(viewpoints))
 
     # Prepare per-agent research briefs (pre-debate files)
-    briefs_dir = output_dir / "briefs"
+    briefs_dir = output_dir / "briefs" / question_type_id
     agent_briefs: List[Dict[str, Any]] = []
 
     # Build agent personas
@@ -433,6 +448,13 @@ def run_interactive_debate(
             reply = invoke_raw(base_model, sys, user_prompt)
             if not reply:
                 reply = "[No response due to API error; treating as empty turn.]"
+            
+            print(f"\n{'='*80}")
+            print(f"ROUND {r} - {name}:")
+            print(f"{'='*80}")
+            print(reply)
+            print(f"{'='*80}\n")
+            
             conversation_log.append({"speaker": name, "content": reply, "round": r})
             agent["messages"].append({"round": r, "content": reply})
 
@@ -457,6 +479,12 @@ def run_interactive_debate(
 
     logger.info("Calling judge to summarize debate.")
     judge_summary = invoke_raw(base_model, judge_system, judge_user)
+    
+    print(f"\n{'='*80}")
+    print(f"JUDGE SUMMARY:")
+    print(f"{'='*80}")
+    print(judge_summary)
+    print(f"{'='*80}\n")
 
     # Final academic-style report for instructor / professor
     report_system = (
@@ -503,6 +531,12 @@ def run_interactive_debate(
 
     logger.info("Calling model to generate final report.")
     final_report = invoke_raw(base_model, report_system, report_user)
+    
+    print(f"\n{'='*80}")
+    print(f"FINAL REPORT:")
+    print(f"{'='*80}")
+    print(final_report)
+    print(f"{'='*80}\n")
 
     # Fallback 1: if the long-context report fails (empty string), try a shorter prompt
     if not final_report:

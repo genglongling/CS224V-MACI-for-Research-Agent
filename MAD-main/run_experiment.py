@@ -3,8 +3,10 @@ import os
 import sys
 import yaml
 import argparse
+import logging
 from pathlib import Path
 from typing import List, Dict, Any
+from datetime import datetime
 
 # Add src to path
 sys.path.append(os.path.join(os.getcwd(), "src"))
@@ -128,7 +130,7 @@ def load_models_config(path: str):
     with open(path, 'r') as f:
         return yaml.safe_load(f)
 
-def run_baseline(topic: str, models_cfg: Dict, output_dir: Path, mock=False):
+def run_baseline(topic: str, models_cfg: Dict, output_dir: Path, question_type_id: str = "1", mock=False):
     """
     Runs the Baseline: Generate Viewpoints -> Generate Briefs -> Synthesize Report (No Debate)
     """
@@ -148,7 +150,7 @@ def run_baseline(topic: str, models_cfg: Dict, output_dir: Path, mock=False):
     
     # 3. Deep Preparation (Briefs)
     briefs = []
-    briefs_dir = output_dir / "baseline_briefs"
+    briefs_dir = output_dir / "baseline_briefs" / question_type_id
     briefs_dir.mkdir(parents=True, exist_ok=True)
     
     for idx, vp in enumerate(viewpoints, start=1):
@@ -222,12 +224,34 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--mock", action="store_true", help="Use mock models for testing")
     parser.add_argument("--topics", type=int, default=1, help="Number of topics to run")
+    parser.add_argument("--category", type=str, default="finance", help="Category to run: finance, ai_governance, or social_policy")
+    parser.add_argument("--start-from", type=int, default=1, help="Start from topic number (1-indexed)")
     args = parser.parse_args()
 
     # Load Topics
     with open("topics.json", "r") as f:
-        topics = json.load(f)
+        topics_data = json.load(f)
     
+    # Handle new structure with categories
+    if isinstance(topics_data, dict):
+        if args.category not in topics_data:
+            print(f"Error: Category '{args.category}' not found. Available: {list(topics_data.keys())}")
+            return
+        category_topics = topics_data[args.category]
+        # Convert to list of tuples: (question_type_id, topic)
+        topics = [(qid, topic) for qid, topic in category_topics.items()]
+    else:
+        # Old structure: list of topics
+        topics = [(str(i+1), topic) for i, topic in enumerate(topics_data)]
+    
+    # Filter by start_from and limit number of topics
+    start_idx = args.start_from - 1  # Convert to 0-indexed
+    if start_idx < 0:
+        start_idx = 0
+    if start_idx >= len(topics):
+        print(f"Error: start-from ({args.start_from}) is greater than number of topics ({len(topics)})")
+        return
+    topics = topics[start_idx:]
     topics = topics[:args.topics]
     
     models_cfg_path = "configs/experiment_models.yaml"
@@ -242,8 +266,39 @@ def main():
         pairing_cfg = models_cfg["pairings"]["experiment"]
         evaluator_model = LLMFactory.make(**pairing_cfg["judge"])
 
-    results_dir = Path("results/experiment")
+    results_dir = Path("results/experiment") / args.category
     results_dir.mkdir(parents=True, exist_ok=True)
+    
+    # Set up logging to both file and console
+    log_file = results_dir / f"experiment_log_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        handlers=[
+            logging.FileHandler(log_file, mode='w', encoding='utf-8'),
+            logging.StreamHandler(sys.stdout)
+        ]
+    )
+    logger = logging.getLogger(__name__)
+    logger.info(f"Starting experiment for category: {args.category}")
+    logger.info(f"Log file: {log_file}")
+    logger.info(f"Processing {len(topics)} topics")
+    
+    # Also redirect print statements
+    class TeeOutput:
+        def __init__(self, *files):
+            self.files = files
+        def write(self, obj):
+            for f in self.files:
+                f.write(obj)
+                f.flush()
+        def flush(self):
+            for f in self.files:
+                f.flush()
+    
+    log_file_handle = open(log_file, 'a', encoding='utf-8')
+    sys.stdout = TeeOutput(sys.stdout, log_file_handle)
+    sys.stderr = TeeOutput(sys.stderr, log_file_handle)
     
     aggregated_stats = {
         "baseline_kps": 0,
@@ -258,11 +313,11 @@ def main():
     
     topic_results = []
 
-    for topic in topics:
-        print(f"\nProcessing Topic: {topic}")
+    for question_type_id, topic in topics:
+        print(f"\nProcessing {args.category} - Question Type {question_type_id}: {topic[:80]}...")
         
         # --- Run Baseline ---
-        baseline_report = run_baseline(topic, models_cfg, results_dir, mock=args.mock)
+        baseline_report = run_baseline(topic, models_cfg, results_dir, question_type_id=question_type_id, mock=args.mock)
         
         # --- Run CollectiveMind ---
         print(f"  [CollectiveMind] Starting...")
@@ -272,7 +327,8 @@ def main():
             num_rounds=3,
             models_cfg_path=models_cfg_path,
             pairing="experiment",
-            output_dir=results_dir
+            output_dir=results_dir,
+            question_type_id=question_type_id
         )
         cm_report = cm_result["final_report"]
         
@@ -303,6 +359,7 @@ def main():
         losses = 0
         ties = 0
         
+        pairwise_comparisons = []
         for kp in all_kps:
             point = kp['point']
             ev_baseline = kp['evidence'] if kp['origin'] == 'baseline' else None
@@ -323,6 +380,15 @@ def main():
                 
             winner = run_pairwise_comparison(point, ev_baseline, ev_cm, evaluator_model)
             
+            comparison_result = {
+                "key_point": point,
+                "baseline_evidence": ev_baseline,
+                "cm_evidence": ev_cm,
+                "winner": winner,
+                "reason": winner  # Could be enhanced to include reason from judge
+            }
+            pairwise_comparisons.append(comparison_result)
+            
             if winner == 'B': # B is CM
                 wins += 1
             elif winner == 'A': # A is Baseline
@@ -334,7 +400,47 @@ def main():
         aggregated_stats["cm_losses"] += losses
         aggregated_stats["ties"] += ties
         
+        # Save individual example JSON file
+        import re
+        topic_slug = re.sub(r'[^a-z0-9]+', '_', topic.lower())[:50]
+        output_file = results_dir / f"{question_type_id}_{topic_slug}.json"
+        
+        example_output = {
+            "category": args.category,
+            "question_type_id": int(question_type_id),
+            "topic": topic,
+            "baseline": {
+                "report": baseline_report,
+                "key_points": kps_baseline
+            },
+            "collectivemind": {
+                "viewpoints": cm_result.get("viewpoints", []),
+                "agent_briefs": cm_result.get("agent_briefs", []),
+                "agents": cm_result.get("agents", []),
+                "conversation_log": cm_result.get("conversation_log", []),
+                "judge_summary": cm_result.get("judge_summary", ""),
+                "final_report": cm_report,
+                "key_points": kps_cm
+            },
+            "evaluation": {
+                "baseline_kps": len(kps_baseline),
+                "cm_kps": len(kps_cm),
+                "baseline_evidence_count": sum(1 for k in kps_baseline if k.get("evidence")),
+                "cm_evidence_count": sum(1 for k in kps_cm if k.get("evidence")),
+                "pairwise_comparisons": pairwise_comparisons,
+                "wins": wins,
+                "losses": losses,
+                "ties": ties
+            }
+        }
+        
+        with open(output_file, "w") as f:
+            json.dump(example_output, f, indent=2)
+        print(f"  -> Saved to: {output_file}")
+        
         topic_res = {
+            "category": args.category,
+            "question_type_id": int(question_type_id),
             "topic": topic,
             "baseline_kps": len(kps_baseline),
             "cm_kps": len(kps_cm),
@@ -368,6 +474,13 @@ def main():
             "stats": aggregated_stats,
             "topics": topic_results
         }, f, indent=2)
+    
+    print(f"\nFull log saved to: {log_file}")
+    
+    # Restore stdout/stderr and close log file
+    sys.stdout = sys.__stdout__
+    sys.stderr = sys.__stderr__
+    log_file_handle.close()
 
 if __name__ == "__main__":
     main()
