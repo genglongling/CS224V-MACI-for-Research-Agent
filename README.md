@@ -117,7 +117,7 @@ Different LLMs agent tailored for **Decision-making task**:
 
 ### Supported Question Types
 
-The system can handle **17 types of questions** across different reasoning and decision-making domains:
+The system can handle **20 types of questions** across different reasoning and decision-making domains:
 
 | Category | ID | Question Type | Description | Example |
 |----------|----|--------------|-------------|---------|
@@ -138,6 +138,9 @@ The system can handle **17 types of questions** across different reasoning and d
 | Complex Reasoning | 15 | Open-Ended Synthesis | Generate solutions or approaches without fixed answer choices | How should I approach building a diversified investment portfolio? |
 | Complex Reasoning | 16 | Temporal/Sequential | Determine ordering of actions or events over time | What should be the sequence of steps for launching a new product: market research, product development, testing, or marketing? |
 | Complex Reasoning | 17 | Resource Allocation | Optimize resource distribution under constraints and budgets | How should I allocate $100,000 across stocks (60%), bonds (30%), and cash (10%) to maximize returns while minimizing risk? |
+| Ethical Reasoning | 18 | Ethical/Moral Dilemma | Resolve questions involving moral principles, values, and ethical trade-offs | Should a company prioritize profit maximization or environmental sustainability when these goals conflict? |
+| Multi-Party | 19 | Stakeholder Analysis | Analyze decisions considering multiple stakeholders' perspectives, interests, and impacts | How should a healthcare policy balance patient needs, provider costs, and insurance company interests? |
+| Uncertainty Handling | 20 | Ambiguity/Incomplete Information | Make decisions when information is incomplete, contradictory, or uncertain, requiring acknowledgment of limitations | Given conflicting economic forecasts, how should I adjust my investment strategy when key data points are missing or contradictory? |
 
 ---
 
