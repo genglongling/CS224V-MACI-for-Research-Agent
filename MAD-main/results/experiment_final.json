@@ -1,132 +1,52 @@
 {
   "stats": {
-    "baseline_kps": 150,
-    "collective_kps": 130,
-    "baseline_evidence_count": 150,
-    "collective_evidence_count": 130,
-    "cm_wins": 144,
-    "cm_losses": 131,
-    "ties": 5,
-    "topics": 12
+    "baseline_kps": 50,
+    "collective_kps": 33,
+    "baseline_evidence_count": 50,
+    "collective_evidence_count": 33,
+    "cm_wins": 47,
+    "cm_losses": 32,
+    "ties": 4,
+    "topics": 4
   },
   "topics": [
     {
-      "category": "finance",
-      "question_type_id": 1,
-      "topic": "Which is the best investment strategy for a 30-year retirement plan: A) Diversification across stocks, bonds, and real estate, B) All-in tech stocks, C) Real estate only, D) Cryptocurrency and alternative assets?",
-      "baseline_kps": 8,
-      "cm_kps": 11,
-      "wins": 13,
-      "losses": 5,
+      "category": "social_policy",
+      "question_type_id": 17,
+      "topic": "How should a government allocate its social policy budget of $500 million across education (target 40%), healthcare (target 30%), housing (target 20%), and job training (target 10%) to maximize social impact?",
+      "baseline_kps": 10,
+      "cm_kps": 7,
+      "wins": 10,
+      "losses": 6,
       "ties": 1
     },
     {
-      "category": "finance",
-      "question_type_id": 2,
-      "topic": "Which factors affect stock market volatility? (Select all that apply) A) Interest rates, B) Company earnings reports, C) Market sentiment and news, D) Weather patterns, E) Geopolitical events",
-      "baseline_kps": 11,
-      "cm_kps": 16,
-      "wins": 14,
-      "losses": 13,
-      "ties": 0
-    },
-    {
-      "category": "finance",
-      "question_type_id": 3,
-      "topic": "Should I buy Apple stock on 2026/1/1 given current market conditions?",
+      "category": "social_policy",
+      "question_type_id": 18,
+      "topic": "Should governments prioritize economic growth or social equity when these goals conflict in policy decisions, such as in tax policy or welfare programs?",
       "baseline_kps": 10,
       "cm_kps": 9,
-      "wins": 6,
-      "losses": 13,
-      "ties": 0
-    },
-    {
-      "category": "finance",
-      "question_type_id": 4,
-      "topic": "Should I invest in emerging market bonds? What factors should be considered in this decision?",
-      "baseline_kps": 11,
-      "cm_kps": 8,
-      "wins": 10,
-      "losses": 9,
-      "ties": 0
-    },
-    {
-      "category": "finance",
-      "question_type_id": 5,
-      "topic": "If Apple stock is currently at $180 and analysts predict a 15% increase over the next quarter, what will be the expected stock price?",
-      "baseline_kps": 14,
-      "cm_kps": 13,
-      "wins": 13,
-      "losses": 12,
-      "ties": 2
-    },
-    {
-      "category": "finance",
-      "question_type_id": 6,
-      "topic": "Rank these investment options from most to least risky: Stocks, Bonds, Real Estate, Cryptocurrency, Commodities",
-      "baseline_kps": 9,
-      "cm_kps": 10,
       "wins": 14,
-      "losses": 4,
-      "ties": 1
+      "losses": 5,
+      "ties": 0
     },
     {
-      "category": "finance",
-      "question_type_id": 7,
-      "topic": "Compare and contrast the benefits and risks of investing in growth stocks versus value stocks for a long-term portfolio",
-      "baseline_kps": 12,
+      "category": "social_policy",
+      "question_type_id": 19,
+      "topic": "How should a healthcare policy balance the interests of patients (who need affordable care), providers (who need fair compensation), insurance companies (who need profitability), and taxpayers (who fund the system)?",
+      "baseline_kps": 15,
       "cm_kps": 10,
-      "wins": 8,
-      "losses": 14,
-      "ties": 0
-    },
-    {
-      "category": "finance",
-      "question_type_id": 8,
-      "topic": "What are the trade-offs between investing in growth stocks versus value stocks for a retirement portfolio?",
-      "baseline_kps": 12,
-      "cm_kps": 12,
-      "wins": 13,
-      "losses": 11,
-      "ties": 0
-    },
-    {
-      "category": "finance",
-      "question_type_id": 9,
-      "topic": "If the Federal Reserve raises interest rates by 2% in the next quarter, how should I adjust my investment portfolio?",
-      "baseline_kps": 20,
-      "cm_kps": 9,
-      "wins": 17,
-      "losses": 12,
-      "ties": 0
-    },
-    {
-      "category": "finance",
-      "question_type_id": 10,
-      "topic": "What would have happened to the global stock market if the 2008 financial crisis had been prevented through earlier regulatory intervention?",
-      "baseline_kps": 20,
-      "cm_kps": 10,
-      "wins": 13,
-      "losses": 17,
-      "ties": 0
-    },
-    {
-      "category": "finance",
-      "question_type_id": 11,
-      "topic": "What combination of risk tolerance (conservative/moderate/aggressive), time horizon (short/medium/long), and return expectations (low/medium/high) would you prefer for your investment portfolio?",
-      "baseline_kps": 14,
-      "cm_kps": 13,
-      "wins": 16,
+      "wins": 12,
       "losses": 10,
-      "ties": 1
+      "ties": 3
     },
     {
-      "category": "finance",
-      "question_type_id": 12,
-      "topic": "What are the risks and probabilities of investing in emerging market stocks over a 5-year period?",
-      "baseline_kps": 9,
-      "cm_kps": 9,
-      "wins": 7,
+      "category": "social_policy",
+      "question_type_id": 20,
+      "topic": "Given conflicting data about the effectiveness of different social programs, economic forecasts, and demographic trends, how should policymakers make decisions about social policy when key information is missing or contradictory?",
+      "baseline_kps": 15,
+      "cm_kps": 7,
+      "wins": 11,
       "losses": 11,
       "ties": 0
     }
