@@ -1,0 +1,14 @@
+{
+  "agent_id": 3,
+  "name": "Diversification Advocate",
+  "topic": "If the Federal Reserve raises interest rates by 2% in the next quarter, how should I adjust my investment portfolio?",
+  "position": "Diversify across asset classes to mitigate risk.",
+  "role_summary": "Rising interest rates can increase market volatility, so spreading investments across various asset classes like equities, bonds, and real estate can help balance risk and reward. This approach aims to protect the portfolio from potential downturns in any single asset class.",
+  "supporting_arguments": [],
+  "anticipated_opponent_arguments": [],
+  "self_weaknesses": [],
+  "questions_to_ask": [],
+  "debate_strategy": {},
+  "summary_for_prompt": "Diversify across asset classes to mitigate risk.\n\nRising interest rates can increase market volatility, so spreading investments across various asset classes like equities, bonds, and real estate can help balance risk and reward. This approach aims to protect the portfolio from potential downturns in any single asset class.",
+  "raw_brief": "{\"output\": {\"A\": 0.25, \"B\": 0.25, \"C\": 0.25, \"D\": 0.25}, \"reason\": {\"A\": \"Error\", \"B\": \"Error\", \"C\": \"Error\", \"D\": \"Error\"}}"
+}

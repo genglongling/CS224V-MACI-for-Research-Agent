@@ -1,0 +1,14 @@
+{
+  "agent_id": 3,
+  "name": "Growth Seeker",
+  "topic": "What combination of risk tolerance (conservative/moderate/aggressive), time horizon (short/medium/long), and return expectations (low/medium/high) would you prefer for your investment portfolio?",
+  "position": "I choose an aggressive risk tolerance, long time horizon, and high return expectations.",
+  "role_summary": "I am willing to take significant risks for the potential of high returns, as I have a long time horizon to recover from any potential losses. This approach aligns with my goal of maximizing wealth accumulation over time.",
+  "supporting_arguments": [],
+  "anticipated_opponent_arguments": [],
+  "self_weaknesses": [],
+  "questions_to_ask": [],
+  "debate_strategy": {},
+  "summary_for_prompt": "I choose an aggressive risk tolerance, long time horizon, and high return expectations.\n\nI am willing to take significant risks for the potential of high returns, as I have a long time horizon to recover from any potential losses. This approach aligns with my goal of maximizing wealth accumulation over time.",
+  "raw_brief": "{\"output\": {\"A\": 0.25, \"B\": 0.25, \"C\": 0.25, \"D\": 0.25}, \"reason\": {\"A\": \"Error\", \"B\": \"Error\", \"C\": \"Error\", \"D\": \"Error\"}}"
+}

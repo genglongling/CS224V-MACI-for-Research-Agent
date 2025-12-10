@@ -1,0 +1,178 @@
+{
+  "topic": "Should central banks issue retail digital currencies (CBDCs)?",
+  "viewpoints": [
+    {
+      "name": "Reformer",
+      "position": "Pro Reform",
+      "summary": "Supports change."
+    },
+    {
+      "name": "Traditionalist",
+      "position": "Anti Reform",
+      "summary": "Opposes change."
+    },
+    {
+      "name": "Moderate",
+      "position": "Neutral",
+      "summary": "Seeks balance."
+    }
+  ],
+  "agent_briefs": [
+    {
+      "agent_id": 1,
+      "name": "Reformer",
+      "topic": "Should central banks issue retail digital currencies (CBDCs)?",
+      "position": "Pro Reform",
+      "role_summary": "Supports change.",
+      "supporting_arguments": [],
+      "anticipated_opponent_arguments": [],
+      "self_weaknesses": [],
+      "questions_to_ask": [],
+      "debate_strategy": {},
+      "summary_for_prompt": "Pro Reform\n\nSupports change.",
+      "raw_brief": "Mock response content."
+    },
+    {
+      "agent_id": 2,
+      "name": "Traditionalist",
+      "topic": "Should central banks issue retail digital currencies (CBDCs)?",
+      "position": "Anti Reform",
+      "role_summary": "Opposes change.",
+      "supporting_arguments": [],
+      "anticipated_opponent_arguments": [],
+      "self_weaknesses": [],
+      "questions_to_ask": [],
+      "debate_strategy": {},
+      "summary_for_prompt": "Anti Reform\n\nOpposes change.",
+      "raw_brief": "Mock response content."
+    },
+    {
+      "agent_id": 3,
+      "name": "Moderate",
+      "topic": "Should central banks issue retail digital currencies (CBDCs)?",
+      "position": "Neutral",
+      "role_summary": "Seeks balance.",
+      "supporting_arguments": [],
+      "anticipated_opponent_arguments": [],
+      "self_weaknesses": [],
+      "questions_to_ask": [],
+      "debate_strategy": {},
+      "summary_for_prompt": "Neutral\n\nSeeks balance.",
+      "raw_brief": "Mock response content."
+    }
+  ],
+  "agents": [
+    {
+      "name": "Reformer",
+      "position": "Pro Reform",
+      "summary": "Supports change.",
+      "messages": [
+        {
+          "round": 1,
+          "content": "[{\"name\": \"Reformer\", \"position\": \"Pro Reform\", \"summary\": \"Supports change.\"}, {\"name\": \"Traditionalist\", \"position\": \"Anti Reform\", \"summary\": \"Opposes change.\"}, {\"name\": \"Moderate\", \"position\": \"Neutral\", \"summary\": \"Seeks balance.\"}]"
+        },
+        {
+          "round": 2,
+          "content": "[{\"name\": \"Reformer\", \"position\": \"Pro Reform\", \"summary\": \"Supports change.\"}, {\"name\": \"Traditionalist\", \"position\": \"Anti Reform\", \"summary\": \"Opposes change.\"}, {\"name\": \"Moderate\", \"position\": \"Neutral\", \"summary\": \"Seeks balance.\"}]"
+        },
+        {
+          "round": 3,
+          "content": "[{\"name\": \"Reformer\", \"position\": \"Pro Reform\", \"summary\": \"Supports change.\"}, {\"name\": \"Traditionalist\", \"position\": \"Anti Reform\", \"summary\": \"Opposes change.\"}, {\"name\": \"Moderate\", \"position\": \"Neutral\", \"summary\": \"Seeks balance.\"}]"
+        }
+      ]
+    },
+    {
+      "name": "Traditionalist",
+      "position": "Anti Reform",
+      "summary": "Opposes change.",
+      "messages": [
+        {
+          "round": 1,
+          "content": "[{\"name\": \"Reformer\", \"position\": \"Pro Reform\", \"summary\": \"Supports change.\"}, {\"name\": \"Traditionalist\", \"position\": \"Anti Reform\", \"summary\": \"Opposes change.\"}, {\"name\": \"Moderate\", \"position\": \"Neutral\", \"summary\": \"Seeks balance.\"}]"
+        },
+        {
+          "round": 2,
+          "content": "[{\"name\": \"Reformer\", \"position\": \"Pro Reform\", \"summary\": \"Supports change.\"}, {\"name\": \"Traditionalist\", \"position\": \"Anti Reform\", \"summary\": \"Opposes change.\"}, {\"name\": \"Moderate\", \"position\": \"Neutral\", \"summary\": \"Seeks balance.\"}]"
+        },
+        {
+          "round": 3,
+          "content": "[{\"name\": \"Reformer\", \"position\": \"Pro Reform\", \"summary\": \"Supports change.\"}, {\"name\": \"Traditionalist\", \"position\": \"Anti Reform\", \"summary\": \"Opposes change.\"}, {\"name\": \"Moderate\", \"position\": \"Neutral\", \"summary\": \"Seeks balance.\"}]"
+        }
+      ]
+    },
+    {
+      "name": "Moderate",
+      "position": "Neutral",
+      "summary": "Seeks balance.",
+      "messages": [
+        {
+          "round": 1,
+          "content": "[{\"name\": \"Reformer\", \"position\": \"Pro Reform\", \"summary\": \"Supports change.\"}, {\"name\": \"Traditionalist\", \"position\": \"Anti Reform\", \"summary\": \"Opposes change.\"}, {\"name\": \"Moderate\", \"position\": \"Neutral\", \"summary\": \"Seeks balance.\"}]"
+        },
+        {
+          "round": 2,
+          "content": "[{\"name\": \"Reformer\", \"position\": \"Pro Reform\", \"summary\": \"Supports change.\"}, {\"name\": \"Traditionalist\", \"position\": \"Anti Reform\", \"summary\": \"Opposes change.\"}, {\"name\": \"Moderate\", \"position\": \"Neutral\", \"summary\": \"Seeks balance.\"}]"
+        },
+        {
+          "round": 3,
+          "content": "[{\"name\": \"Reformer\", \"position\": \"Pro Reform\", \"summary\": \"Supports change.\"}, {\"name\": \"Traditionalist\", \"position\": \"Anti Reform\", \"summary\": \"Opposes change.\"}, {\"name\": \"Moderate\", \"position\": \"Neutral\", \"summary\": \"Seeks balance.\"}]"
+        }
+      ]
+    }
+  ],
+  "conversation_log": [
+    {
+      "speaker": "Research / Setup",
+      "content": "Initial viewpoints (Round 0 - research/setup):\nAgent 1 (Reformer): Pro Reform\nAgent 2 (Traditionalist): Anti Reform\nAgent 3 (Moderate): Neutral",
+      "round": 0
+    },
+    {
+      "speaker": "Reformer",
+      "content": "[{\"name\": \"Reformer\", \"position\": \"Pro Reform\", \"summary\": \"Supports change.\"}, {\"name\": \"Traditionalist\", \"position\": \"Anti Reform\", \"summary\": \"Opposes change.\"}, {\"name\": \"Moderate\", \"position\": \"Neutral\", \"summary\": \"Seeks balance.\"}]",
+      "round": 1
+    },
+    {
+      "speaker": "Traditionalist",
+      "content": "[{\"name\": \"Reformer\", \"position\": \"Pro Reform\", \"summary\": \"Supports change.\"}, {\"name\": \"Traditionalist\", \"position\": \"Anti Reform\", \"summary\": \"Opposes change.\"}, {\"name\": \"Moderate\", \"position\": \"Neutral\", \"summary\": \"Seeks balance.\"}]",
+      "round": 1
+    },
+    {
+      "speaker": "Moderate",
+      "content": "[{\"name\": \"Reformer\", \"position\": \"Pro Reform\", \"summary\": \"Supports change.\"}, {\"name\": \"Traditionalist\", \"position\": \"Anti Reform\", \"summary\": \"Opposes change.\"}, {\"name\": \"Moderate\", \"position\": \"Neutral\", \"summary\": \"Seeks balance.\"}]",
+      "round": 1
+    },
+    {
+      "speaker": "Reformer",
+      "content": "[{\"name\": \"Reformer\", \"position\": \"Pro Reform\", \"summary\": \"Supports change.\"}, {\"name\": \"Traditionalist\", \"position\": \"Anti Reform\", \"summary\": \"Opposes change.\"}, {\"name\": \"Moderate\", \"position\": \"Neutral\", \"summary\": \"Seeks balance.\"}]",
+      "round": 2
+    },
+    {
+      "speaker": "Traditionalist",
+      "content": "[{\"name\": \"Reformer\", \"position\": \"Pro Reform\", \"summary\": \"Supports change.\"}, {\"name\": \"Traditionalist\", \"position\": \"Anti Reform\", \"summary\": \"Opposes change.\"}, {\"name\": \"Moderate\", \"position\": \"Neutral\", \"summary\": \"Seeks balance.\"}]",
+      "round": 2
+    },
+    {
+      "speaker": "Moderate",
+      "content": "[{\"name\": \"Reformer\", \"position\": \"Pro Reform\", \"summary\": \"Supports change.\"}, {\"name\": \"Traditionalist\", \"position\": \"Anti Reform\", \"summary\": \"Opposes change.\"}, {\"name\": \"Moderate\", \"position\": \"Neutral\", \"summary\": \"Seeks balance.\"}]",
+      "round": 2
+    },
+    {
+      "speaker": "Reformer",
+      "content": "[{\"name\": \"Reformer\", \"position\": \"Pro Reform\", \"summary\": \"Supports change.\"}, {\"name\": \"Traditionalist\", \"position\": \"Anti Reform\", \"summary\": \"Opposes change.\"}, {\"name\": \"Moderate\", \"position\": \"Neutral\", \"summary\": \"Seeks balance.\"}]",
+      "round": 3
+    },
+    {
+      "speaker": "Traditionalist",
+      "content": "[{\"name\": \"Reformer\", \"position\": \"Pro Reform\", \"summary\": \"Supports change.\"}, {\"name\": \"Traditionalist\", \"position\": \"Anti Reform\", \"summary\": \"Opposes change.\"}, {\"name\": \"Moderate\", \"position\": \"Neutral\", \"summary\": \"Seeks balance.\"}]",
+      "round": 3
+    },
+    {
+      "speaker": "Moderate",
+      "content": "[{\"name\": \"Reformer\", \"position\": \"Pro Reform\", \"summary\": \"Supports change.\"}, {\"name\": \"Traditionalist\", \"position\": \"Anti Reform\", \"summary\": \"Opposes change.\"}, {\"name\": \"Moderate\", \"position\": \"Neutral\", \"summary\": \"Seeks balance.\"}]",
+      "round": 3
+    }
+  ],
+  "judge_summary": "[{\"name\": \"Reformer\", \"position\": \"Pro Reform\", \"summary\": \"Supports change.\"}, {\"name\": \"Traditionalist\", \"position\": \"Anti Reform\", \"summary\": \"Opposes change.\"}, {\"name\": \"Moderate\", \"position\": \"Neutral\", \"summary\": \"Seeks balance.\"}]",
+  "final_report": "[{\"name\": \"Reformer\", \"position\": \"Pro Reform\", \"summary\": \"Supports change.\"}, {\"name\": \"Traditionalist\", \"position\": \"Anti Reform\", \"summary\": \"Opposes change.\"}, {\"name\": \"Moderate\", \"position\": \"Neutral\", \"summary\": \"Seeks balance.\"}]",
+  "timestamp": 1765221937.218631
+}

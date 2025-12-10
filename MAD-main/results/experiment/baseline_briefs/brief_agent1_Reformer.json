@@ -1,0 +1,14 @@
+{
+  "agent_id": 1,
+  "name": "Reformer",
+  "topic": "Given conflicting data about the effectiveness of different social programs, economic forecasts, and demographic trends, how should policymakers make decisions about social policy when key information is missing or contradictory?",
+  "position": "Pro Reform",
+  "role_summary": "Supports change.",
+  "supporting_arguments": [],
+  "anticipated_opponent_arguments": [],
+  "self_weaknesses": [],
+  "questions_to_ask": [],
+  "debate_strategy": {},
+  "summary_for_prompt": "Pro Reform\n\nSupports change.",
+  "raw_brief": "Mock response content."
+}

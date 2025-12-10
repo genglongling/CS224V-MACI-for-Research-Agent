@@ -1,0 +1,14 @@
+{
+  "agent_id": 2,
+  "name": "Traditionalist",
+  "topic": "Given conflicting data about the effectiveness of different social programs, economic forecasts, and demographic trends, how should policymakers make decisions about social policy when key information is missing or contradictory?",
+  "position": "Anti Reform",
+  "role_summary": "Opposes change.",
+  "supporting_arguments": [],
+  "anticipated_opponent_arguments": [],
+  "self_weaknesses": [],
+  "questions_to_ask": [],
+  "debate_strategy": {},
+  "summary_for_prompt": "Anti Reform\n\nOpposes change.",
+  "raw_brief": "Mock response content."
+}

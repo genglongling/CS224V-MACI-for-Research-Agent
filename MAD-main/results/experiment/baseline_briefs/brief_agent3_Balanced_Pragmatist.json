@@ -1,0 +1,14 @@
+{
+  "agent_id": 3,
+  "name": "Balanced Pragmatist",
+  "topic": "How should governments approach building a comprehensive AI governance framework that balances innovation, safety, and economic competitiveness?",
+  "position": "Governments should strive for a balanced AI governance framework that equally considers innovation, safety, and competitiveness.",
+  "role_summary": "This approach advocates for a middle ground, suggesting that it is possible to foster innovation while maintaining safety and ethical standards. By collaborating with industry experts and international bodies, governments can create adaptive regulations that support growth without compromising public interest.",
+  "supporting_arguments": [],
+  "anticipated_opponent_arguments": [],
+  "self_weaknesses": [],
+  "questions_to_ask": [],
+  "debate_strategy": {},
+  "summary_for_prompt": "Governments should strive for a balanced AI governance framework that equally considers innovation, safety, and competitiveness.\n\nThis approach advocates for a middle ground, suggesting that it is possible to foster innovation while maintaining safety and ethical standards. By collaborating with industry experts and international bodies, governments can create adaptive regulations that support growth without compromising public interest.",
+  "raw_brief": "{\"output\": {\"A\": 0.25, \"B\": 0.25, \"C\": 0.25, \"D\": 0.25}, \"reason\": {\"A\": \"Error\", \"B\": \"Error\", \"C\": \"Error\", \"D\": \"Error\"}}"
+}

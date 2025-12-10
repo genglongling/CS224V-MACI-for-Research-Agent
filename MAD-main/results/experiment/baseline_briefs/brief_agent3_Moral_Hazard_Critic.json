@@ -1,0 +1,14 @@
+{
+  "agent_id": 3,
+  "name": "Moral Hazard Critic",
+  "topic": "What would have happened to the global stock market if the 2008 financial crisis had been prevented through earlier regulatory intervention?",
+  "position": "Preventing the crisis could have increased moral hazard in financial institutions.",
+  "role_summary": "If the crisis had been averted through regulatory intervention, financial institutions might have taken even riskier actions, counting on the expectation of future bailouts. This could have led to an eventual crisis of greater magnitude, as the underlying issues of excessive risk-taking would not have been addressed.",
+  "supporting_arguments": [],
+  "anticipated_opponent_arguments": [],
+  "self_weaknesses": [],
+  "questions_to_ask": [],
+  "debate_strategy": {},
+  "summary_for_prompt": "Preventing the crisis could have increased moral hazard in financial institutions.\n\nIf the crisis had been averted through regulatory intervention, financial institutions might have taken even riskier actions, counting on the expectation of future bailouts. This could have led to an eventual crisis of greater magnitude, as the underlying issues of excessive risk-taking would not have been addressed.",
+  "raw_brief": "{\"output\": {\"A\": 0.25, \"B\": 0.25, \"C\": 0.25, \"D\": 0.25}, \"reason\": {\"A\": \"Error\", \"B\": \"Error\", \"C\": \"Error\", \"D\": \"Error\"}}"
+}
