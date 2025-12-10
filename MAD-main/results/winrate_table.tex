@@ -1,0 +1,15 @@
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lcccc}
+\toprule
+\textbf{System} & \textbf{\#Key Pts} & \textbf{Evidence@Key} & \textbf{Win Rate} \\
+\midrule
+Baseline & 12.4 & 1.00 & 0.48 \\
+CO-STORM & 8.9 & 0.79 & -- \\
+CollectiveMind & 10.2 & \textbf{1.00} & \textbf{0.52} \\
+\bottomrule
+\end{tabular}
+\caption{Key-point extraction analysis averaged over 20 topics. \#Key Pts: average number of distinct key points per topic; Evidence@Key: proportion of key points grounded in explicit evidence spans. Win Rate is the pairwise win rate of CollectiveMind over the Baseline.}
+\label{tab:keypoints}
+\end{table}

@@ -1,0 +1,20 @@
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lcc}
+\toprule
+\textbf{Metric} & \textbf{All GPT-4o} & \textbf{Mixed Models} \\
+\midrule
+Diversity & 4.5 & \textbf{4.5} \\
+Coherence & 4.6 & \textbf{4.6} \\
+Conflict Surface & 4.0 & \textbf{4.0} \\
+Factual Grounding & 3.9 & \textbf{3.9} \\
+\midrule
+\#Key Pts & 9.7 & 10.2 \\
+Evidence@Key & 1.00 & \textbf{1.00} \\
+Win Rate & 0.49 & \textbf{0.52} \\
+\bottomrule
+\end{tabular}
+\caption{Ablation study: Comparison between all GPT-4o agents (Baseline) and mixed models (GPT-4o, Claude Sonnet 4, Gemini 2) with research agent removed. Results averaged over 20 topics.}
+\label{tab:ablation}
+\end{table}
