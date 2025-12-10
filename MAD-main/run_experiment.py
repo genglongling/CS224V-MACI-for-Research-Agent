@@ -142,7 +142,8 @@ def run_baseline(topic: str, models_cfg: Dict, output_dir: Path, question_type_i
         judge = MockModel()
     else:
         pairing_cfg = models_cfg["pairings"]["experiment"]
-        researcher = LLMFactory.make(**pairing_cfg["researcher"])
+        # Use model A for researcher (baseline) instead of separate researcher
+        researcher = LLMFactory.make(**pairing_cfg["A"])
         judge = LLMFactory.make(**pairing_cfg["judge"])
 
     # 2. Viewpoint Discovery

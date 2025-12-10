@@ -1,0 +1,14 @@
+{
+  "agent_id": 4,
+  "name": "Cautious Bear",
+  "topic": "How much will Apple stock increase/decrease from 2025/12/2 to 2026/1/1?",
+  "position": "Apple stock will decline modestly by 5–10%.",
+  "role_summary": "After a strong multi-year run, the stock may face valuation compression if growth decelerates or iPhone demand disappoints during the holiday season. Any signs of weaker consumer spending or softer guidance could trigger profit-taking and a pullback.",
+  "supporting_arguments": [],
+  "anticipated_opponent_arguments": [],
+  "self_weaknesses": [],
+  "questions_to_ask": [],
+  "debate_strategy": {},
+  "summary_for_prompt": "Apple stock will decline modestly by 5–10%.\n\nAfter a strong multi-year run, the stock may face valuation compression if growth decelerates or iPhone demand disappoints during the holiday season. Any signs of weaker consumer spending or softer guidance could trigger profit-taking and a pullback.",
+  "raw_brief": "Apple stock will decline modestly by 5–10%.\n\nAfter a strong multi-year run, the stock may face valuation compression if growth decelerates or iPhone demand disappoints during the holiday season. Any signs of weaker consumer spending or softer guidance could trigger profit-taking and a pullback."
+}

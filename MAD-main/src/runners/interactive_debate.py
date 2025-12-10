@@ -355,7 +355,36 @@ def run_interactive_debate(
     output_dir.mkdir(parents=True, exist_ok=True)
 
     models_cfg = load_models_config(models_cfg_path)
-    base_model = make_base_model(models_cfg, pairing)
+    pairing_cfg = models_cfg["pairings"][pairing]
+    
+    # Create models for different agents
+    agent_models = [
+        LLMFactory.make(**pairing_cfg["A"]),  # Agent 1 uses model A
+        LLMFactory.make(**pairing_cfg["B"]),  # Agent 2 uses model B
+    ]
+    # For third agent, use model C if available, otherwise use A
+    if "C" in pairing_cfg:
+        agent_models.append(LLMFactory.make(**pairing_cfg["C"]))
+    else:
+        agent_models.append(LLMFactory.make(**pairing_cfg["A"]))  # Fallback to A
+    
+    model_a_name = f"{pairing_cfg['A'].get('provider', 'unknown')}/{pairing_cfg['A'].get('model', 'unknown')}"
+    model_b_name = f"{pairing_cfg['B'].get('provider', 'unknown')}/{pairing_cfg['B'].get('model', 'unknown')}"
+    model_c_name = f"{pairing_cfg.get('C', {}).get('provider', 'unknown')}/{pairing_cfg.get('C', {}).get('model', 'A (fallback)')}"
+    
+    print(f"\n{'='*80}")
+    print(f"AGENT MODEL ASSIGNMENT:")
+    print(f"{'='*80}")
+    print(f"Agent 1 (Model A): {model_a_name}")
+    print(f"Agent 2 (Model B): {model_b_name}")
+    print(f"Agent 3 (Model C): {model_c_name}")
+    print(f"{'='*80}\n")
+    
+    logger.info("Created %d agent models: A=%s, B=%s, C=%s", 
+                len(agent_models), model_a_name, model_b_name, model_c_name)
+    
+    # Use model A for viewpoint generation and other non-agent tasks
+    base_model = agent_models[0]
 
     logger.info("Generating viewpoints for topic: %s", topic)
     viewpoints = generate_viewpoints(base_model, topic, max_agents)
@@ -369,8 +398,16 @@ def run_interactive_debate(
     agents: List[Dict[str, Any]] = []
     for idx, vp in enumerate(viewpoints, start=1):
         name = vp["name"]
+        
+        # Assign model to agent (cycle through available models)
+        agent_model = agent_models[(idx - 1) % len(agent_models)]
+        model_key = ["A", "B", "C"][(idx - 1) % len(agent_models)]
+        model_info = f"{pairing_cfg[model_key].get('provider', 'unknown')}/{pairing_cfg[model_key].get('model', 'unknown')}"
+        
+        print(f"Agent {idx} ({name}) -> Model {model_key}: {model_info}")
+        logger.info("Agent %d (%s) assigned model: %s (from %s)", idx, name, model_info, model_key)
 
-        brief = generate_agent_brief(base_model, topic, vp, idx, briefs_dir)
+        brief = generate_agent_brief(agent_model, topic, vp, idx, briefs_dir)
         agent_briefs.append(brief)
 
         system_prompt = (
@@ -395,6 +432,7 @@ def run_interactive_debate(
                 "system_prompt": system_prompt,
                 "messages": [],
                 "brief": brief,
+                "model": agent_model,  # Assign specific model to this agent
             }
         )
 
@@ -445,7 +483,11 @@ def run_interactive_debate(
             )
 
             logger.info("Agent '%s' taking a turn for round %d.", name, r)
-            reply = invoke_raw(base_model, sys, user_prompt)
+            # Use agent-specific model instead of base_model
+            agent_model = agent.get("model", base_model)
+            model_info = f"{agent_model.provider}/{agent_model.model}" if hasattr(agent_model, 'provider') else "unknown"
+            logger.info("Using model for agent '%s': %s", name, model_info)
+            reply = invoke_raw(agent_model, sys, user_prompt)
             if not reply:
                 reply = "[No response due to API error; treating as empty turn.]"
             

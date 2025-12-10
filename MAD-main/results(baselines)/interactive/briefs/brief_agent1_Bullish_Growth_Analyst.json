@@ -1,0 +1,14 @@
+{
+  "agent_id": 1,
+  "name": "Bullish Growth Analyst",
+  "topic": "How much will Apple stock increase/decrease from 2025/12/2 to 2026/1/1?",
+  "position": "Apple stock will rise 8–15% over the period.",
+  "role_summary": "Holiday-quarter strength, ongoing services growth, and optimism around Apple’s emerging AI and device roadmap could drive multiple expansion into year-end. If macro conditions remain stable and guidance is solid, investors may bid up the stock on expectations for a strong 2026 product cycle.",
+  "supporting_arguments": [],
+  "anticipated_opponent_arguments": [],
+  "self_weaknesses": [],
+  "questions_to_ask": [],
+  "debate_strategy": {},
+  "summary_for_prompt": "Apple stock will rise 8–15% over the period.\n\nHoliday-quarter strength, ongoing services growth, and optimism around Apple’s emerging AI and device roadmap could drive multiple expansion into year-end. If macro conditions remain stable and guidance is solid, investors may bid up the stock on expectations for a strong 2026 product cycle.",
+  "raw_brief": "Apple stock will rise 8–15% over the period.\n\nHoliday-quarter strength, ongoing services growth, and optimism around Apple’s emerging AI and device roadmap could drive multiple expansion into year-end. If macro conditions remain stable and guidance is solid, investors may bid up the stock on expectations for a strong 2026 product cycle."
+}

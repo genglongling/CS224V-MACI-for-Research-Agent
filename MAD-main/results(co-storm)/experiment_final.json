@@ -1,0 +1,174 @@
+{
+  "stats": {
+    "baseline_kps": 142,
+    "collective_kps": 178,
+    "baseline_evidence_count": 96,
+    "collective_evidence_count": 140,
+    "cm_wins": 161,
+    "cm_losses": 92,
+    "ties": 0,
+    "topics": 20
+  },
+  "topics": [
+    {
+      "topic": "Should central banks issue retail digital currencies (CBDCs)?",
+      "baseline_kps": 11,
+      "cm_kps": 10,
+      "wins": 15,
+      "losses": 6,
+      "ties": 0
+    },
+    {
+      "topic": "Should governments ban end-to-end encryption to combat crime?",
+      "baseline_kps": 6,
+      "cm_kps": 9,
+      "wins": 7,
+      "losses": 5,
+      "ties": 0
+    },
+    {
+      "topic": "Is Universal Basic Income (UBI) a viable solution to AI-driven displacement?",
+      "baseline_kps": 8,
+      "cm_kps": 11,
+      "wins": 11,
+      "losses": 4,
+      "ties": 0
+    },
+    {
+      "topic": "Should genetic engineering of human embryos be legalized for disease prevention?",
+      "baseline_kps": 7,
+      "cm_kps": 7,
+      "wins": 6,
+      "losses": 5,
+      "ties": 0
+    },
+    {
+      "topic": "Should social media platforms be treated as publishers or platforms under the law?",
+      "baseline_kps": 8,
+      "cm_kps": 10,
+      "wins": 9,
+      "losses": 5,
+      "ties": 0
+    },
+    {
+      "topic": "Should nuclear energy be classified as 'green' in sustainable finance taxonomies?",
+      "baseline_kps": 7,
+      "cm_kps": 11,
+      "wins": 8,
+      "losses": 6,
+      "ties": 0
+    },
+    {
+      "topic": "Should autonomous weapons systems be banned internationally?",
+      "baseline_kps": 6,
+      "cm_kps": 7,
+      "wins": 7,
+      "losses": 3,
+      "ties": 0
+    },
+    {
+      "topic": "Should the gig economy be regulated to classify workers as employees?",
+      "baseline_kps": 8,
+      "cm_kps": 9,
+      "wins": 7,
+      "losses": 6,
+      "ties": 0
+    },
+    {
+      "topic": "Should developing nations be exempt from carbon emission targets?",
+      "baseline_kps": 6,
+      "cm_kps": 10,
+      "wins": 8,
+      "losses": 4,
+      "ties": 0
+    },
+    {
+      "topic": "Should patent protection be waived for essential medicines during pandemics?",
+      "baseline_kps": 7,
+      "cm_kps": 8,
+      "wins": 8,
+      "losses": 4,
+      "ties": 0
+    },
+    {
+      "topic": "Should universities abolish standardized testing for admissions?",
+      "baseline_kps": 5,
+      "cm_kps": 11,
+      "wins": 7,
+      "losses": 5,
+      "ties": 0
+    },
+    {
+      "topic": "Should strict rent control be implemented in major cities to solve housing crises?",
+      "baseline_kps": 8,
+      "cm_kps": 9,
+      "wins": 9,
+      "losses": 4,
+      "ties": 0
+    },
+    {
+      "topic": "Should space exploration be privatized or remain government-led?",
+      "baseline_kps": 8,
+      "cm_kps": 9,
+      "wins": 9,
+      "losses": 4,
+      "ties": 0
+    },
+    {
+      "topic": "Should the voting age be lowered to 16?",
+      "baseline_kps": 6,
+      "cm_kps": 7,
+      "wins": 6,
+      "losses": 4,
+      "ties": 0
+    },
+    {
+      "topic": "Should meat consumption be taxed to reduce carbon footprint?",
+      "baseline_kps": 8,
+      "cm_kps": 7,
+      "wins": 8,
+      "losses": 4,
+      "ties": 0
+    },
+    {
+      "topic": "Should AI art be copyrightable?",
+      "baseline_kps": 6,
+      "cm_kps": 7,
+      "wins": 6,
+      "losses": 4,
+      "ties": 0
+    },
+    {
+      "topic": "Should remote work be a legal right for eligible professions?",
+      "baseline_kps": 7,
+      "cm_kps": 11,
+      "wins": 9,
+      "losses": 5,
+      "ties": 0
+    },
+    {
+      "topic": "Should the death penalty be abolished globally?",
+      "baseline_kps": 8,
+      "cm_kps": 11,
+      "wins": 10,
+      "losses": 5,
+      "ties": 0
+    },
+    {
+      "topic": "Should cash be completely phased out in favor of digital payments?",
+      "baseline_kps": 7,
+      "cm_kps": 7,
+      "wins": 6,
+      "losses": 5,
+      "ties": 0
+    },
+    {
+      "topic": "Should wealthy nations pay 'climate reparations' to vulnerable countries?",
+      "baseline_kps": 5,
+      "cm_kps": 7,
+      "wins": 5,
+      "losses": 4,
+      "ties": 0
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "stats": {
+    "baseline_kps": 48,
+    "collective_kps": 38,
+    "baseline_evidence_count": 48,
+    "collective_evidence_count": 38,
+    "cm_wins": 37,
+    "cm_losses": 48,
+    "ties": 1,
+    "topics": 4
+  },
+  "topics": [
+    {
+      "category": "social_policy",
+      "question_type_id": 17,
+      "topic": "How should a government allocate its social policy budget of $500 million across education (target 40%), healthcare (target 30%), housing (target 20%), and job training (target 10%) to maximize social impact?",
+      "baseline_kps": 11,
+      "cm_kps": 11,
+      "wins": 10,
+      "losses": 12,
+      "ties": 0
+    },
+    {
+      "category": "social_policy",
+      "question_type_id": 18,
+      "topic": "Should governments prioritize economic growth or social equity when these goals conflict in policy decisions, such as in tax policy or welfare programs?",
+      "baseline_kps": 14,
+      "cm_kps": 8,
+      "wins": 9,
+      "losses": 12,
+      "ties": 1
+    },
+    {
+      "category": "social_policy",
+      "question_type_id": 19,
+      "topic": "How should a healthcare policy balance the interests of patients (who need affordable care), providers (who need fair compensation), insurance companies (who need profitability), and taxpayers (who fund the system)?",
+      "baseline_kps": 13,
+      "cm_kps": 8,
+      "wins": 7,
+      "losses": 14,
+      "ties": 0
+    },
+    {
+      "category": "social_policy",
+      "question_type_id": 20,
+      "topic": "Given conflicting data about the effectiveness of different social programs, economic forecasts, and demographic trends, how should policymakers make decisions about social policy when key information is missing or contradictory?",
+      "baseline_kps": 10,
+      "cm_kps": 11,
+      "wins": 11,
+      "losses": 10,
+      "ties": 0
+    }
+  ]
+}

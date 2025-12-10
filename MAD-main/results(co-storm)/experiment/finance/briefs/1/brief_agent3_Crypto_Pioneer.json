@@ -1,0 +1,27 @@
+{
+  "agent_id": 3,
+  "name": "Crypto Pioneer",
+  "topic": "Which is the best investment strategy for a 30-year retirement plan: A) Diversification across stocks, bonds, and real estate, B) All-in tech stocks, C) Real estate only, D) Cryptocurrency and alternative assets?",
+  "position": "Cryptocurrency and alternative assets offer the best returns for a 30-year retirement plan.",
+  "role_summary": "Cryptocurrencies and alternative assets like NFTs have shown exponential growth and can drastically outperform traditional markets. While they are high-risk, they also provide a unique opportunity for significant returns, appealing to those who are willing to embrace volatility.",
+  "supporting_arguments": [],
+  "anticipated_opponent_arguments": [],
+  "self_weaknesses": [],
+  "questions_to_ask": [],
+  "debate_strategy": {},
+  "summary_for_prompt": "Cryptocurrency and alternative assets offer the best returns for a 30-year retirement plan.\n\nCryptocurrencies and alternative assets like NFTs have shown exponential growth and can drastically outperform traditional markets. While they are high-risk, they also provide a unique opportunity for significant returns, appealing to those who are willing to embrace volatility.",
+  "raw_json_response": "{\"output\": {\"A\": 0.25, \"B\": 0.25, \"C\": 0.25, \"D\": 0.25}, \"reason\": {\"A\": \"Error\", \"B\": \"Error\", \"C\": \"Error\", \"D\": \"Error\"}}",
+  "output": {
+    "A": 0.25,
+    "B": 0.25,
+    "C": 0.25,
+    "D": 0.25
+  },
+  "reason": {
+    "A": "Error",
+    "B": "Error",
+    "C": "Error",
+    "D": "Error"
+  },
+  "raw_brief": "{\"output\": {\"A\": 0.25, \"B\": 0.25, \"C\": 0.25, \"D\": 0.25}, \"reason\": {\"A\": \"Error\", \"B\": \"Error\", \"C\": \"Error\", \"D\": \"Error\"}}"
+}

@@ -1,0 +1,14 @@
+{
+  "agent_id": 5,
+  "name": "Macro Pessimist",
+  "topic": "How much will Apple stock increase/decrease from 2025/12/2 to 2026/1/1?",
+  "position": "Apple stock could drop more than 10% in a risk-off scenario.",
+  "role_summary": "If macro conditions worsen—such as higher-for-longer rates, a sharp slowdown, or regulatory shocks—large-cap tech could see broad multiple contraction, pulling Apple down despite its strong balance sheet. In such an environment, investors may rotate away from mega-cap growth, amplifying downside moves.",
+  "supporting_arguments": [],
+  "anticipated_opponent_arguments": [],
+  "self_weaknesses": [],
+  "questions_to_ask": [],
+  "debate_strategy": {},
+  "summary_for_prompt": "Apple stock could drop more than 10% in a risk-off scenario.\n\nIf macro conditions worsen—such as higher-for-longer rates, a sharp slowdown, or regulatory shocks—large-cap tech could see broad multiple contraction, pulling Apple down despite its strong balance sheet. In such an environment, investors may rotate away from mega-cap growth, amplifying downside moves.",
+  "raw_brief": "Apple stock could drop more than 10% in a risk-off scenario.\n\nIf macro conditions worsen—such as higher-for-longer rates, a sharp slowdown, or regulatory shocks—large-cap tech could see broad multiple contraction, pulling Apple down despite its strong balance sheet. In such an environment, investors may rotate away from mega-cap growth, amplifying downside moves."
+}

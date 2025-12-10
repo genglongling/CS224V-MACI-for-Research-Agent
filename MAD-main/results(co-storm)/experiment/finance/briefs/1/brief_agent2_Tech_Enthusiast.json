@@ -1,0 +1,27 @@
+{
+  "agent_id": 2,
+  "name": "Tech Enthusiast",
+  "topic": "Which is the best investment strategy for a 30-year retirement plan: A) Diversification across stocks, bonds, and real estate, B) All-in tech stocks, C) Real estate only, D) Cryptocurrency and alternative assets?",
+  "position": "Investing all-in on tech stocks is the most profitable strategy.",
+  "role_summary": "Technological innovation has consistently outperformed other sectors, offering high growth potential. By focusing on tech stocks, investors may achieve superior returns, though they must be willing to accept higher volatility and risk.",
+  "supporting_arguments": [],
+  "anticipated_opponent_arguments": [],
+  "self_weaknesses": [],
+  "questions_to_ask": [],
+  "debate_strategy": {},
+  "summary_for_prompt": "Investing all-in on tech stocks is the most profitable strategy.\n\nTechnological innovation has consistently outperformed other sectors, offering high growth potential. By focusing on tech stocks, investors may achieve superior returns, though they must be willing to accept higher volatility and risk.",
+  "raw_json_response": "{\"output\": {\"A\": 0.25, \"B\": 0.25, \"C\": 0.25, \"D\": 0.25}, \"reason\": {\"A\": \"Error\", \"B\": \"Error\", \"C\": \"Error\", \"D\": \"Error\"}}",
+  "output": {
+    "A": 0.25,
+    "B": 0.25,
+    "C": 0.25,
+    "D": 0.25
+  },
+  "reason": {
+    "A": "Error",
+    "B": "Error",
+    "C": "Error",
+    "D": "Error"
+  },
+  "raw_brief": "{\"output\": {\"A\": 0.25, \"B\": 0.25, \"C\": 0.25, \"D\": 0.25}, \"reason\": {\"A\": \"Error\", \"B\": \"Error\", \"C\": \"Error\", \"D\": \"Error\"}}"
+}
